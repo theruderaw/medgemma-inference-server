@@ -36,7 +36,6 @@ them through a retrieval-augmented chat interface backed by pgvector.
 
 ## Tech stack
 
-Confirmed from `requirements.txt`:
 
 - **FastAPI 0.141.1** on **Starlette 1.4.1** / **Uvicorn 0.52.1** (with
   `uvloop` + `httptools` for the async event loop and HTTP parsing)
