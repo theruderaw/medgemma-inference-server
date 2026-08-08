@@ -4,10 +4,10 @@ A FastAPI backend for uploading medical images (chest X-rays), running VLM-based
 analysis on them, extracting structured findings, and answering questions about
 them through a retrieval-augmented chat interface backed by pgvector.
 
-> **Note:** Some details below (exact dependency versions, database engine setup)
-> are inferred from imports and usage patterns rather than confirmed from a
-> `requirements.txt`/`pyproject.toml` or `database.py`. These are marked
-> *(inferred)* — double-check before relying on them for deployment.
+> **Note:** Dependency versions below are confirmed from `requirements.txt`.
+> The database engine setup (`app/core/database.py`) hasn't been reviewed, so
+> the exact async driver in use (`asyncpg` vs. `psycopg`, both of which are
+> installed) is called out as an open question rather than assumed.
 
 ---
 
@@ -39,18 +39,37 @@ them through a retrieval-augmented chat interface backed by pgvector.
 
 ---
 
-## Tech stack *(inferred from imports)*
+## Tech stack
 
-- **FastAPI** — HTTP framework, async
-- **SQLAlchemy (async) + SQLModel** — ORM / data models
-- **PostgreSQL with `pgvector`** — `Chunk.embedding.cosine_distance(...)` implies
-  a `pgvector` column type and a Postgres backend; not confirmed from a
-  database/engine file
-- **Ollama** — local LLM/VLM serving, used for chat completion, structured
-  extraction, and embeddings via `app/inference/llm.py`
-- **Pillow** — image validation on upload
-- **aiofiles** — async file I/O for storing uploads
-- **pydantic-settings** — environment-based configuration
+Confirmed from `requirements.txt`:
+
+- **FastAPI 0.141.1** on **Starlette 1.4.1** / **Uvicorn 0.52.1** (with
+  `uvloop` + `httptools` for the async event loop and HTTP parsing)
+- **SQLAlchemy 2.0.51 (async) + SQLModel 0.0.39** — ORM / data models
+- **Alembic 1.19.0** — DB migrations (present, though no migration files were
+  reviewed here)
+- **PostgreSQL with `pgvector` 0.5.0** — confirms the `pgvector` column type
+  backing `Chunk.embedding.cosine_distance(...)`
+- **Both `asyncpg` 0.31.0 and `psycopg`/`psycopg-binary` 3.3.4 are present** —
+  worth confirming which one `database.py` actually uses for the async
+  engine; having both installed is unusual and may be leftover from a driver
+  switch
+- **Pillow 12.3.0** — image validation on upload
+- **opencv-python 5.0.0.93** — installed but not seen used in the reviewed
+  service code; may be used elsewhere in image preprocessing
+- **torch 2.13.0 / torchvision 0.28.0 / triton 3.7.1 / `cuda-*` packages** —
+  a full local GPU-capable ML stack is installed, which is notable since the
+  analysis/extraction/embedding calls reviewed here all go through Ollama
+  over HTTP rather than loading models directly. Suggests either local model
+  loading happens elsewhere in the codebase (not reviewed) or this is
+  leftover from an earlier architecture — worth confirming which
+- **aiofiles 25.1.0** — async file I/O for storing uploads
+- **pydantic 2.13.4 / pydantic-settings 2.14.2** — validation and
+  environment-based configuration
+- **python-multipart 0.0.32** — required by FastAPI for the multipart upload
+  endpoints (`/documents/upload`, `/chats/{chat_id}/context`)
+- **Ollama** — local LLM/VLM serving (not in `requirements.txt` since it runs
+  as a separate service, reached via `OLLAMA_URL`)
 
 ---
 
@@ -168,11 +187,11 @@ here; at a high level:
 
 ---
 
-## Running locally *(inferred — verify against your actual setup)*
+## Running locally
 
 ```bash
-# 1. Install dependencies (adjust to your actual package manager/lockfile)
-pip install -e .
+# 1. Install dependencies
+pip install -r requirements.txt
 
 # 2. Set up environment
 cp .env.example .env   # fill in DATABASE_URL, OLLAMA_URL, *_MODEL vars
