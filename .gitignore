@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environment
+venv/
+.venv/
+env/
+ENV/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Runtime / generated data
+uploads/
+datasets/
+results/
+logs/
+*.log
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Testing / tooling
+.pytest_cache/
+.coverage
+swagger-documentation/
+evaluate.py
+ingest.py
+schema.sql
+htmlcov/
+.mypy_cache/
+.pyright/
+.ruff_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model files / local models
+medgemma-gguf/
+*.gguf
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.onnx
