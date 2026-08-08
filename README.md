@@ -4,11 +4,6 @@ A FastAPI backend for uploading medical images (chest X-rays), running VLM-based
 analysis on them, extracting structured findings, and answering questions about
 them through a retrieval-augmented chat interface backed by pgvector.
 
-> **Note:** Dependency versions below are confirmed from `requirements.txt`.
-> The database engine setup (`app/core/database.py`) hasn't been reviewed, so
-> the exact async driver in use (`asyncpg` vs. `psycopg`, both of which are
-> installed) is called out as an open question rather than assumed.
-
 ---
 
 ## How it works
