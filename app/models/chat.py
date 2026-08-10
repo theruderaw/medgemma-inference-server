@@ -1,9 +1,9 @@
 from datetime import datetime
-from uuid import UUID, uuid4
 from typing import TYPE_CHECKING
+from uuid import UUID, uuid4
 
-from sqlmodel import SQLModel, Field, Relationship
-from sqlalchemy import Column, JSON, Enum
+from sqlalchemy import Column, Enum, JSON
+from sqlmodel import Field, Relationship, SQLModel
 
 from .enums import MessageRole
 
@@ -16,30 +16,30 @@ class ChatSession(SQLModel, table=True):
 
     chat_id: UUID = Field(
         default_factory=uuid4,
-        primary_key=True
+        primary_key=True,
     )
 
     title: str | None = Field(
         default=None,
-        nullable=True
+        nullable=True,
     )
 
     updated_at: datetime = Field(
         default_factory=datetime.now,
-        nullable=False
+        nullable=False,
     )
 
     created_at: datetime = Field(
         default_factory=datetime.now,
-        nullable=False
+        nullable=False,
     )
 
     messages: list["ChatMessage"] = Relationship(
-        back_populates="chat"
+        back_populates="chat",
     )
 
     chat_documents: list["ChatDocument"] = Relationship(
-        back_populates="chat"
+        back_populates="chat",
     )
 
 
@@ -48,13 +48,13 @@ class ChatMessage(SQLModel, table=True):
 
     message_id: UUID = Field(
         default_factory=uuid4,
-        primary_key=True
+        primary_key=True,
     )
 
     chat_id: UUID = Field(
         foreign_key="chat_sessions.chat_id",
         nullable=False,
-        index=True
+        index=True,
     )
 
     role: MessageRole = Field(
@@ -62,34 +62,34 @@ class ChatMessage(SQLModel, table=True):
             Enum(
                 MessageRole,
                 name="messagerole",
-                create_type=True
+                create_type=True,
             ),
-            nullable=False
-        )
+            nullable=False,
+        ),
     )
 
     content: str = Field(
-        nullable=False
+        nullable=False,
     )
 
     message_metadata: dict = Field(
         default_factory=dict,
         sa_column=Column(
             JSON,
-            nullable=False
-        )
+            nullable=False,
+        ),
     )
 
     updated_at: datetime = Field(
         default_factory=datetime.now,
-        nullable=False
+        nullable=False,
     )
 
     created_at: datetime = Field(
         default_factory=datetime.now,
-        nullable=False
+        nullable=False,
     )
 
     chat: "ChatSession" = Relationship(
-        back_populates="messages"
+        back_populates="messages",
     )

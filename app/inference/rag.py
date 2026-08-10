@@ -1,118 +1,196 @@
+from collections import defaultdict
 from uuid import UUID, uuid4
 
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import aliased
+from sqlmodel import select
+from sqlmodel.ext.asyncio.session import AsyncSession
 
-from app.core.database import AsyncSessionLocal
-from app.inference.llm import chat, embed
 from app.core.config import settings
+from app.core.database import AsyncSessionLocal
+from app.inference.context import ContextBundle, ContextEngine
+from app.inference.llm import chat, embed
 from app.inference.prompts import GENERATE_PROMPT, QUERY_PROMPT
+from app.inference.types import ChestXrayEntity
+from app.models.analysis import Analysis
 from app.models.chat import ChatMessage
+from app.models.chat_document import ChatDocument
 from app.models.chunk import Chunk
 from app.models.enums import MessageRole
+from app.schemas.context import ChatDocumentSummary
+
 
 class RAGService:
-    def __init__(self,db:AsyncSession):
+    def __init__(self, db: AsyncSession):
         self.db = db
-    async def retrieve(
-        self,
-        query: str,
-        top_k: int = 4
-    ):
+        self.context_engine = ContextEngine(db)
+
+    # ---- query embedding -------------------------------------------------
+
+    async def embed_query(self, query: str) -> list[float]:
         if not query or not query.strip():
             raise ValueError("Query can't be empty")
 
-        res = await embed(
-            model=settings.EMBED_MODEL,
-            input=query
-        )
-        
-        query_embedding = res["embeddings"][0]
-        
-        distance = Chunk.embedding.cosine_distance(
-            query_embedding
-        )
-        
-        statement = (
-            select(
-                Chunk,
-                distance.label("distance")
-            )
-            .where(
-                Chunk.embedding.is_not(None)
-            )
-            .order_by(distance)
-            .limit(top_k)
-        )
+        res = await embed(model=settings.EMBED_MODEL, input=query)
+        return res["embeddings"][0]
 
-        result = await self.db.execute(statement)
-        rows = result.all()
-        
-        return [
-            {
-                "chunk":chunk,
-                "distance":float(distance)
-            } for chunk,distance in rows
-        ]
-        
-    async def augment(
-        self,
-        query: str,
-        context: list[dict]
-    ):
-        contexts = [
+    # ---- prompt assembly --------------------------------------------------
+
+    async def augment(self, query: str, context: ContextBundle) -> str:
+        similar_chunks_section = "\n".join(
             f"""
-            CONTEXT {index}
-            Content: {item["chunk"].chunk_content}
-            Entities: {item["chunk"].entities}
-            Notes: {item["chunk"].notes}
+            Chunk {index}:
+            Content: {chunk.content}
+            Entities: {chunk.entities}
             """
-            for index,item in enumerate(context,start=1)
-        ]
-        return QUERY_PROMPT.format(
-            context=f"\n{'-'*40}\n".join(contexts),
-            query=query
-        )
-        
-    async def generate(
-        self,
-        chat_id: UUID,
-        prompt: str
-    ):
+            for index, chunk in enumerate(context.similar_chunks, start=1)
+        ) or "None"
+
+        previous_docs_section = "\n".join(
+            f"- Document {doc.document_id}: {doc.summary or 'No summary'} "
+            f"(Findings: {', '.join(n.value for n in doc.notes) or 'None'})"
+            for doc in context.previous_documents
+        ) or "None"
+
+        current_doc_section = context.current_document_raw_output or "None"
+
+        combined_context = f"""
+        Similar Chunks:
+        {similar_chunks_section}
+
+        Previously Attached Documents:
+        {previous_docs_section}
+
+        Current Document (raw analysis output):
+        {current_doc_section}
+        """
+
+        return QUERY_PROMPT.format(context=combined_context, query=query)
+
+    # ---- generation ---------------------------------------------------
+
+    async def generate(self, chat_id: UUID, prompt: str):
         res = await chat(
             model=settings.TEXT_MODEL,
             messages=[
-                {
-                    "role":"system",
-                    "content":GENERATE_PROMPT
-                },
-                {
-                    "role":"user",
-                    "content":prompt
-                }
+                {"role": "system", "content": GENERATE_PROMPT},
+                {"role": "user", "content": prompt},
             ],
         )
-        
+
         message = ChatMessage(
             message_id=uuid4(),
             chat_id=chat_id,
-            role= MessageRole.ASSISTANT,
-            content = res["message"]["content"],
-            message_metadata={}
-        ) 
-        
+            role=MessageRole.ASSISTANT,
+            content=res["message"]["content"],
+            message_metadata={},
+        )
+
         self.db.add(message)
         await self.db.commit()
         await self.db.refresh(message)
-        
-        
+
+    # ---- entry points -----------------------------------------------------
+
     @staticmethod
-    async def run(chat_id:UUID,query: str):
+    async def run(
+        chat_id: UUID,
+        query: str,
+        current_document_id: UUID | None = None,
+    ):
         async with AsyncSessionLocal() as db:
-            service = RAGService(
-                db=db
+            service = RAGService(db=db)
+
+            query_embedding = await service.embed_query(query)
+            context = await service.context_engine.build_context(
+                chat_id=chat_id,
+                query_embedding=query_embedding,
+                current_document_id=current_document_id,
             )
-        
-            result = await service.retrieve(query, 4)
-            prompt = await service.augment(query,result)
-            await service.generate(chat_id,prompt)
+            prompt = await service.augment(query, context)
+            await service.generate(chat_id, prompt)
+
+    @staticmethod
+    async def getDocumentSummary(chat_id: UUID) -> list[ChatDocumentSummary]:
+        async with AsyncSessionLocal() as db:
+            try:
+                latest_analysis = (
+                    select(Analysis)
+                    .distinct(Analysis.document_id)
+                    .order_by(
+                        Analysis.document_id,
+                        Analysis.created_at.desc()
+                    )
+                    .subquery()
+                )
+
+                latest_analysis_alias = aliased(Analysis, latest_analysis)
+
+                result = await db.exec(
+                    select(
+                        ChatDocument.chat_id,
+                        ChatDocument.document_id,
+                        ChatDocument.attached_at,
+                        latest_analysis_alias.analysis_id,
+                        latest_analysis_alias.summary,
+                        latest_analysis_alias.status,
+                    )
+                    .join(
+                        latest_analysis_alias,
+                        latest_analysis_alias.document_id == ChatDocument.document_id,
+                    )
+                    .where(ChatDocument.chat_id == chat_id)
+                )
+
+                rows = result.all()
+
+                if not rows:
+                    return []
+
+                analysis_ids = [row.analysis_id for row in rows]
+
+                chunk_result = await db.exec(
+                    select(Chunk.analysis_id, Chunk.chunk_id, Chunk.notes)
+                    .where(Chunk.analysis_id.in_(analysis_ids))
+                )
+
+                chunk_rows = chunk_result.all()
+
+                chunks_by_analysis: dict[UUID, list[UUID]] = defaultdict(list)
+                notes_by_analysis: dict[UUID, set[ChestXrayEntity]] = defaultdict(set)
+
+                for chunk_row in chunk_rows:
+                    chunks_by_analysis[chunk_row.analysis_id].append(
+                        chunk_row.chunk_id
+                    )
+
+                    for note in (chunk_row.notes or []):
+                        try:
+                            notes_by_analysis[chunk_row.analysis_id].add(
+                                ChestXrayEntity(note)
+                            )
+                        except ValueError:
+                            continue
+
+                summaries = [
+                    ChatDocumentSummary(
+                        chat_id=row.chat_id,
+                        document_id=row.document_id,
+                        analysis_id=row.analysis_id,
+                        summary=row.summary,
+                        status=row.status,
+                        attached_at=row.attached_at,
+                        chunks=chunks_by_analysis.get(row.analysis_id, []),
+                        notes=list(
+                            notes_by_analysis.get(row.analysis_id, set())
+                        ),
+                    )
+                    for row in rows
+                ]
+
+                return summaries
+
+            except Exception as e:
+                print(
+                    f"Error fetching document summary for chat_id={chat_id}: {e}"
+                )
+                raise

@@ -1,0 +1,13 @@
+services:
+  inference:
+    build: .
+    container_name: medgemma-inference
+    ports:
+      - "14323:14323"
+    env_file:
+      - .env
+    volumes:
+      - ./uploads:/app/uploads
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped

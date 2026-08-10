@@ -1,58 +1,61 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
-from uuid import uuid4,UUID
-from sqlalchemy import Enum
+from uuid import UUID, uuid4
 
-from sqlmodel import SQLModel,Field,Relationship,Column
+from sqlalchemy import Column, Enum
+from sqlmodel import Field, Relationship, SQLModel
+
 from app.models.enums import AnalysisStatus
 
 if TYPE_CHECKING:
-    from .document import Document
     from .chunk import Chunk
-    
-class Analysis(SQLModel,table=True):
+    from .document import Document
+
+
+class Analysis(SQLModel, table=True):
     __tablename__ = "analyses"
-    
+
     analysis_id: UUID = Field(
         default_factory=uuid4,
-        primary_key=True
+        primary_key=True,
     )
-    
+
     document_id: UUID = Field(
         foreign_key="documents.document_id",
         nullable=False,
-        index=True
+        index=True,
     )
-    
+
     model_name: str
     model_version: str
-    
-    raw_output: str | None
-    summary: str | None
-    
+
+    raw_output: str | None = None
+    summary: str | None = None
+
     status: AnalysisStatus = Field(
         default=AnalysisStatus.READY,
         sa_column=Column(
             Enum(
                 AnalysisStatus,
                 name="analysisstatus",
-                create_type=True
+                create_type=True,
             ),
-            nullable=False
-        )
+            nullable=False,
+        ),
     )
-    
+
     updated_at: datetime = Field(
-            default_factory=datetime.now
+        default_factory=datetime.now,
     )
+
     created_at: datetime = Field(
-        default_factory=datetime.now
+        default_factory=datetime.now,
     )
-    
+
     document: "Document" = Relationship(
-        back_populates="analyses"
+        back_populates="analyses",
     )
-    
+
     chunks: list["Chunk"] = Relationship(
-        back_populates="analysis"
+        back_populates="analysis",
     )

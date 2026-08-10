@@ -5,7 +5,6 @@ from app.features.documents.router import router as document_router
 from app.features.analysis.router import router as analysis_router
 from app.features.chats.router import router as chats_general_router
 from app.features.chat_messages.router import router as chats_message_router
-from app.features.context.router import router as chats_context_router
 
 
 app = FastAPI()
@@ -34,4 +33,3 @@ app.include_router(document_router)
 app.include_router(analysis_router)
 app.include_router(chats_general_router)
 app.include_router(chats_message_router)
-app.include_router(chats_context_router)

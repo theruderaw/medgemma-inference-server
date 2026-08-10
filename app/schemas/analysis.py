@@ -1,10 +1,10 @@
 from datetime import datetime
-import fastapi
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from app.models.enums import AnalysisStatus
+
 
 class AnalysisListItem(BaseModel):
     analysis_id: UUID
@@ -12,6 +12,7 @@ class AnalysisListItem(BaseModel):
     summary: str | None
     status: AnalysisStatus
     created_at: datetime
+
 
 class AnalysisCreateResponse(BaseModel):
     analysis_id: UUID
@@ -38,5 +39,5 @@ class AnalysisRead(BaseModel):
     raw_output: str | None
     summary: str | None
     status: AnalysisStatus
-    entities : list[str]
+    entities: list[str]
     analysis_metadata: AnalysisMetadata

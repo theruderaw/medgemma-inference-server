@@ -1,17 +1,17 @@
 from datetime import datetime
-from typing import TYPE_CHECKING, Dict, Any
+from typing import TYPE_CHECKING, Any
 from uuid import UUID, uuid4
 
-from sqlmodel import SQLModel, Field, Relationship
-from sqlalchemy import Column, JSON, Enum
-from sqlalchemy.dialects.postgresql import JSONB
 from pgvector.sqlalchemy import Vector
+from sqlalchemy import Column, Enum
+from sqlalchemy.dialects.postgresql import JSONB
+from sqlmodel import Field, Relationship, SQLModel
 
 from .enums import ChunkType
 
 if TYPE_CHECKING:
-    from .document import Document
     from .analysis import Analysis
+    from .document import Document
 
 
 class Chunk(SQLModel, table=True):
@@ -19,24 +19,24 @@ class Chunk(SQLModel, table=True):
 
     chunk_id: UUID = Field(
         default_factory=uuid4,
-        primary_key=True
+        primary_key=True,
     )
 
     document_id: UUID = Field(
         foreign_key="documents.document_id",
         nullable=False,
-        index=True
+        index=True,
     )
 
     analysis_id: UUID = Field(
         foreign_key="analyses.analysis_id",
         nullable=False,
-        index=True
+        index=True,
     )
 
     chunk_index: int = Field(
         nullable=False,
-        ge=0
+        ge=0,
     )
 
     chunk_type: ChunkType = Field(
@@ -45,38 +45,38 @@ class Chunk(SQLModel, table=True):
             Enum(
                 ChunkType,
                 name="chunktype",
-                create_type=True
+                create_type=True,
             ),
-            nullable=False
-        )
+            nullable=False,
+        ),
     )
 
     chunk_content: str = Field(
-        nullable=False
+        nullable=False,
     )
 
     entities: list[str] = Field(
         default_factory=list,
         sa_column=Column(
-            JSON,
-            nullable=False
-        )
+            JSONB,
+            nullable=False,
+        ),
     )
 
     notes: list[str] = Field(
         default_factory=list,
         sa_column=Column(
-            JSON,
-            nullable=False
-        )
+            JSONB,
+            nullable=False,
+        ),
     )
 
-    source_locations: Dict[str, Any] = Field(
+    source_locations: dict[str, Any] = Field(
         default_factory=dict,
         sa_column=Column(
             JSONB,
-            nullable=False
-        )
+            nullable=False,
+        ),
     )
 
     embedding: list[float] | None = Field(
@@ -84,27 +84,27 @@ class Chunk(SQLModel, table=True):
         sa_column=Column(
             Vector(768),
             nullable=True,
-        )
+        ),
     )
 
     embedding_model: str = Field(
-        nullable=False
+        nullable=False,
     )
 
     updated_at: datetime = Field(
         default_factory=datetime.now,
-        nullable=False
+        nullable=False,
     )
 
     created_at: datetime = Field(
         default_factory=datetime.now,
-        nullable=False
+        nullable=False,
     )
 
     document: "Document" = Relationship(
-        back_populates="chunks"
+        back_populates="chunks",
     )
 
     analysis: "Analysis" = Relationship(
-        back_populates="chunks"
+        back_populates="chunks",
     )

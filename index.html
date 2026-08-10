@@ -4,1399 +4,960 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Dashboard - Documents, Chats & Analysis</title>
+    <title>RAG Console</title>
     <style>
         :root {
-            --bg: #121212;
-            --surface: #1a1a1a;
-            --surface2: #1f1f1f;
-            --surface3: #252525;
-            --border: #333333;
-            --text: #d4d4d4;
-            --text-muted: #999999;
-            --accent: #3b8ed4;
-            --accent-hover: #4a9de0;
-            --danger: #c0392b;
-            --danger-hover: #d94a3a;
-            --success: #27ae60;
-            --success-hover: #2ecc71;
-            --warning: #c5941a;
-            --input-bg: #1e1e1e;
+            --bg: #fafafa;
+            --panel: #ffffff;
+            --border: #dcdcdc;
+            --text: #1a1a1a;
+            --muted: #737373;
+            --accent: #2b5fd9;
+            --accent-soft: #eaf0fd;
+            --ok: #1a7f37;
+            --warn: #b45309;
+            --err: #c0392b;
             --radius: 6px;
-            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            --mono: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
         }
 
         * {
             box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
             margin: 0;
-            padding: 0;
+            overflow: hidden;
+        }
+
+        /* Hide scrollbars everywhere but keep scrolling functional */
+        * {
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* old Edge/IE */
+        }
+
+        *::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari, new Edge */
+            width: 0;
+            height: 0;
         }
 
         body {
+            display: flex;
+            flex-direction: column;
             background: var(--bg);
             color: var(--text);
-            font-family: var(--font);
-            line-height: 1.5;
-            min-height: 100vh;
+            font-size: 14px;
         }
 
-        /* ── Header ───────────────────── */
-        .header {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            padding: 12px 20px;
+        header {
+            flex: none;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
+            padding: 10px 16px;
+            background: var(--panel);
+            border-bottom: 1px solid var(--border);
             flex-wrap: wrap;
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
 
-        .header .logo {
-            font-weight: 700;
-            font-size: 1.1rem;
-            letter-spacing: 0.02em;
-            color: #fff;
+        header h1 {
+            font-size: 15px;
+            font-weight: 600;
+            margin: 0;
             white-space: nowrap;
         }
 
-        .header .logo span {
-            color: var(--accent);
+        header .sub {
+            color: var(--muted);
+            font-size: 12px;
         }
 
-        .header .base-url-wrap {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex: 1;
-            min-width: 260px;
-        }
-
-        .header .base-url-wrap label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            white-space: nowrap;
-        }
-
-        .header .base-url-wrap input {
-            flex: 1;
-            background: var(--input-bg);
+        header input[type=text] {
+            margin-left: auto;
+            width: 260px;
+            padding: 6px 8px;
             border: 1px solid var(--border);
-            color: var(--text);
-            padding: 7px 10px;
             border-radius: var(--radius);
-            font-family: var(--mono);
-            font-size: 0.82rem;
-            min-width: 200px;
+            font-size: 12px;
         }
 
-        .header .base-url-wrap input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-
-        .header .status-dot {
-            width: 10px;
-            height: 10px;
+        #status-dot {
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: #555;
-            flex-shrink: 0;
+            background: var(--muted);
+            flex: none;
         }
 
-        .header .status-dot.online {
-            background: var(--success);
+        #status-dot.ok {
+            background: var(--ok);
         }
 
-        .header .status-dot.offline {
-            background: var(--danger);
+        #status-dot.err {
+            background: var(--err);
         }
 
-        /* ── Tabs ─────────────────────── */
-        .tabs {
-            display: flex;
-            gap: 0;
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            padding: 0 16px;
-            overflow-x: auto;
-        }
-
-        .tabs button {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            padding: 12px 20px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-family: var(--font);
-            border-bottom: 2px solid transparent;
-            transition: color 0.15s, border-color 0.15s;
-            white-space: nowrap;
-        }
-
-        .tabs button:hover {
-            color: #fff;
-        }
-
-        .tabs button.active {
-            color: #fff;
-            border-bottom-color: var(--accent);
-        }
-
-        /* ── Main content ─────────────── */
-        .main {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px 16px 60px;
+        main {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: minmax(240px, 300px) minmax(200px, 260px) minmax(320px, 1fr);
+            grid-template-rows: minmax(0, 1fr);
         }
 
         .panel {
-            display: none;
-        }
-
-        .panel.active {
-            display: block;
-        }
-
-        /* ── Cards & sections ─────────── */
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 16px 18px;
-            margin-bottom: 14px;
-        }
-
-        .card h3 {
-            font-size: 0.95rem;
-            margin-bottom: 10px;
-            color: #fff;
-            font-weight: 600;
-        }
-
-        .card h4 {
-            font-size: 0.85rem;
-            margin-bottom: 6px;
-            color: #ccc;
-        }
-
-        /* ── Forms ────────────────────── */
-        .form-row {
-            display: flex;
-            gap: 8px;
-            align-items: flex-end;
-            flex-wrap: wrap;
-        }
-
-        .form-group {
+            border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            flex: 1;
-            min-width: 140px;
+            min-width: 0;
+            min-height: 0;
+            height: 100%;
+            background: var(--panel);
         }
 
-        .form-group label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
+        .panel:last-child {
+            border-right: none;
         }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            background: var(--input-bg);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 8px 10px;
-            border-radius: var(--radius);
-            font-family: var(--font);
-            font-size: 0.85rem;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 60px;
-        }
-
-        .form-group input[type="file"] {
-            padding: 6px;
-            font-size: 0.8rem;
-        }
-
-        /* ── Buttons ──────────────────── */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 8px 14px;
-            border-radius: var(--radius);
-            font-size: 0.82rem;
-            font-family: var(--font);
-            cursor: pointer;
-            border: 1px solid transparent;
-            white-space: nowrap;
-            transition: background 0.15s, border-color 0.15s;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-hover);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: #fff;
-            border-color: var(--danger);
-        }
-
-        .btn-danger:hover {
-            background: var(--danger-hover);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--text);
-            border-color: var(--border);
-        }
-
-        .btn-outline:hover {
-            background: var(--surface3);
-            border-color: #555;
-        }
-
-        .btn-sm {
-            padding: 5px 10px;
-            font-size: 0.75rem;
-        }
-
-        .btn-xs {
-            padding: 3px 8px;
-            font-size: 0.7rem;
-            border-radius: 4px;
-        }
-
-        .btn:disabled {
-            opacity: 0.45;
-            cursor: not-allowed;
-            pointer-events: none;
-        }
-
-        /* ── Tables / lists ───────────── */
-        .list-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.82rem;
-        }
-
-        .list-table th,
-        .list-table td {
-            text-align: left;
-            padding: 8px 10px;
+        .panel-head {
+            padding: 12px 14px;
             border-bottom: 1px solid var(--border);
         }
 
-        .list-table th {
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.72rem;
+        .panel-head h2 {
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 0.03em;
+            letter-spacing: .04em;
+            color: var(--muted);
+            margin: 0 0 8px 0;
         }
 
-        .list-table tr:hover td {
-            background: var(--surface2);
+        .panel-body {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 8px;
         }
 
-        .list-table .actions {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
+        button {
+            font: inherit;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: var(--panel);
+            border-radius: var(--radius);
+            padding: 6px 10px;
+            color: var(--text);
         }
 
-        .mono {
-            font-family: var(--mono);
-            font-size: 0.78rem;
-            color: #aaa;
+        button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        button:disabled {
+            opacity: .5;
+            cursor: default;
+        }
+
+        button:disabled:hover {
+            border-color: var(--border);
+            color: var(--text);
+        }
+
+        button.primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            width: 100%;
+        }
+
+        button.primary:hover {
+            opacity: .9;
+            color: #fff;
+        }
+
+        input[type=file] {
+            display: none;
+        }
+
+        .doc-card,
+        .chat-item {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            font-size: 12.5px;
+        }
+
+        .doc-card .name {
+            font-weight: 600;
+            word-break: break-all;
+            margin-bottom: 4px;
+        }
+
+        .doc-meta {
+            color: var(--muted);
+            font-size: 11px;
+            margin-bottom: 6px;
         }
 
         .badge {
             display: inline-block;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.7rem;
+            padding: 1px 7px;
+            border-radius: 999px;
+            font-size: 10.5px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.03em;
+            letter-spacing: .02em;
         }
 
-        .badge-ready {
-            background: #1a3a2a;
-            color: #4caf84;
+        .badge.ready {
+            background: #eee;
+            color: var(--muted);
         }
 
-        .badge-processing {
-            background: #2a2a1a;
-            color: #c5941a;
+        .badge.analyzing,
+        .badge.chunking,
+        .badge.embedding {
+            background: #fff4e0;
+            color: var(--warn);
         }
 
-        .badge-complete {
-            background: #1a2a3a;
-            color: #4a9de0;
+        .badge.complete {
+            background: #e6f6ea;
+            color: var(--ok);
         }
 
-        .badge-failed {
-            background: #3a1a1a;
-            color: #e05555;
+        .badge.failed {
+            background: #fdeceb;
+            color: var(--err);
         }
 
-        .badge-deleted {
-            background: #2a1a2a;
-            color: #9955aa;
+        .badge.deleted {
+            background: #eee;
+            color: var(--muted);
         }
 
-        /* ── Pagination ───────────────── */
-        .pagination {
+        .doc-actions,
+        .chat-actions {
             display: flex;
             gap: 6px;
-            align-items: center;
-            font-size: 0.8rem;
-            margin-top: 8px;
-        }
-
-        .pagination span {
-            color: var(--text-muted);
-        }
-
-        /* ── Messages area ────────────── */
-        .message-bubble {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 10px 14px;
-            margin-bottom: 8px;
-            font-size: 0.84rem;
-        }
-
-        .message-bubble .role {
-            font-weight: 700;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            margin-bottom: 4px;
-        }
-
-        .role-SYSTEM {
-            color: #c5941a;
-        }
-
-        .role-USER {
-            color: #4a9de0;
-        }
-
-        .role-ASSISTANT {
-            color: #4caf84;
-        }
-
-        /* ── Toast notifications ──────── */
-        .toast-container {
-            position: fixed;
-            top: 16px;
-            right: 16px;
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            max-width: 400px;
-        }
-
-        .toast {
-            padding: 10px 16px;
-            border-radius: var(--radius);
-            font-size: 0.82rem;
-            color: #fff;
-            animation: slideIn 0.25s ease;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .toast.success {
-            background: #1a3a2a;
-            border-color: #2ecc71;
-        }
-
-        .toast.error {
-            background: #3a1a1a;
-            border-color: #e05555;
-        }
-
-        .toast.info {
-            background: #1a2a3a;
-            border-color: #4a9de0;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(120%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        /* ── Utility ──────────────────── */
-        .hidden {
-            display: none !important;
-        }
-
-        .mt-8 {
-            margin-top: 8px;
-        }
-
-        .mt-12 {
-            margin-top: 12px;
-        }
-
-        .mb-8 {
-            margin-bottom: 8px;
-        }
-
-        .gap-8 {
-            gap: 8px;
-        }
-
-        .flex-wrap {
-            display: flex;
+            margin-top: 6px;
             flex-wrap: wrap;
         }
 
-        .text-muted {
-            color: var(--text-muted);
-            font-size: 0.8rem;
+        .doc-actions button,
+        .chat-actions button {
+            font-size: 11px;
+            padding: 3px 8px;
         }
 
-        .divider {
+        .chat-item {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chat-item.active {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .chat-item .title {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .chat-item .del {
             border: none;
-            border-top: 1px solid var(--border);
-            margin: 12px 0;
+            background: none;
+            color: var(--muted);
+            padding: 2px 6px;
         }
 
-        pre {
-            background: #0d0d0d;
-            color: #c0c0c0;
-            padding: 12px;
-            border-radius: var(--radius);
-            overflow-x: auto;
-            font-family: var(--mono);
-            font-size: 0.78rem;
-            max-height: 300px;
-            overflow-y: auto;
+        .chat-item .del:hover {
+            color: var(--err);
+        }
+
+        .empty {
+            color: var(--muted);
+            font-size: 12px;
+            padding: 16px 8px;
+            text-align: center;
+        }
+
+        /* Active chat panel */
+        .chat-view {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .chat-view-head {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .chat-view-head h2 {
+            margin: 0 0 6px 0;
+            font-size: 14px;
+        }
+
+        .attached-docs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 3px 6px 3px 10px;
+            font-size: 11.5px;
+            background: var(--bg);
+        }
+
+        .chip button {
+            border: none;
+            background: none;
+            padding: 0 4px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1;
+        }
+
+        .chip button:hover {
+            color: var(--err);
+        }
+
+        .attach-row {
+            display: flex;
+            gap: 6px;
+        }
+
+        .attach-row select {
+            flex: 1;
+            padding: 5px 6px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 12px;
+        }
+
+        .attach-row button {
+            font-size: 12px;
+        }
+
+        .messages {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .msg {
+            max-width: 72%;
+            padding: 8px 12px;
+            border-radius: var(--radius);
+            font-size: 13px;
+            line-height: 1.45;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .msg .role {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            opacity: .6;
+            margin-bottom: 3px;
+            font-weight: 600;
+        }
+
+        .msg.USER {
+            align-self: flex-end;
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .msg.ASSISTANT {
+            align-self: flex-start;
+            background: var(--panel);
+            border: 1px solid var(--border);
+        }
+
+        .msg.SYSTEM {
+            align-self: center;
+            background: transparent;
+            border: 1px dashed var(--border);
+            color: var(--muted);
+            font-size: 11.5px;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .composer {
+            border-top: 1px solid var(--border);
+            padding: 10px 16px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .composer textarea {
+            flex: 1;
+            min-width: 0;
+            resize: none;
+            height: 44px;
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font: inherit;
+        }
+
+        .composer button.primary {
+            width: auto;
+            flex: none;
+            padding: 0 20px;
+        }
+
+        .no-chat {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .thinking {
+            align-self: flex-start;
+            color: var(--muted);
+            font-size: 12px;
+            font-style: italic;
+            padding: 4px 12px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            background: var(--err);
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: var(--radius);
+            font-size: 12.5px;
+            max-width: 320px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .15);
+            z-index: 10;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- ══════════════ HEADER ══════════════ -->
-    <div class="header">
-        <div class="logo">📋 <span>API</span> Dashboard</div>
-        <div class="base-url-wrap">
-            <label for="baseUrl">Base URL:</label>
-            <input type="text" id="baseUrl" value="http://localhost:8000" placeholder="http://localhost:8000">
-        </div>
-        <div class="status-dot" id="statusDot" title="API status"></div>
-    </div>
+    <header>
+        <span id="status-dot"></span>
+        <h1>RAG Console</h1>
+        <span class="sub">upload → analyze → attach → chat</span>
+        <input id="api-base" type="text" placeholder="http://localhost:8000" value="http://localhost:8000"
+            autocomplete="off">
+    </header>
 
-    <!-- ══════════════ TABS ═══════════════ -->
-    <div class="tabs">
-        <button class="active" data-tab="documents">📄 Documents</button>
-        <button data-tab="chats">💬 Chats</button>
-        <button data-tab="analysis">🔍 Analysis</button>
-    </div>
-
-    <!-- ══════════════ TOAST CONTAINER ════ -->
-    <div class="toast-container" id="toastContainer"></div>
-
-    <!-- ══════════════ MAIN CONTENT ═══════ -->
-    <div class="main">
-
-        <!-- ─── DOCUMENTS PANEL ───────────── -->
-        <div class="panel active" id="panel-documents">
-            <!-- Upload -->
-            <div class="card">
-                <h3>Upload Document</h3>
-                <div class="form-row">
-                    <div class="form-group" style="flex:2;min-width:220px;">
-                        <label>Select file</label>
-                        <input type="file" id="docFileInput">
-                    </div>
-                    <button class="btn btn-primary" id="btnUploadDoc" style="align-self:flex-end;">Upload</button>
-                </div>
+    <main>
+        <!-- Documents -->
+        <section class="panel">
+            <div class="panel-head">
+                <h2>Documents</h2>
+                <button class="primary" id="upload-btn">Upload document</button>
+                <input type="file" id="file-input">
             </div>
-
-            <!-- List -->
-            <div class="card">
-                <h3>Documents</h3>
-                <div class="form-row mb-8" style="align-items:flex-end;">
-                    <div class="form-group" style="max-width:90px;">
-                        <label>Page</label>
-                        <input type="number" id="docPageNo" value="1" min="1" style="width:70px;">
-                    </div>
-                    <div class="form-group" style="max-width:90px;">
-                        <label>Size</label>
-                        <input type="number" id="docPageSize" value="10" min="1" max="100" style="width:70px;">
-                    </div>
-                    <button class="btn btn-outline btn-sm" id="btnListDocs">Refresh</button>
-                </div>
-                <div style="overflow-x:auto;">
-                    <table class="list-table" id="docsTable">
-                        <thead>
-                            <tr>
-                                <th>Document ID</th>
-                                <th>Filename</th>
-                                <th>Type</th>
-                                <th>Size</th>
-                                <th>Created</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="docsTableBody">
-                            <tr>
-                                <td colspan="6" class="text-muted">No documents loaded.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="pagination" id="docsPagination"></div>
+            <div class="panel-body" id="documents-list">
+                <div class="empty">No documents yet</div>
             </div>
+        </section>
 
-            <!-- Document Analyses (requires selecting a doc) -->
-            <div class="card hidden" id="docAnalysesCard">
-                <h3>Analyses for Document: <span id="docAnalysesDocId" class="mono"></span></h3>
-                <button class="btn btn-outline btn-sm mb-8" id="btnRefreshAnalyses">Refresh Analyses</button>
-                <button class="btn btn-danger btn-sm mb-8" id="btnDeleteAllAnalyses">Delete All Analyses</button>
-                <table class="list-table" id="analysesTable">
-                    <thead>
-                        <tr>
-                            <th>Analysis ID</th>
-                            <th>Status</th>
-                            <th>Summary</th>
-                            <th>Created</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="analysesTableBody">
-                        <tr>
-                            <td colspan="5" class="text-muted">Select a document first.</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="pagination" id="analysesPagination"></div>
+        <!-- Chats -->
+        <section class="panel">
+            <div class="panel-head">
+                <h2>Chats</h2>
+                <button class="primary" id="new-chat-btn">New chat</button>
             </div>
-        </div>
-
-        <!-- ─── CHATS PANEL ───────────────── -->
-        <div class="panel" id="panel-chats">
-            <!-- Create Chat -->
-            <div class="card">
-                <h3>Create Chat Session</h3>
-                <div class="form-row">
-                    <div class="form-group" style="flex:2;">
-                        <label>Title (optional)</label>
-                        <input type="text" id="chatCreateTitle" placeholder="My chat session">
-                    </div>
-                    <button class="btn btn-primary" id="btnCreateChat" style="align-self:flex-end;">Create</button>
-                </div>
+            <div class="panel-body" id="chats-list">
+                <div class="empty">No chats yet</div>
             </div>
+        </section>
 
-            <!-- List Chats -->
-            <div class="card">
-                <h3>Chats</h3>
-                <div class="form-row mb-8" style="align-items:flex-end;">
-                    <div class="form-group" style="max-width:90px;">
-                        <label>Page</label>
-                        <input type="number" id="chatPageNo" value="1" min="1" style="width:70px;">
-                    </div>
-                    <div class="form-group" style="max-width:90px;">
-                        <label>Size</label>
-                        <input type="number" id="chatPageSize" value="10" min="1" max="100" style="width:70px;">
-                    </div>
-                    <button class="btn btn-outline btn-sm" id="btnListChats">Refresh</button>
-                </div>
-                <table class="list-table" id="chatsTable">
-                    <thead>
-                        <tr>
-                            <th>Chat ID</th>
-                            <th>Title</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="chatsTableBody">
-                        <tr>
-                            <td colspan="3" class="text-muted">No chats loaded.</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="pagination" id="chatsPagination"></div>
-            </div>
-
-            <!-- Selected Chat Detail -->
-            <div class="card hidden" id="chatDetailCard">
-                <h3>Chat Detail: <span id="chatDetailId" class="mono"></span></h3>
-                <div class="form-row mb-8">
-                    <div class="form-group" style="flex:2;">
-                        <label>Title</label>
-                        <input type="text" id="chatDetailTitle">
-                    </div>
-                    <button class="btn btn-outline btn-sm" id="btnUpdateChat" style="align-self:flex-end;">Update
-                        Title</button>
-                    <button class="btn btn-danger btn-sm" id="btnDeleteChat" style="align-self:flex-end;">Delete
-                        Chat</button>
-                </div>
-
-                <!-- Context -->
-                <h4>Context Documents</h4>
-                <div class="form-row mb-8" style="align-items:flex-end;">
-                    <div class="form-group" style="flex:1;min-width:180px;">
-                        <label>Document ID</label>
-                        <input type="text" id="ctxDocId" placeholder="UUID">
-                    </div>
-                    <div class="form-group" style="flex:1;min-width:180px;">
-                        <label>Prompt (optional)</label>
-                        <input type="text" id="ctxPrompt" placeholder="Custom prompt">
-                    </div>
-                    <div class="form-group" style="flex:1;min-width:160px;">
-                        <label>Image (optional)</label>
-                        <input type="file" id="ctxImage">
-                    </div>
-                    <button class="btn btn-primary btn-sm" id="btnAddContext" style="align-self:flex-end;">Add
-                        Context</button>
-                </div>
-                <button class="btn btn-outline btn-sm mb-8" id="btnListContext">Refresh Context</button>
-                <table class="list-table" id="contextTable">
-                    <thead>
-                        <tr>
-                            <th>Context ID</th>
-                            <th>Title</th>
-                            <th>Doc ID</th>
-                            <th>Type</th>
-                            <th>Size</th>
-                            <th>Attached</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="contextTableBody">
-                        <tr>
-                            <td colspan="7" class="text-muted">No context.</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <hr class="divider">
-
-                <!-- Messages -->
-                <h4>Send Message</h4>
-                <div class="form-row mb-8" style="align-items:flex-end;">
-                    <div class="form-group" style="max-width:130px;">
-                        <label>Role</label>
-                        <select id="msgRole">
-                            <option value="USER">USER</option>
-                            <option value="SYSTEM">SYSTEM</option>
-                            <option value="ASSISTANT">ASSISTANT</option>
-                        </select>
-                    </div>
-                    <div class="form-group" style="flex:3;min-width:200px;">
-                        <label>Content</label>
-                        <textarea id="msgContent" placeholder="Type your message..."></textarea>
-                    </div>
-                    <button class="btn btn-primary btn-sm" id="btnSendMsg" style="align-self:flex-end;">Send</button>
-                </div>
-                <button class="btn btn-outline btn-sm mb-8" id="btnListMessages">Refresh Messages</button>
-                <div id="messagesList"></div>
-            </div>
-        </div>
-
-        <!-- ─── ANALYSIS PANEL ────────────── -->
-        <div class="panel" id="panel-analysis">
-            <div class="card">
-                <h3>Lookup Analysis</h3>
-                <div class="form-row" style="align-items:flex-end;">
-                    <div class="form-group" style="flex:2;min-width:250px;">
-                        <label>Analysis ID</label>
-                        <input type="text" id="analysisLookupId" placeholder="UUID">
-                    </div>
-                    <button class="btn btn-primary" id="btnGetAnalysis" style="align-self:flex-end;">Get
-                        Analysis</button>
-                    <button class="btn btn-outline" id="btnAnalysisStatus" style="align-self:flex-end;">Check
-                        Status</button>
-                    <button class="btn btn-danger" id="btnDeleteAnalysis" style="align-self:flex-end;">Delete</button>
-                </div>
-                <div id="analysisResult" class="mt-12 hidden">
-                    <h4>Result</h4>
-                    <pre id="analysisResultPre"></pre>
-                </div>
-                <div id="analysisStatusResult" class="mt-12 hidden">
-                    <h4>Status</h4>
-                    <pre id="analysisStatusPre"></pre>
-                </div>
-            </div>
-        </div>
-
-    </div>
+        <!-- Active chat -->
+        <section class="panel" id="active-chat-panel">
+            <div class="no-chat">Select or create a chat to begin</div>
+        </section>
+    </main>
 
     <script>
         (function () {
-            // ═══════════════ HELPERS ═══════════════
-            const $ = (sel) => document.querySelector(sel);
-            const $$ = (sel) => document.querySelectorAll(sel);
+            const $ = (sel, el = document) => el.querySelector(sel);
+            const $$ = (sel, el = document) => Array.from(el.querySelectorAll(sel));
 
-            function getBaseUrl() {
-                return $('#baseUrl').value.replace(/\/+$/, '');
+            const state = {
+                documents: [],       // {document_id, original_filename, content_type, file_size, created_at, status}
+                chats: [],           // {chat_id, title}
+                activeChatId: null,
+                chatDocuments: [],   // ChatDocumentRead[] for active chat
+                messages: [],        // ChatMessageRead[] for active chat
+            };
+
+            let msgPollTimer = null;
+            let lastMessageCount = 0;
+
+            function apiBase() {
+                return $('#api-base').value.replace(/\/+$/, '');
             }
 
-            function showToast(message, type = 'info') {
-                const container = $('#toastContainer');
-                const toast = document.createElement('div');
-                toast.className = `toast ${type}`;
-                toast.textContent = message;
-                container.appendChild(toast);
-                setTimeout(() => {
-                    toast.style.opacity = '0';
-                    toast.style.transition = 'opacity 0.3s';
-                    setTimeout(() => toast.remove(), 300);
-                }, 3500);
-            }
-
-            async function apiRequest(method, path, body = null, isFormData = false) {
-                const url = getBaseUrl() + path;
-                const options = { method, headers: {} };
-                if (body && !isFormData) {
-                    options.headers['Content-Type'] = 'application/json';
-                    options.body = JSON.stringify(body);
-                } else if (body && isFormData) {
-                    options.body = body;
-                }
-                const res = await fetch(url, options);
+            async function api(path, options = {}) {
+                const res = await fetch(apiBase() + path, {
+                    headers: options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' },
+                    ...options,
+                });
+                setStatus(true);
                 if (res.status === 204) return null;
-                const data = await res.json();
+                let data = null;
+                try { data = await res.json(); } catch (_) { /* no body */ }
                 if (!res.ok) {
-                    const errMsg = data?.message || data?.detail?.[0]?.msg || `HTTP ${res.status}`;
-                    throw new Error(errMsg);
+                    const msg = (data && (data.message || data.detail)) || res.statusText;
+                    throw new Error(typeof msg === 'string' ? msg : JSON.stringify(msg));
                 }
                 return data;
             }
 
-            function setStatusDot(online) {
-                const dot = $('#statusDot');
-                dot.className = 'status-dot ' + (online ? 'online' : 'offline');
-                dot.title = online ? 'API reachable' : 'API unreachable';
+            function setStatus(ok) {
+                const dot = $('#status-dot');
+                dot.classList.remove('ok', 'err');
+                dot.classList.add(ok ? 'ok' : 'err');
             }
 
-            async function checkApiStatus() {
+            function toast(message) {
+                const t = document.createElement('div');
+                t.className = 'toast';
+                t.textContent = message;
+                document.body.appendChild(t);
+                setTimeout(() => t.remove(), 4000);
+            }
+
+            function fmtSize(bytes) {
+                if (bytes < 1024) return bytes + ' B';
+                if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+                return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+            }
+
+            function fmtTime(iso) {
                 try {
-                    await fetch(getBaseUrl() + '/documents?page_no=1&page_size=1', {
-                        method: 'GET',
-                        signal: AbortSignal.timeout(5000)
-                    });
-                    setStatusDot(true);
-                } catch {
-                    setStatusDot(false);
-                }
+                    return new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                } catch (_) { return ''; }
             }
 
-            function formatBytes(b) {
-                if (!b) return '0 B';
-                const u = ['B', 'KB', 'MB', 'GB'];
-                let i = 0;
-                let s = b;
-                while (s >= 1024 && i < u.length - 1) {
-                    s /= 1024;
-                    i++;
-                }
-                return s.toFixed(i === 0 ? 0 : 1) + ' ' + u[i];
-            }
+            // ---------- Documents ----------
 
-            function statusBadge(status) {
-                const map = {
-                    'ready': 'badge-ready',
-                    'analyzing': 'badge-processing',
-                    'chunking': 'badge-processing',
-                    'embedding': 'badge-processing',
-                    'complete': 'badge-complete',
-                    'failed': 'badge-failed',
-                    'deleted': 'badge-deleted'
-                };
-                return `<span class="badge ${map[status] || ''}">${status}</span>`;
-            }
-
-            function roleBadge(role) {
-                return `<span class="role-${role}">${role}</span>`;
-            }
-
-            function truncate(str, max = 50) {
-                if (!str) return '—';
-                return str.length > max ? str.slice(0, max) + '…' : str;
-            }
-
-            // ═══════════════ TAB SWITCHING ═══════════════
-            const tabButtons = $$('.tabs button');
-            const panels = $$('.panel');
-
-            tabButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    tabButtons.forEach(b => b.classList.remove('active'));
-                    panels.forEach(p => p.classList.remove('active'));
-                    btn.classList.add('active');
-                    const panelId = 'panel-' + btn.dataset.tab;
-                    $('#' + panelId).classList.add('active');
-                });
-            });
-
-            // ═══════════════ DOCUMENTS ═══════════════
-            let currentDocIdForAnalyses = null;
-            let analysesPageNo = 1;
-            let analysesPageSize = 10;
-
-            function renderDocsTable(docs) {
-                const tbody = $('#docsTableBody');
-                if (!docs || docs.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" class="text-muted">No documents found.</td></tr>';
-                    return;
-                }
-                tbody.innerHTML = docs.map(d => `
-                <tr>
-                  <td class="mono" title="${d.document_id}">${truncate(d.document_id, 18)}</td>
-                  <td>${escapeHtml(d.original_filename)}</td>
-                  <td>${escapeHtml(d.content_type)}</td>
-                  <td>${formatBytes(d.file_size)}</td>
-                  <td>${d.created_at ? new Date(d.created_at).toLocaleString() : '—'}</td>
-                  <td class="actions">
-                    <button class="btn btn-outline btn-xs" data-action="view-doc" data-id="${d.document_id}">View</button>
-                    <button class="btn btn-outline btn-xs" data-action="analyze-doc" data-id="${d.document_id}">Analyze</button>
-                    <button class="btn btn-outline btn-xs" data-action="doc-analyses" data-id="${d.document_id}">Analyses</button>
-                    <button class="btn btn-danger btn-xs" data-action="delete-doc" data-id="${d.document_id}">Delete</button>
-                  </td>
-                </tr>
-              `).join('');
-            }
-
-            async function listDocuments(pageNo, pageSize) {
+            async function loadDocuments() {
                 try {
-                    const data = await apiRequest('GET',
-                        `/documents?page_no=${pageNo || 1}&page_size=${pageSize || 10}`);
-                    renderDocsTable(data);
-                    $('#docsPagination').innerHTML =
-                        `<span>Page ${pageNo || 1} (${data?.length || 0} results)</span>`;
-                    setStatusDot(true);
+                    const docs = await api('/documents?page_no=1&page_size=100');
+                    state.documents = docs.map(d => ({ ...d, status: state.documents.find(x => x.document_id === d.document_id)?.status || 'ready' }));
+                    renderDocuments();
+                    renderAttachSelect();
                 } catch (e) {
-                    showToast('Failed to list documents: ' + e.message, 'error');
-                    setStatusDot(false);
+                    toast('Failed to load documents: ' + e.message);
                 }
             }
 
             async function uploadDocument(file) {
-                const fd = new FormData();
-                fd.append('file', file);
+                const form = new FormData();
+                form.append('file', file);
                 try {
-                    const data = await apiRequest('POST', '/documents/upload', fd, true);
-                    showToast('Document uploaded: ' + data.document_id, 'success');
-                    listDocuments(parseInt($('#docPageNo').value), parseInt($('#docPageSize').value));
+                    const doc = await api('/documents/upload', { method: 'POST', body: form });
+                    doc.status = 'ready';
+                    state.documents.unshift(doc);
+                    renderDocuments();
+                    renderAttachSelect();
+                    analyzeDocument(doc.document_id);
                 } catch (e) {
-                    showToast('Upload failed: ' + e.message, 'error');
+                    toast('Upload failed: ' + e.message);
                 }
             }
 
-            async function getDocument(docId) {
+            async function analyzeDocument(documentId) {
+                setDocStatus(documentId, 'analyzing');
                 try {
-                    const data = await apiRequest('GET', `/documents/${docId}`);
-                    const info = `
-              Document ID: ${data.document_id}
-              Filename:    ${data.original_filename}
-              Type:        ${data.content_type}
-              Size:        ${formatBytes(data.file_size)}
-              Created:     ${data.created_at}
-              `.trim();
-                    alert(info);
+                    const res = await api(`/documents/${documentId}/analysis`, { method: 'POST' });
+                    setDocStatus(documentId, res.status || 'analyzing');
+                    pollAnalysis(documentId, res.analysis_id);
                 } catch (e) {
-                    showToast('Error: ' + e.message, 'error');
+                    setDocStatus(documentId, 'failed');
+                    toast('Analysis failed to start: ' + e.message);
                 }
             }
 
-            async function deleteDocument(docId) {
-                if (!confirm('Permanently delete document ' + docId + '?')) return;
-                try {
-                    await apiRequest('DELETE', `/documents/${docId}`);
-                    showToast('Document deleted.', 'success');
-                    listDocuments(parseInt($('#docPageNo').value), parseInt($('#docPageSize').value));
-                } catch (e) {
-                    showToast('Delete failed: ' + e.message, 'error');
+            async function pollAnalysis(documentId, analysisId) {
+                const terminal = ['complete', 'failed', 'deleted'];
+                const tick = async () => {
+                    try {
+                        const s = await api(`/analysis/${analysisId}/status`);
+                        setDocStatus(documentId, s.status);
+                        if (!terminal.includes(s.status)) {
+                            setTimeout(tick, 1500);
+                        }
+                    } catch (e) {
+                        // stop polling silently on error
+                    }
+                };
+                tick();
+            }
+
+            function setDocStatus(documentId, status) {
+                const doc = state.documents.find(d => d.document_id === documentId);
+                if (doc) {
+                    doc.status = status;
+                    renderDocuments();
                 }
             }
 
-            async function analyzeDocument(docId) {
+            async function deleteDocument(documentId) {
+                if (!confirm('Delete this document permanently?')) return;
                 try {
-                    const data = await apiRequest('POST', `/documents/${docId}/analysis`);
-                    showToast('Analysis started: ' + data.analysis_id + ' (status: ' + data.status + ')', 'success');
+                    await api(`/documents/${documentId}`, { method: 'DELETE' });
+                    state.documents = state.documents.filter(d => d.document_id !== documentId);
+                    renderDocuments();
+                    renderAttachSelect();
                 } catch (e) {
-                    showToast('Analyze failed: ' + e.message, 'error');
+                    toast('Delete failed: ' + e.message);
                 }
             }
 
-            function renderAnalysesTable(analyses) {
-                const tbody = $('#analysesTableBody');
-                if (!analyses || analyses.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" class="text-muted">No analyses found.</td></tr>';
+            function renderDocuments() {
+                const el = $('#documents-list');
+                if (!state.documents.length) {
+                    el.innerHTML = '<div class="empty">No documents yet</div>';
                     return;
                 }
-                tbody.innerHTML = analyses.map(a => `
-                <tr>
-                  <td class="mono" title="${a.analysis_id}">${truncate(a.analysis_id, 18)}</td>
-                  <td>${statusBadge(a.status)}</td>
-                  <td>${truncate(a.summary || '—', 40)}</td>
-                  <td>${a.created_at ? new Date(a.created_at).toLocaleString() : '—'}</td>
-                  <td class="actions">
-                    <button class="btn btn-outline btn-xs" data-action="view-analysis" data-id="${a.analysis_id}">View</button>
-                    <button class="btn btn-outline btn-xs" data-action="analysis-status" data-id="${a.analysis_id}">Status</button>
-                    <button class="btn btn-danger btn-xs" data-action="delete-analysis" data-id="${a.analysis_id}">Delete</button>
-                  </td>
-                </tr>
-              `).join('');
+                el.innerHTML = state.documents.map(d => `
+      <div class="doc-card">
+        <div class="name">${escapeHtml(d.original_filename)}</div>
+        <div class="doc-meta">${escapeHtml(d.content_type)} · ${fmtSize(d.file_size)}</div>
+        <span class="badge ${d.status}">${d.status}</span>
+        <div class="doc-actions">
+          <button data-action="analyze" data-id="${d.document_id}">Re-analyze</button>
+          ${state.activeChatId ? `<button data-action="attach" data-id="${d.document_id}">Attach</button>` : ''}
+          <button data-action="delete-doc" data-id="${d.document_id}">Delete</button>
+        </div>
+      </div>
+    `).join('');
             }
 
-            async function listAnalysesForDoc(docId, pageNo, pageSize) {
-                try {
-                    const data = await apiRequest('GET',
-                        `/documents/${docId}/analyses?page_no=${pageNo || 1}&page_size=${pageSize || 10}`);
-                    renderAnalysesTable(data);
-                    $('#analysesPagination').innerHTML =
-                        `<span>Page ${pageNo || 1} (${data?.length || 0} results)</span>`;
-                    currentDocIdForAnalyses = docId;
-                    analysesPageNo = pageNo || 1;
-                    analysesPageSize = pageSize || 10;
-                    $('#docAnalysesCard').classList.remove('hidden');
-                    $('#docAnalysesDocId').textContent = docId;
-                } catch (e) {
-                    showToast('Failed to list analyses: ' + e.message, 'error');
-                }
-            }
+            // ---------- Chats ----------
 
-            async function deleteAllAnalysesForDoc(docId) {
-                if (!confirm('Delete ALL analyses for document ' + docId + '?')) return;
+            async function loadChats() {
                 try {
-                    await apiRequest('DELETE', `/documents/${docId}/analyses`);
-                    showToast('All analyses deleted.', 'success');
-                    if (currentDocIdForAnalyses === docId) {
-                        listAnalysesForDoc(docId, analysesPageNo, analysesPageSize);
+                    state.chats = await api('/chats?page_no=1&page_size=100');
+                    renderChats();
+                    if (!state.activeChatId && state.chats.length) {
+                        selectChat(state.chats[0].chat_id);
                     }
                 } catch (e) {
-                    showToast('Delete failed: ' + e.message, 'error');
+                    toast('Failed to load chats: ' + e.message);
                 }
             }
 
-            // Document event delegation
-            $('#docsTableBody').addEventListener('click', async (e) => {
-                const btn = e.target.closest('button');
-                if (!btn) return;
-                const action = btn.dataset.action;
-                const id = btn.dataset.id;
-                if (action === 'view-doc') getDocument(id);
-                if (action === 'analyze-doc') analyzeDocument(id);
-                if (action === 'doc-analyses') listAnalysesForDoc(id, 1, 10);
-                if (action === 'delete-doc') deleteDocument(id);
-            });
+            async function createChat() {
+                try {
+                    const chat = await api('/chats', { method: 'POST', body: JSON.stringify({ title: null }) });
+                    state.chats.unshift(chat);
+                    renderChats();
+                    selectChat(chat.chat_id);
+                } catch (e) {
+                    toast('Failed to create chat: ' + e.message);
+                }
+            }
 
-            $('#analysesTableBody').addEventListener('click', async (e) => {
-                const btn = e.target.closest('button');
-                if (!btn) return;
-                const action = btn.dataset.action;
-                const id = btn.dataset.id;
-                if (action === 'view-analysis') getAnalysisById(id);
-                if (action === 'analysis-status') getAnalysisStatusById(id);
-                if (action === 'delete-analysis') deleteAnalysisById(id);
-            });
+            async function deleteChat(chatId, evt) {
+                evt.stopPropagation();
+                if (!confirm('Delete this chat?')) return;
+                try {
+                    await api(`/chats/${chatId}`, { method: 'DELETE' });
+                    state.chats = state.chats.filter(c => c.chat_id !== chatId);
+                    renderChats();
+                    if (state.activeChatId === chatId) {
+                        state.activeChatId = null;
+                        stopMessagePolling();
+                        renderActiveChatEmpty();
+                    }
+                } catch (e) {
+                    toast('Failed to delete chat: ' + e.message);
+                }
+            }
 
-            $('#btnUploadDoc').addEventListener('click', () => {
-                const fileInput = $('#docFileInput');
-                if (!fileInput.files.length) {
-                    showToast('Please select a file.', 'error');
+            function renderChats() {
+                const el = $('#chats-list');
+                if (!state.chats.length) {
+                    el.innerHTML = '<div class="empty">No chats yet</div>';
                     return;
                 }
-                uploadDocument(fileInput.files[0]);
-                fileInput.value = '';
-            });
-            $('#btnListDocs').addEventListener('click', () => {
-                listDocuments(parseInt($('#docPageNo').value), parseInt($('#docPageSize').value));
-            });
-            $('#btnRefreshAnalyses').addEventListener('click', () => {
-                if (currentDocIdForAnalyses) listAnalysesForDoc(currentDocIdForAnalyses, analysesPageNo,
-                    analysesPageSize);
-            });
-            $('#btnDeleteAllAnalyses').addEventListener('click', () => {
-                if (currentDocIdForAnalyses) deleteAllAnalysesForDoc(currentDocIdForAnalyses);
-            });
-
-            // ═══════════════ CHATS ═══════════════
-            let currentChatId = null;
-
-            function renderChatsTable(chats) {
-                const tbody = $('#chatsTableBody');
-                if (!chats || chats.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="3" class="text-muted">No chats found.</td></tr>';
-                    return;
-                }
-                tbody.innerHTML = chats.map(c => `
-                <tr>
-                  <td class="mono" title="${c.chat_id}">${truncate(c.chat_id, 20)}</td>
-                  <td>${escapeHtml(c.title || '—')}</td>
-                  <td class="actions">
-                    <button class="btn btn-outline btn-xs" data-action="select-chat" data-id="${c.chat_id}" data-title="${escapeHtml(c.title || '')}">Select</button>
-                    <button class="btn btn-danger btn-xs" data-action="delete-chat" data-id="${c.chat_id}">Delete</button>
-                  </td>
-                </tr>
-              `).join('');
-            }
-
-            async function listChats(pageNo, pageSize) {
-                try {
-                    const data = await apiRequest('GET', `/chats?page_no=${pageNo || 1}&page_size=${pageSize || 10}`);
-                    renderChatsTable(data);
-                    $('#chatsPagination').innerHTML =
-                        `<span>Page ${pageNo || 1} (${data?.length || 0} results)</span>`;
-                    setStatusDot(true);
-                } catch (e) {
-                    showToast('Failed to list chats: ' + e.message, 'error');
-                }
-            }
-
-            async function createChat(title) {
-                try {
-                    const body = title ? { title } : {};
-                    const data = await apiRequest('POST', '/chats', body);
-                    showToast('Chat created: ' + data.chat_id, 'success');
-                    listChats(parseInt($('#chatPageNo').value), parseInt($('#chatPageSize').value));
-                } catch (e) {
-                    showToast('Create chat failed: ' + e.message, 'error');
-                }
+                el.innerHTML = state.chats.map(c => `
+      <div class="chat-item ${c.chat_id === state.activeChatId ? 'active' : ''}" data-id="${c.chat_id}">
+        <span class="title">${escapeHtml(c.title || 'Untitled chat')}</span>
+        <button class="del" data-del="${c.chat_id}" title="Delete chat">&times;</button>
+      </div>
+    `).join('');
             }
 
             async function selectChat(chatId) {
+                state.activeChatId = chatId;
+                lastMessageCount = 0;
+                renderChats();
+                renderDocuments();
+                await Promise.all([loadChatDocuments(chatId), loadMessages(chatId, true)]);
+                renderActiveChat();
+                startMessagePolling();
+            }
+
+            // ---------- Chat documents ----------
+
+            async function loadChatDocuments(chatId) {
                 try {
-                    const data = await apiRequest('GET', `/chats/${chatId}`);
-                    currentChatId = chatId;
-                    $('#chatDetailCard').classList.remove('hidden');
-                    $('#chatDetailId').textContent = chatId;
-                    $('#chatDetailTitle').value = data.title || '';
-                    listContextForChat(chatId);
-                    listMessagesForChat(chatId);
+                    state.chatDocuments = await api(`/chats/${chatId}/documents`);
                 } catch (e) {
-                    showToast('Failed to get chat: ' + e.message, 'error');
+                    state.chatDocuments = [];
+                    toast('Failed to load attached documents: ' + e.message);
                 }
             }
 
-            async function updateChat(chatId, title) {
+            async function attachDocument(documentId) {
+                if (!state.activeChatId || !documentId) return;
                 try {
-                    const data = await apiRequest('PATCH', `/chats/${chatId}`, { title: title || null });
-                    showToast('Chat updated.', 'success');
-                    $('#chatDetailTitle').value = data.title || '';
+                    await api(`/chats/${state.activeChatId}/document/${documentId}`, { method: 'POST' });
+                    await loadChatDocuments(state.activeChatId);
+                    renderActiveChat();
+                    renderDocuments();
                 } catch (e) {
-                    showToast('Update failed: ' + e.message, 'error');
+                    toast('Attach failed: ' + e.message);
                 }
             }
 
-            async function deleteChat(chatId) {
-                if (!confirm('Delete chat ' + chatId + ' and all its messages?')) return;
+            async function detachDocument(documentId) {
+                if (!state.activeChatId) return;
                 try {
-                    await apiRequest('DELETE', `/chats/${chatId}`);
-                    showToast('Chat deleted.', 'success');
-                    currentChatId = null;
-                    $('#chatDetailCard').classList.add('hidden');
-                    listChats(parseInt($('#chatPageNo').value), parseInt($('#chatPageSize').value));
+                    await api(`/chats/${state.activeChatId}/document/${documentId}`, { method: 'DELETE' });
+                    await loadChatDocuments(state.activeChatId);
+                    renderActiveChat();
                 } catch (e) {
-                    showToast('Delete failed: ' + e.message, 'error');
+                    toast('Detach failed: ' + e.message);
                 }
             }
 
-            // Context
-            function renderContextTable(contexts) {
-                const tbody = $('#contextTableBody');
-                if (!contexts || contexts.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" class="text-muted">No context documents.</td></tr>';
-                    return;
-                }
-                tbody.innerHTML = contexts.map(c => `
-                <tr>
-                  <td class="mono">${truncate(c.document_id, 18)}</td>
-                  <td>${escapeHtml(c.title || '—')}</td>
-                  <td class="mono">${truncate(c.document_id, 18)}</td>
-                  <td>${escapeHtml(c.content_type)}</td>
-                  <td>${formatBytes(c.file_size)}</td>
-                  <td>${c.attached_at ? new Date(c.attached_at).toLocaleString() : '—'}</td>
-                  <td class="actions">
-                    <button class="btn btn-danger btn-xs" data-action="delete-context" data-ctx-id="${c.document_id}">Remove</button>
-                  </td>
-                </tr>
-              `).join('');
-            }
+            // ---------- Messages ----------
 
-            async function listContextForChat(chatId) {
+            async function loadMessages(chatId, silent) {
                 try {
-                    const data = await apiRequest('GET', `/chats/${chatId}/context?skip=0&limit=100`);
-                    renderContextTable(data);
+                    const msgs = await api(`/chats/${chatId}/messages`);
+                    const grew = msgs.length !== state.messages.length;
+                    state.messages = msgs;
+                    if (chatId === state.activeChatId && (grew || !silent)) {
+                        renderMessages();
+                    }
                 } catch (e) {
-                    showToast('Failed to list context: ' + e.message, 'error');
+                    if (!silent) toast('Failed to load messages: ' + e.message);
                 }
             }
 
-            async function addContext(chatId, documentId, prompt, imageFile) {
-                const fd = new FormData();
-                if (documentId) fd.append('document_id', documentId);
-                if (prompt) fd.append('prompt', prompt);
-                if (imageFile) fd.append('image', imageFile);
+            function startMessagePolling() {
+                stopMessagePolling();
+                msgPollTimer = setInterval(() => {
+                    if (state.activeChatId) loadMessages(state.activeChatId, true);
+                }, 2000);
+            }
+
+            function stopMessagePolling() {
+                if (msgPollTimer) clearInterval(msgPollTimer);
+                msgPollTimer = null;
+            }
+
+            async function sendMessage(content) {
+                if (!state.activeChatId || !content.trim()) return;
+                const chatId = state.activeChatId;
+                // optimistic render
+                const optimistic = {
+                    message_id: 'pending-' + Date.now(),
+                    chat_id: chatId,
+                    role: 'USER',
+                    content,
+                    message_metadata: {},
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString(),
+                    pending: true,
+                };
+                state.messages.push(optimistic);
+                renderMessages(true);
+
                 try {
-                    const data = await apiRequest('POST', `/chats/${chatId}/context`, fd, true);
-                    showToast('Context added.', 'success');
-                    listContextForChat(chatId);
-                } catch (e) {
-                    showToast('Add context failed: ' + e.message, 'error');
-                }
-            }
-
-            async function deleteContext(chatId, contextId) {
-                if (!confirm('Remove context ' + contextId + '?')) return;
-                try {
-                    await apiRequest('DELETE', `/chats/${chatId}/context/${contextId}`);
-                    showToast('Context removed.', 'success');
-                    listContextForChat(chatId);
-                } catch (e) {
-                    showToast('Delete context failed: ' + e.message, 'error');
-                }
-            }
-
-            // Messages
-            function renderMessages(messages) {
-                const container = $('#messagesList');
-                if (!messages || messages.length === 0) {
-                    container.innerHTML = '<p class="text-muted">No messages.</p>';
-                    return;
-                }
-                container.innerHTML = messages.map(m => `
-                <div class="message-bubble">
-                  <div class="role role-${m.role}">${m.role}</div>
-                  <div>${escapeHtml(m.content)}</div>
-                  <div class="text-muted" style="margin-top:4px;font-size:0.7rem;">
-                    ID: ${truncate(m.message_id, 16)} · ${m.created_at ? new Date(m.created_at).toLocaleString() : ''}
-                    <button class="btn btn-outline btn-xs" data-action="edit-msg" data-msg-id="${m.message_id}" data-content="${escapeHtml(m.content)}" style="margin-left:6px;">Edit</button>
-                    <button class="btn btn-danger btn-xs" data-action="delete-msg" data-msg-id="${m.message_id}" style="margin-left:2px;">Del</button>
-                  </div>
-                </div>
-              `).join('');
-            }
-
-            async function listMessagesForChat(chatId) {
-                try {
-                    const data = await apiRequest('GET', `/chats/${chatId}/messages`);
-                    renderMessages(data);
-                } catch (e) {
-                    showToast('Failed to list messages: ' + e.message, 'error');
-                }
-            }
-
-            async function sendMessage(chatId, role, content) {
-                try {
-                    const data = await apiRequest('POST', `/chats/${chatId}/query`, {
-                        role, content,
-                        message_metadata: {}
+                    await api(`/chats/${chatId}/query`, {
+                        method: 'POST',
+                        body: JSON.stringify({ role: 'USER', content, message_metadata: {} }),
                     });
-                    showToast('Message sent: ' + data.message_id, 'success');
-                    listMessagesForChat(chatId);
+                    await loadMessages(chatId, true);
+                    renderMessages();
                 } catch (e) {
-                    showToast('Send message failed: ' + e.message, 'error');
+                    state.messages = state.messages.filter(m => m.message_id !== optimistic.message_id);
+                    renderMessages();
+                    toast('Message failed to send: ' + e.message);
                 }
             }
 
-            async function editMessage(chatId, messageId, content) {
-                const newContent = prompt('Edit message content:', content);
-                if (newContent === null) return;
-                try {
-                    await apiRequest('PATCH', `/chats/${chatId}/messages/${messageId}`, { content: newContent });
-                    showToast('Message updated.', 'success');
-                    listMessagesForChat(chatId);
-                } catch (e) {
-                    showToast('Edit failed: ' + e.message, 'error');
-                }
+            // ---------- Active chat rendering ----------
+
+            function renderActiveChatEmpty() {
+                $('#active-chat-panel').innerHTML = '<div class="no-chat">No chat selected — click "New chat" to start one</div>';
             }
 
-            async function deleteMessage(chatId, messageId) {
-                if (!confirm('Delete message ' + messageId + '?')) return;
-                try {
-                    await apiRequest('DELETE', `/chats/${chatId}/messages/${messageId}`);
-                    showToast('Message deleted.', 'success');
-                    listMessagesForChat(chatId);
-                } catch (e) {
-                    showToast('Delete failed: ' + e.message, 'error');
-                }
+            function renderActiveChat() {
+                const chat = state.chats.find(c => c.chat_id === state.activeChatId);
+                if (!chat) { renderActiveChatEmpty(); return; }
+
+                const attachedIds = new Set(state.chatDocuments.map(d => d.document_id));
+                const attachOptions = state.documents.filter(d => !attachedIds.has(d.document_id));
+
+                $('#active-chat-panel').innerHTML = `
+      <div class="chat-view">
+        <div class="chat-view-head">
+          <h2>${escapeHtml(chat.title || 'Untitled chat')}</h2>
+          <div class="attached-docs" id="attached-docs">
+            ${state.chatDocuments.map(d => `
+              <span class="chip">
+                ${escapeHtml(d.file_path.split('/').pop())}
+                <button data-detach="${d.document_id}" title="Remove from chat">&times;</button>
+              </span>
+            `).join('') || '<span class="doc-meta">No documents attached</span>'}
+          </div>
+          <div class="attach-row">
+            <select id="attach-select">
+              <option value="">Attach a document…</option>
+              ${attachOptions.map(d => `<option value="${d.document_id}">${escapeHtml(d.original_filename)}</option>`).join('')}
+            </select>
+            <button id="attach-go">Attach</button>
+          </div>
+        </div>
+        <div class="messages" id="messages"></div>
+        <div class="composer">
+          <textarea id="composer-input" placeholder="Ask something about the attached documents…"></textarea>
+          <button class="primary" id="send-btn">Send</button>
+        </div>
+      </div>
+    `;
+                renderMessages(true);
             }
 
-            // Chat event delegation
-            $('#chatsTableBody').addEventListener('click', async (e) => {
-                const btn = e.target.closest('button');
-                if (!btn) return;
-                const action = btn.dataset.action;
-                const id = btn.dataset.id;
-                if (action === 'select-chat') selectChat(id);
-                if (action === 'delete-chat') deleteChat(id);
-            });
-
-            $('#btnCreateChat').addEventListener('click', () => {
-                createChat($('#chatCreateTitle').value || null);
-                $('#chatCreateTitle').value = '';
-            });
-            $('#btnListChats').addEventListener('click', () => {
-                listChats(parseInt($('#chatPageNo').value), parseInt($('#chatPageSize').value));
-            });
-            $('#btnUpdateChat').addEventListener('click', () => {
-                if (currentChatId) updateChat(currentChatId, $('#chatDetailTitle').value || null);
-            });
-            $('#btnDeleteChat').addEventListener('click', () => {
-                if (currentChatId) deleteChat(currentChatId);
-            });
-            $('#btnAddContext').addEventListener('click', () => {
-                if (!currentChatId) return;
-                const docId = $('#ctxDocId').value.trim() || null;
-                const prompt = $('#ctxPrompt').value.trim() || null;
-                const imageFile = $('#ctxImage').files[0] || null;
-                addContext(currentChatId, docId, prompt, imageFile);
-                $('#ctxDocId').value = '';
-                $('#ctxPrompt').value = '';
-                $('#ctxImage').value = '';
-            });
-            $('#btnListContext').addEventListener('click', () => {
-                if (currentChatId) listContextForChat(currentChatId);
-            });
-            $('#contextTableBody').addEventListener('click', (e) => {
-                const btn = e.target.closest('button');
-                if (!btn) return;
-                if (btn.dataset.action === 'delete-context' && currentChatId) {
-                    deleteContext(currentChatId, btn.dataset.ctxId);
+            function renderMessages(scrollBottom) {
+                const el = $('#messages');
+                if (!el) return;
+                if (!state.messages.length) {
+                    el.innerHTML = '<div class="empty">No messages yet — say something below</div>';
+                    return;
                 }
-            });
-            $('#btnSendMsg').addEventListener('click', () => {
-                if (!currentChatId) { showToast('Select a chat first.', 'error'); return; }
-                const role = $('#msgRole').value;
-                const content = $('#msgContent').value.trim();
-                if (!content) { showToast('Enter a message.', 'error'); return; }
-                sendMessage(currentChatId, role, content);
-                $('#msgContent').value = '';
-            });
-            $('#btnListMessages').addEventListener('click', () => {
-                if (currentChatId) listMessagesForChat(currentChatId);
-            });
-            $('#messagesList').addEventListener('click', (e) => {
-                const btn = e.target.closest('button');
-                if (!btn || !currentChatId) return;
-                if (btn.dataset.action === 'edit-msg') {
-                    editMessage(currentChatId, btn.dataset.msgId, btn.dataset.content);
-                }
-                if (btn.dataset.action === 'delete-msg') {
-                    deleteMessage(currentChatId, btn.dataset.msgId);
-                }
-            });
-
-            // ═══════════════ ANALYSIS ═══════════════
-            async function getAnalysisById(analysisId) {
-                try {
-                    const data = await apiRequest('GET', `/analysis/${analysisId}`);
-                    $('#analysisResult').classList.remove('hidden');
-                    $('#analysisResultPre').textContent = JSON.stringify(data, null, 2);
-                    setStatusDot(true);
-                } catch (e) {
-                    showToast('Error: ' + e.message, 'error');
-                }
+                el.innerHTML = state.messages.map(m => `
+      <div class="msg ${m.role}">
+        <div class="role">${m.role.toLowerCase()} · ${fmtTime(m.created_at)}</div>
+        <div>${escapeHtml(m.content)}</div>
+      </div>
+    `).join('');
+                if (scrollBottom !== false) el.scrollTop = el.scrollHeight;
             }
 
-            async function getAnalysisStatusById(analysisId) {
-                try {
-                    const data = await apiRequest('GET', `/analysis/${analysisId}/status`);
-                    $('#analysisStatusResult').classList.remove('hidden');
-                    $('#analysisStatusPre').textContent = JSON.stringify(data, null, 2);
-                } catch (e) {
-                    showToast('Error: ' + e.message, 'error');
-                }
+            function renderAttachSelect() {
+                if (state.activeChatId) renderActiveChat();
             }
 
-            async function deleteAnalysisById(analysisId) {
-                if (!confirm('Delete analysis ' + analysisId + '?')) return;
-                try {
-                    await apiRequest('DELETE', `/analysis/${analysisId}`);
-                    showToast('Analysis deleted.', 'success');
-                    $('#analysisResult').classList.add('hidden');
-                    $('#analysisStatusResult').classList.add('hidden');
-                } catch (e) {
-                    showToast('Delete failed: ' + e.message, 'error');
-                }
-            }
-
-            $('#btnGetAnalysis').addEventListener('click', () => {
-                const id = $('#analysisLookupId').value.trim();
-                if (!id) { showToast('Enter an analysis ID.', 'error'); return; }
-                getAnalysisById(id);
-            });
-            $('#btnAnalysisStatus').addEventListener('click', () => {
-                const id = $('#analysisLookupId').value.trim();
-                if (!id) { showToast('Enter an analysis ID.', 'error'); return; }
-                getAnalysisStatusById(id);
-            });
-            $('#btnDeleteAnalysis').addEventListener('click', () => {
-                const id = $('#analysisLookupId').value.trim();
-                if (!id) { showToast('Enter an analysis ID.', 'error'); return; }
-                deleteAnalysisById(id);
-            });
-
-            // ═══════════════ ESCAPE HTML ═══════════════
             function escapeHtml(str) {
-                if (!str) return '';
-                const div = document.createElement('div');
-                div.textContent = str;
-                return div.innerHTML;
+                return String(str ?? '').replace(/[&<>"']/g, c => ({
+                    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+                }[c]));
             }
 
-            // ═══════════════ INIT ═══════════════
-            async function init() {
-                await checkApiStatus();
-                listDocuments(1, 10);
-                listChats(1, 10);
-                // Periodic status check
-                setInterval(checkApiStatus, 30000);
-                // Check on base URL change
-                $('#baseUrl').addEventListener('change', () => {
-                    checkApiStatus();
-                    listDocuments(parseInt($('#docPageNo').value), parseInt($('#docPageSize').value));
-                    listChats(parseInt($('#chatPageNo').value), parseInt($('#chatPageSize').value));
-                });
-            }
+            // ---------- Event wiring ----------
 
-            init();
+            $('#upload-btn').addEventListener('click', () => $('#file-input').click());
+            $('#file-input').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) uploadDocument(file);
+                e.target.value = '';
+            });
+
+            $('#new-chat-btn').addEventListener('click', createChat);
+
+            $('#documents-list').addEventListener('click', (e) => {
+                const btn = e.target.closest('button[data-action]');
+                if (!btn) return;
+                const id = btn.dataset.id;
+                if (btn.dataset.action === 'analyze') analyzeDocument(id);
+                if (btn.dataset.action === 'delete-doc') deleteDocument(id);
+                if (btn.dataset.action === 'attach') attachDocument(id);
+            });
+
+            $('#chats-list').addEventListener('click', (e) => {
+                const del = e.target.closest('button[data-del]');
+                if (del) { deleteChat(del.dataset.del, e); return; }
+                const item = e.target.closest('.chat-item');
+                if (item) selectChat(item.dataset.id);
+            });
+
+            document.body.addEventListener('click', (e) => {
+                if (e.target.id === 'attach-go') {
+                    const sel = $('#attach-select');
+                    if (sel && sel.value) attachDocument(sel.value);
+                }
+                if (e.target.closest('button[data-detach]')) {
+                    detachDocument(e.target.closest('button[data-detach]').dataset.detach);
+                }
+                if (e.target.id === 'send-btn') {
+                    const input = $('#composer-input');
+                    const val = input.value;
+                    input.value = '';
+                    sendMessage(val);
+                }
+            });
+
+            document.body.addEventListener('keydown', (e) => {
+                if (e.target.id === 'composer-input' && e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    $('#send-btn').click();
+                }
+            });
+
+            $('#api-base').addEventListener('change', () => {
+                loadDocuments();
+                loadChats();
+            });
+
+            // ---------- Init ----------
+            $('#api-base').value = 'http://localhost:8000';
+            loadDocuments();
+            loadChats();
         })();
     </script>
+
 </body>
 
 </html>
