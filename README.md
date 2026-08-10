@@ -218,15 +218,7 @@ These are deferred until the backend API contract is finalized, since each
 touches request/response shape or status-code behavior that's easier to
 settle once:
 
-- **Concurrency guards.** Add checks so `POST /documents/{document_id}/analysis`
-  and `POST /chats/{chat_id}/context` actually return the documented
-  `409 Resource Conflict` when an analysis/context operation is already
-  in progress for that document/chat, instead of silently creating a
-  duplicate.
-- **Upload size checks.** Reorder `upload_document` so the size limit is
-  enforced before the file is fully read into memory (e.g. via `file.size`
-  or a chunked/streaming read with an early cutoff), rather than checking
-  `len(contents)` after `await file.read()` has already buffered it.
+
 - **PDF read support.** Extend document upload/analysis to accept PDFs in
   addition to JPEG/PNG — content-type allowlist, byte validation, and how
   a multi-page PDF maps onto the existing single-image analysis pipeline
