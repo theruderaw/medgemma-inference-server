@@ -47,12 +47,12 @@ class ImageAnalysisService:
         """Fallback: literal substring matching against known entity names."""
         report_lower = report_text.lower()
         found = []
+
         for entity in EXTRACTION_ENTITIES:
-            if entity.lower() in report_lower:
+            pattern = rf"\b{re.escape(entity.lower())}\b"
+
+            if re.search(pattern, report_lower):
                 found.append(entity)
-        if not found:
-            found = ["No Finding"]
-        return found
 
     @staticmethod
     def _extract_summary_fallback(raw_output: str) -> str:
