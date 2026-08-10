@@ -662,8 +662,4 @@ These tools are intended for local testing and performance evaluation.
 
 ---
 
-The core documentation remains 1000% verified against your source code. Let me know if you need any further tweaks.
-
----
-
 This documentation is an AI-assisted analysis of the actual codebase. For further details, refer directly to the source files in `app/`.
