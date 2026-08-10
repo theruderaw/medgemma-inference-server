@@ -1,0 +1,101 @@
+filename,label_ids,labels
+xray_000.png,0,No Finding
+xray_001.png,1,Atelectasis
+xray_002.png,1,Atelectasis
+xray_003.png,0,No Finding
+xray_004.png,0,No Finding
+xray_005.png,0,No Finding
+xray_006.png,0,No Finding
+xray_007.png,4;5,Infiltration;Mass
+xray_008.png,4,Infiltration
+xray_009.png,5,Mass
+xray_010.png,0,No Finding
+xray_011.png,0,No Finding
+xray_012.png,3,Effusion
+xray_013.png,10;11,Edema;Emphysema
+xray_014.png,0,No Finding
+xray_015.png,13,Pleural_Thickening
+xray_016.png,0,No Finding
+xray_017.png,0,No Finding
+xray_018.png,0,No Finding
+xray_019.png,9;3,Consolidation;Effusion
+xray_020.png,1;4,Atelectasis;Infiltration
+xray_021.png,0,No Finding
+xray_022.png,1,Atelectasis
+xray_023.png,6,Nodule
+xray_024.png,0,No Finding
+xray_025.png,0,No Finding
+xray_026.png,6;13,Nodule;Pleural_Thickening
+xray_027.png,0,No Finding
+xray_028.png,1;3;4,Atelectasis;Effusion;Infiltration
+xray_029.png,7,Pneumonia
+xray_030.png,0,No Finding
+xray_031.png,10;4,Edema;Infiltration
+xray_032.png,0,No Finding
+xray_033.png,4;8,Infiltration;Pneumothorax
+xray_034.png,0,No Finding
+xray_035.png,0,No Finding
+xray_036.png,0,No Finding
+xray_037.png,0,No Finding
+xray_038.png,0,No Finding
+xray_039.png,0,No Finding
+xray_040.png,4;6,Infiltration;Nodule
+xray_041.png,0,No Finding
+xray_042.png,0,No Finding
+xray_043.png,4;5,Infiltration;Mass
+xray_044.png,0,No Finding
+xray_045.png,2,Cardiomegaly
+xray_046.png,0,No Finding
+xray_047.png,4;8,Infiltration;Pneumothorax
+xray_048.png,12,Fibrosis
+xray_049.png,4;7,Infiltration;Pneumonia
+xray_050.png,1;11,Atelectasis;Emphysema
+xray_051.png,0,No Finding
+xray_052.png,0,No Finding
+xray_053.png,0,No Finding
+xray_054.png,0,No Finding
+xray_055.png,4,Infiltration
+xray_056.png,0,No Finding
+xray_057.png,0,No Finding
+xray_058.png,3;8,Effusion;Pneumothorax
+xray_059.png,0,No Finding
+xray_060.png,0,No Finding
+xray_061.png,4,Infiltration
+xray_062.png,1,Atelectasis
+xray_063.png,1;3,Atelectasis;Effusion
+xray_064.png,1,Atelectasis
+xray_065.png,0,No Finding
+xray_066.png,9,Consolidation
+xray_067.png,1;3;5,Atelectasis;Effusion;Mass
+xray_068.png,3,Effusion
+xray_069.png,0,No Finding
+xray_070.png,0,No Finding
+xray_071.png,4,Infiltration
+xray_072.png,0,No Finding
+xray_073.png,4,Infiltration
+xray_074.png,0,No Finding
+xray_075.png,0,No Finding
+xray_076.png,3;6,Effusion;Nodule
+xray_077.png,9;3;4,Consolidation;Effusion;Infiltration
+xray_078.png,0,No Finding
+xray_079.png,3,Effusion
+xray_080.png,1;11,Atelectasis;Emphysema
+xray_081.png,3,Effusion
+xray_082.png,3;7,Effusion;Pneumonia
+xray_083.png,8,Pneumothorax
+xray_084.png,0,No Finding
+xray_085.png,0,No Finding
+xray_086.png,0,No Finding
+xray_087.png,6,Nodule
+xray_088.png,4,Infiltration
+xray_089.png,0,No Finding
+xray_090.png,0,No Finding
+xray_091.png,3,Effusion
+xray_092.png,1;3;4,Atelectasis;Effusion;Infiltration
+xray_093.png,3;4,Effusion;Infiltration
+xray_094.png,0,No Finding
+xray_095.png,0,No Finding
+xray_096.png,3,Effusion
+xray_097.png,0,No Finding
+xray_098.png,4;6,Infiltration;Nodule
+xray_099.png,5;6,Mass;Nodule
