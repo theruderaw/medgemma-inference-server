@@ -14,6 +14,7 @@ from app.models.analysis import Analysis
 from app.models.document import Document
 
 from app.inference.analysis import ImageAnalysisService
+from app.models.enums import AnalysisStatus
 
 ALLOWED_CONTENT_TYPES = [
     "image/jpeg",
@@ -23,8 +24,13 @@ ALLOWED_CONTENT_TYPES = [
 UPLOAD_DIR = "./uploads"
 
 # A generous but bounded cap -- prevents unbounded memory use from
-# `await file.read()` buffering an arbitrarily large upload in full.
+# buffering an arbitrarily large upload in full.
 MAX_UPLOAD_BYTES = 25 * 1024 * 1024  # 25 MB
+
+# Size of each chunk read from the upload stream while enforcing
+# MAX_UPLOAD_BYTES. Kept well under the cap so an oversized upload is
+# rejected long before it's been fully buffered.
+UPLOAD_READ_CHUNK_SIZE = 1024 * 1024  # 1 MB
 
 
 class DocumentService:
@@ -40,18 +46,12 @@ class DocumentService:
                 detail="Unsupported Media Type",
             )
 
-        contents = await file.read()
+        contents = await self._read_upload_within_limit(file)
 
         if not contents:
             raise HTTPException(
                 status_code=400,
                 detail="Empty file provided",
-            )
-
-        if len(contents) > MAX_UPLOAD_BYTES:
-            raise HTTPException(
-                status_code=413,
-                detail="File too large",
             )
 
         # Content-type header is client-supplied and not trustworthy on its
@@ -102,6 +102,32 @@ class DocumentService:
                 status_code=500,
                 detail="Failed to save document to database",
             )
+
+    @staticmethod
+    async def _read_upload_within_limit(file: UploadFile) -> bytes:
+        """Read the upload in bounded chunks, rejecting it as soon as the
+        size cap is exceeded instead of buffering an arbitrarily large
+        body in full before its length is ever checked.
+        """
+        chunks: list[bytes] = []
+        total = 0
+
+        while True:
+            chunk = await file.read(UPLOAD_READ_CHUNK_SIZE)
+            if not chunk:
+                break
+
+            total += len(chunk)
+            if total > MAX_UPLOAD_BYTES:
+                raise HTTPException(
+                    status_code=413,
+                    detail="File too large",
+                )
+
+            chunks.append(chunk)
+
+        await file.seek(0)
+        return b"".join(chunks)
 
     @staticmethod
     def _validate_image_bytes(contents: bytes) -> None:
@@ -169,6 +195,12 @@ class DocumentService:
 
         return result.scalars().all()
 
+    # Statuses that mean an analysis is still in flight for a document.
+    IN_PROGRESS_ANALYSIS_STATUSES = (
+        AnalysisStatus.ANALYZING,
+        AnalysisStatus.CHUNKING,
+        AnalysisStatus.EMBEDDING,
+    )
 
     async def analyze_document(
         self,
@@ -176,6 +208,16 @@ class DocumentService:
         background_tasks: BackgroundTasks,
     ):
         await self.get_document(document_id)
+        existing = await self.db.execute(
+            select(Analysis)
+            .where(Analysis.document_id == document_id)
+            .where(Analysis.status.in_(self.IN_PROGRESS_ANALYSIS_STATUSES))
+        )
+        if existing.scalars().first() is not None:
+            raise HTTPException(
+                status_code=409,
+                detail="Resource Conflict: an analysis is already in progress for this document",
+            )
 
         analysis_id = uuid4()
 
@@ -212,6 +254,7 @@ class DocumentService:
         )
 
         return analysis
+
     async def delete_document_analyses(self, document_id: UUID):
         await self.get_document(document_id)
 
