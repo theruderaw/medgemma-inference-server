@@ -76,8 +76,6 @@ class ImageAnalysisService:
         if analysis is None:
             raise ValueError("Analysis not found")
 
-        analysis.status = AnalysisStatus.ANALYZING
-
         await self.db.commit()
 
         document = await self.db.get(

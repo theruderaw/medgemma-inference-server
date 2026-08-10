@@ -7,6 +7,7 @@ from fastapi import HTTPException, UploadFile, BackgroundTasks
 # pyrefly: ignore [missing-import]
 from sqlalchemy import select
 # pyrefly: ignore [missing-import]
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
@@ -235,12 +236,19 @@ class DocumentService:
             document_id=document_id,
             model_name=model_name,
             model_version=model_version,
+            status=AnalysisStatus.ANALYZING
         )
 
         try:
             self.db.add(analysis)
             await self.db.commit()
             await self.db.refresh(analysis)
+        except IntegrityError:
+            await self.db.rollback()
+            raise HTTPException(
+                status_code=409,
+                detail="Resource Conflict: an analysis is already in progress for this document",
+            )
         except Exception as e:
             await self.db.rollback()
             raise HTTPException(
