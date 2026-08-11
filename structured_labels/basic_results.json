@@ -1,0 +1,236 @@
+{
+  "medgemma1.5_4b_qwen2.5_3b": {
+    "num_images": 100,
+    "num_scored": 100,
+    "num_parse_failures": 0,
+    "parse_failure_rate": 0.0,
+    "precision": 0.1224,
+    "recall": 0.2812,
+    "f1": 0.1706,
+    "top_missing": [
+      [
+        "No Finding",
+        28
+      ],
+      [
+        "Infiltration",
+        19
+      ],
+      [
+        "Effusion",
+        16
+      ],
+      [
+        "Nodule",
+        7
+      ],
+      [
+        "Mass",
+        5
+      ]
+    ],
+    "top_extra": [
+      [
+        "Atelectasis",
+        47
+      ],
+      [
+        "Lung Opacity",
+        39
+      ],
+      [
+        "Consolidation",
+        32
+      ],
+      [
+        "Cardiomegaly",
+        29
+      ],
+      [
+        "Edema",
+        16
+      ]
+    ]
+  },
+  "medgemma1.5_4b_qwen3_1.7b": {
+    "num_images": 100,
+    "num_scored": 100,
+    "num_parse_failures": 0,
+    "parse_failure_rate": 0.0,
+    "precision": 0.0847,
+    "recall": 0.2734,
+    "f1": 0.1294,
+    "top_missing": [
+      [
+        "No Finding",
+        28
+      ],
+      [
+        "Infiltration",
+        19
+      ],
+      [
+        "Effusion",
+        16
+      ],
+      [
+        "Nodule",
+        7
+      ],
+      [
+        "Mass",
+        5
+      ]
+    ],
+    "top_extra": [
+      [
+        "Lung Opacity",
+        69
+      ],
+      [
+        "Atelectasis",
+        51
+      ],
+      [
+        "Cardiomegaly",
+        47
+      ],
+      [
+        "Support Devices",
+        42
+      ],
+      [
+        "Enlarged Cardiomediastinum",
+        20
+      ]
+    ]
+  },
+  "medgemma-vision_latest_qwen3_1.7b": {
+    "num_images": 100,
+    "num_scored": 100,
+    "num_parse_failures": 0,
+    "parse_failure_rate": 0.0,
+    "precision": 0.061,
+    "recall": 0.2031,
+    "f1": 0.0939,
+    "top_missing": [
+      [
+        "No Finding",
+        33
+      ],
+      [
+        "Infiltration",
+        19
+      ],
+      [
+        "Effusion",
+        16
+      ],
+      [
+        "Nodule",
+        7
+      ],
+      [
+        "Atelectasis",
+        6
+      ]
+    ],
+    "top_extra": [
+      [
+        "Lung Opacity",
+        75
+      ],
+      [
+        "Cardiomegaly",
+        72
+      ],
+      [
+        "Atelectasis",
+        61
+      ],
+      [
+        "Support Devices",
+        39
+      ],
+      [
+        "Enlarged Cardiomediastinum",
+        38
+      ]
+    ]
+  },
+  "medgemma-vision_latest_qwen2.5_3b": {
+    "num_images": 100,
+    "num_scored": 100,
+    "num_parse_failures": 0,
+    "parse_failure_rate": 0.0,
+    "precision": 0.0438,
+    "recall": 0.0938,
+    "f1": 0.0597,
+    "top_missing": [
+      [
+        "No Finding",
+        45
+      ],
+      [
+        "Infiltration",
+        19
+      ],
+      [
+        "Effusion",
+        16
+      ],
+      [
+        "Atelectasis",
+        8
+      ],
+      [
+        "Nodule",
+        7
+      ]
+    ],
+    "top_extra": [
+      [
+        "Cardiomegaly",
+        47
+      ],
+      [
+        "Lung Opacity",
+        45
+      ],
+      [
+        "Edema",
+        45
+      ],
+      [
+        "Atelectasis",
+        45
+      ],
+      [
+        "Enlarged Cardiomediastinum",
+        23
+      ]
+    ]
+  },
+  "medgemma-vision_latest_osmosis_0.6b": {
+    "num_images": 100,
+    "num_scored": 0,
+    "num_parse_failures": 100,
+    "parse_failure_rate": 1.0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "top_missing": [],
+    "top_extra": []
+  },
+  "medgemma1.5_4b_osmosis_0.6b": {
+    "num_images": 100,
+    "num_scored": 0,
+    "num_parse_failures": 100,
+    "parse_failure_rate": 1.0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "top_missing": [],
+    "top_extra": []
+  }
+}

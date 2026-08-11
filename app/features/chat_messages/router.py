@@ -12,7 +12,7 @@ from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(
-    prefix="/chats",
+    prefix="/api/v1/chats",
     tags=["Messages"],
 )
 

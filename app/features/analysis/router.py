@@ -14,7 +14,7 @@ from app.schemas.analysis import (
 from app.schemas.errors import ERROR_404, ERROR_500
 
 router = APIRouter(
-    prefix="/analysis",
+    prefix="/api/v1/analysis",
     tags=["Analysis"],
 )
 

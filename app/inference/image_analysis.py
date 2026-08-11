@@ -9,13 +9,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.database import AsyncSessionLocal
+from app.features.chats import service
 from app.inference.llm import chat, embed as ollama_embed
-from app.inference.prompts import EXTRACT_PROMPT, SYS_PROMPT_INGESTION
+from app.inference.prompts import EXTRACT_PROMPT, PDF_PAGE_ANALYSIS_PROMPT, SYS_PROMPT_INGESTION
 from app.inference.types import ChestXrayEntity
 from app.models.analysis import Analysis
 from app.models.chunk import Chunk
 from app.models.document import Document
 from app.models.enums import AnalysisStatus, ChunkType
+from app.utils.pdf_ocr import extract_pdf_text, render_pdf_images
 
 
 # Fixed entity set for regex fallback
@@ -75,8 +77,6 @@ class ImageAnalysisService:
 
         if analysis is None:
             raise ValueError("Analysis not found")
-
-        await self.db.commit()
 
         document = await self.db.get(
             Document,
@@ -255,3 +255,4 @@ class ImageAnalysisService:
                     await db.commit()
 
                 raise
+            

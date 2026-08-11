@@ -16,7 +16,7 @@ from app.schemas.errors import (
 from app.features.chats.service import ChatsService
 
 router = APIRouter(
-    prefix="/chats",
+    prefix="/api/v1/chats",
     tags=["Chats"],
 )
 

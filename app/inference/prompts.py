@@ -464,3 +464,20 @@ Rules:
 - Do not mention embeddings, vector search, retrieval, chunks, or internal system processes.
 - Do not provide clinical recommendations beyond what is supported by the context.
 """
+
+PDF_PAGE_ANALYSIS_PROMPT = """
+Analyze the attached medical document page together with its extracted text.
+
+Page text:
+{page_text}
+
+Use the page image to identify and interpret clinically relevant visual
+information, including medical images, figures, diagrams, charts, and tables.
+
+Relate visual findings to the surrounding text where appropriate.
+Preserve important details and relationships between text and visual content.
+
+Do not invent findings that are not supported by the page.
+If the page contains no clinically relevant visual information, rely on
+the extracted text and state the relevant information clearly.
+""".strip()

@@ -18,7 +18,7 @@ from app.schemas.errors import (
 )
 
 router = APIRouter(
-    prefix="/documents",
+    prefix="/api/v1/documents",
     tags=["Documents"],
 )
 
