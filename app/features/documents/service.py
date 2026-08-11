@@ -204,7 +204,7 @@ class DocumentService:
         result = await self.db.execute(
             select(Analysis)
             .where(Analysis.document_id == document_id)
-            .order_by(Analysis.updated_at.desc())
+            .order_by(Analysis.created_at.desc())
             .offset(skip)
             .limit(limit)
         )
