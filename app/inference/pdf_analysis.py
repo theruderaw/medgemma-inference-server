@@ -226,6 +226,7 @@ class PDFAnalysisService:
                 analysis_id=analysis_id,
                 chunk_content=summary,
                 chunk_index=page_num,
+                page_number=page_num,
                 chunk_type=ChunkType.TEXT,  # NOTE: adjust to your actual enum member
                 entities=entities,
                 notes=notes,
@@ -261,18 +262,29 @@ class PDFAnalysisService:
         if not chunks:
             raise ValueError("No chunks found")
 
-        for chunk in chunks:
-            if not chunk.chunk_content:
-                continue
+        embeddable = [c for c in chunks if c.chunk_content]
+        if not embeddable:
+            analysis.status = AnalysisStatus.COMPLETE
+            await self.db.commit()
+            return
 
-            res = await ollama_embed(
-                model=settings.EMBED_MODEL,
-                input=chunk.chunk_content,
+        res = await ollama_embed(
+            model=settings.EMBED_MODEL,
+            input=[c.chunk_content for c in embeddable],
+        )
+        
+        embeddings = res["embeddings"]
+
+        if len(embeddable) != len(embeddings):
+            raise ValueError(
+                f"Embedding count mismatch: got {len(embeddings)} "
+                f"for {len(embeddable)} chunks"
             )
-
-            chunk.embedding = res["embeddings"][0]
+            
+        for chunk,embedding in zip(embeddable,embeddings):
+            chunk.embedding = embedding
             chunk.embedding_model = settings.EMBED_MODEL
-
+            
         analysis.status = AnalysisStatus.COMPLETE
 
         await self.db.commit()
