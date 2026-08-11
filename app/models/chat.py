@@ -36,10 +36,12 @@ class ChatSession(SQLModel, table=True):
 
     messages: list["ChatMessage"] = Relationship(
         back_populates="chat",
+        sa_relationship_kwargs={"cascade":"delete"}
     )
 
     chat_documents: list["ChatDocument"] = Relationship(
         back_populates="chat",
+        sa_relationship_kwargs={"cascade":"delete"}
     )
 
 

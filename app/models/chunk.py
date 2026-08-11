@@ -3,10 +3,11 @@ from typing import TYPE_CHECKING, Any
 from uuid import UUID, uuid4
 
 from pgvector.sqlalchemy import Vector
-from sqlalchemy import Column, Enum
+from sqlalchemy import Column, Enum, ForeignKey  # Import ForeignKey explicitly
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Field, Relationship, SQLModel
 
+from app.core.config import settings  # Import your settings
 from .enums import ChunkType
 
 if TYPE_CHECKING:
@@ -32,6 +33,11 @@ class Chunk(SQLModel, table=True):
         foreign_key="analyses.analysis_id",
         nullable=False,
         index=True,
+    )
+
+    page_number: int = Field(
+        nullable=False,
+        ge=1,
     )
 
     chunk_index: int = Field(
@@ -82,7 +88,7 @@ class Chunk(SQLModel, table=True):
     embedding: list[float] | None = Field(
         default=None,
         sa_column=Column(
-            Vector(768),
+            Vector(settings.EMBEDDING_DIM),  
             nullable=True,
         ),
     )
@@ -103,8 +109,12 @@ class Chunk(SQLModel, table=True):
 
     document: "Document" = Relationship(
         back_populates="chunks",
+        sa_relationship_kwargs={"cascade": "delete"}  
     )
 
     analysis: "Analysis" = Relationship(
         back_populates="chunks",
+        sa_relationship_kwargs={"cascade": "delete"}  
     )
+    
+    

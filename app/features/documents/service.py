@@ -11,15 +11,20 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
+from app.models import document
 from app.models.analysis import Analysis
 from app.models.document import Document
 
-from app.inference.analysis import ImageAnalysisService
+from app.inference.image_analysis import ImageAnalysisService
 from app.models.enums import AnalysisStatus
+from app.utils.pdf_ocr import validate_pdf_bytes
+from app.inference.pdf_analysis import PDFAnalysisService
+from app.inference.image_analysis import ImageAnalysisService
 
 ALLOWED_CONTENT_TYPES = [
     "image/jpeg",
     "image/png",
+    "application/pdf"
 ]
 
 UPLOAD_DIR = "./uploads"
@@ -56,9 +61,9 @@ class DocumentService:
             )
 
         # Content-type header is client-supplied and not trustworthy on its
-        # own -- verify the bytes actually decode as an image before we
-        # persist them and later feed them into cv2/PIL/YOLO.
-        self._validate_image_bytes(contents)
+        # own -- verify the bytes actually decode as the claimed type before
+        # we persist them and later feed them into cv2/PIL/YOLO/fitz.
+        self._validate_file_bytes(contents, file.content_type)
 
         os.makedirs(UPLOAD_DIR, exist_ok=True)
 
@@ -131,6 +136,16 @@ class DocumentService:
         return b"".join(chunks)
 
     @staticmethod
+    def _validate_file_bytes(contents: bytes, content_type: str) -> None:
+        if content_type == "application/pdf":
+            try:
+                validate_pdf_bytes(contents)
+            except ValueError as e:
+                raise HTTPException(status_code=400, detail=str(e))
+        else:
+            DocumentService._validate_image_bytes(contents)
+
+    @staticmethod
     def _validate_image_bytes(contents: bytes) -> None:
         from io import BytesIO
         from PIL import Image, UnidentifiedImageError
@@ -152,7 +167,7 @@ class DocumentService:
         )
         return result.scalars().all()
 
-    async def get_document(self, document_id: UUID):
+    async def get_document(self, document_id: UUID) -> Document:
         result = await self.db.execute(
             select(Document)
             .where(Document.document_id == document_id)
@@ -256,10 +271,18 @@ class DocumentService:
                 detail=f"Failed to create analysis record: {type(e).__name__}",
             )
 
-        background_tasks.add_task(
-            ImageAnalysisService.run,
-            analysis.analysis_id,
-        )
+        document = await self.get_document(analysis.document_id)
+        if document.content_type == 'application/pdf':
+            background_tasks.add_task(
+                PDFAnalysisService.run,
+                analysis.analysis_id,
+            )
+        elif (document.content_type == 'image/png' or 
+            document.content_type == 'image/jpeg'):
+            background_tasks.add_task(
+                ImageAnalysisService.run,
+                analysis.analysis_id
+            ) 
 
         return analysis
 
