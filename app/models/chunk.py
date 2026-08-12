@@ -3,11 +3,11 @@ from typing import TYPE_CHECKING, Any
 from uuid import UUID, uuid4
 
 from pgvector.sqlalchemy import Vector
-from sqlalchemy import Column, Enum, ForeignKey  # Import ForeignKey explicitly
+from sqlalchemy import Column, Computed, Enum
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Field, Relationship, SQLModel
 
-from app.core.config import settings  # Import your settings
+from app.core.config import settings
 from .enums import ChunkType
 
 if TYPE_CHECKING:
@@ -61,6 +61,17 @@ class Chunk(SQLModel, table=True):
         nullable=False,
     )
 
+    search_vector: Any = Field(
+        default=None,
+        sa_column=Column(
+            Computed(
+                "to_tsvector('english', coalesce(chunk_content, ''))",
+                persisted=True,
+            ),
+            nullable=True,
+        ),
+    )
+
     entities: list[str] = Field(
         default_factory=list,
         sa_column=Column(
@@ -88,7 +99,7 @@ class Chunk(SQLModel, table=True):
     embedding: list[float] | None = Field(
         default=None,
         sa_column=Column(
-            Vector(settings.EMBEDDING_DIM),  
+            Vector(settings.EMBEDDING_DIM),
             nullable=True,
         ),
     )
@@ -109,12 +120,10 @@ class Chunk(SQLModel, table=True):
 
     document: "Document" = Relationship(
         back_populates="chunks",
-        sa_relationship_kwargs={"cascade": "delete"}  
+        sa_relationship_kwargs={"cascade": "delete"},
     )
 
     analysis: "Analysis" = Relationship(
         back_populates="chunks",
-        sa_relationship_kwargs={"cascade": "delete"}  
+        sa_relationship_kwargs={"cascade": "delete"},
     )
-    
-    

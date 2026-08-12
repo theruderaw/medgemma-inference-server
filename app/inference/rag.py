@@ -124,6 +124,7 @@ class RAGService:
             query_embedding = await service.embed_query(query)
             context = await service.context_engine.build_context(
                 chat_id=chat_id,
+                query=query,
                 query_embedding=query_embedding,
                 current_document_id=current_document_id,
             )
