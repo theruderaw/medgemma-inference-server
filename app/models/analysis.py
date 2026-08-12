@@ -86,6 +86,18 @@ class Analysis(SQLModel, table=True):
         default_factory=datetime.now,
         nullable=False,
     )
+    
+    #NEW: For DATA-002
+    prompt_template: str = Field(
+        default="",
+        nullable=False
+    )
+    
+# NEW: For DATA-002 (extraction prompt lineage)
+    extract_prompt_template: str | None = Field(
+        default=None,
+        sa_column=Column(Text,nullable=True),
+    )
 
     # Relationships with CASCADE (Matches Chunk behavior)
     document: "Document" = Relationship(

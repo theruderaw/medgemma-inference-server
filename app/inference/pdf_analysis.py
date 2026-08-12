@@ -145,6 +145,8 @@ class PDFAnalysisService:
 
         analysis.raw_output = "\n\n".join(page_results)
         analysis.summary = analysis.raw_output
+        analysis.prompt_template = PDF_PAGE_ANALYSIS_PROMPT
+        analysis.extract_prompt_template = EXTRACT_PROMPT
 
         await self.db.commit()
 

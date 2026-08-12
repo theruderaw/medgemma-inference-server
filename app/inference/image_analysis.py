@@ -106,6 +106,9 @@ class ImageAnalysisService:
 
         analysis.raw_output = content
         analysis.summary = content
+        analysis.prompt_template = IMG_PROCESS_PROMPT
+        analysis.extract_prompt_template = EXTRACT_PROMPT
+        
 
         await self.db.commit()
 
