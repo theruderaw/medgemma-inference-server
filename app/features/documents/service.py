@@ -4,7 +4,7 @@ from uuid import UUID, uuid4
 
 import aiofiles
 # pyrefly: ignore [missing-import]
-from fastapi import HTTPException, UploadFile, BackgroundTasks
+from fastapi import HTTPException, UploadFile
 # pyrefly: ignore [missing-import]
 from sqlalchemy import select
 # pyrefly: ignore [missing-import]
@@ -15,8 +15,8 @@ from app.core.config import settings
 from app.models.document import Document
 from app.models.analysis import Analysis
 from app.models.enums import AnalysisStatus
-from app.inference.image_analysis import ImageAnalysisService
-from app.inference.pdf_analysis import PDFAnalysisService
+from app.queue.redis_queue import RedisQueue
+from app.queue.tasks import TaskEnvelope
 from app.utils.pdf_ocr import validate_pdf_bytes
 from app.logger import logger
 
@@ -32,8 +32,11 @@ UPLOAD_READ_CHUNK_SIZE = 1024 * 1024  # 1 MB
 
 
 class DocumentService:
-    def __init__(self, db: AsyncSession):
+    def __init__(self, db: AsyncSession, queue: RedisQueue | None = None):
         self.db = db
+        # `queue` is only required for operations that enqueue work
+        # (analyze_document). Other callers (list/get/delete) don't need it.
+        self.queue = queue
 
     # ====================== DOCUMENT ======================================
 
@@ -212,7 +215,6 @@ class DocumentService:
     async def analyze_document(
         self,
         document_id: UUID,
-        background_tasks: BackgroundTasks,
     ):
         logger.info("Initiating document analysis", document_id=str(document_id))
         await self.get_document(document_id)
@@ -268,18 +270,18 @@ class DocumentService:
             )
 
         document = await self.get_document(analysis.document_id)
-        if document.content_type == 'application/pdf':
-            background_tasks.add_task(
-                PDFAnalysisService.run,
-                analysis.analysis_id,
+        if document.content_type in ("application/pdf", "image/png", "image/jpeg"):
+            task = TaskEnvelope.for_analysis(
+                analysis_id=analysis.analysis_id,
+                document_type=document.content_type,
             )
-            logger.info("Queued PDF analysis task", analysis_id=str(analysis_id))
-        elif document.content_type in ('image/png', 'image/jpeg'):
-            background_tasks.add_task(
-                ImageAnalysisService.run,
-                analysis.analysis_id
+            await self.queue.add(task)
+            logger.info(
+                "Queued analysis task",
+                analysis_id=str(analysis_id),
+                task_id=str(task.task_id),
+                content_type=document.content_type,
             )
-            logger.info("Queued image analysis task", analysis_id=str(analysis_id))
         else:
             logger.warning("Unsupported content type for analysis", content_type=document.content_type)
 

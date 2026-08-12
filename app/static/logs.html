@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Application Logs</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 20px;
+
+            overflow: hidden;
+
+            background: #0d1117;
+            color: #c9d1d9;
+
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+
+            max-width: 1800px;
+            margin: 0 auto;
+
+            display: flex;
+            flex-direction: column;
+
+            min-height: 0;
+        }
+
+        .header {
+            flex: 0 0 auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 16px;
+        }
+
+        .title {
+            margin: 0;
+
+            font-size: 24px;
+            line-height: 1.2;
+            font-weight: 600;
+
+            color: #f0f6fc;
+        }
+
+        .subtitle {
+            margin-top: 5px;
+
+            color: #8b949e;
+            font-size: 13px;
+        }
+
+        .controls {
+            flex: 0 0 auto;
+
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 12px;
+            padding: 10px;
+
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+        }
+
+        select,
+        input,
+        button {
+            height: 34px;
+
+            padding: 0 10px;
+
+            background: #0d1117;
+            color: #c9d1d9;
+
+            border: 1px solid #30363d;
+            border-radius: 6px;
+
+            font: inherit;
+            font-size: 13px;
+        }
+
+        select,
+        button {
+            cursor: pointer;
+        }
+
+        input {
+            width: 220px;
+        }
+
+        button:hover {
+            background: #21262d;
+        }
+
+        .auto-refresh {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            margin-left: auto;
+
+            color: #8b949e;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .auto-refresh input {
+            width: auto;
+            height: auto;
+            margin: 0;
+        }
+
+        .status {
+            flex: 0 0 auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            min-height: 20px;
+            margin-bottom: 8px;
+
+            color: #8b949e;
+            font-size: 12px;
+        }
+
+        .connection {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .indicator {
+            width: 7px;
+            height: 7px;
+
+            flex: 0 0 7px;
+
+            border-radius: 50%;
+            background: #3fb950;
+        }
+
+        .indicator.error {
+            background: #f85149;
+        }
+
+        .table-container {
+            flex: 1 1 auto;
+
+            min-height: 0;
+
+            width: 100%;
+
+            overflow: auto;
+
+            border: 1px solid #30363d;
+            border-radius: 8px;
+
+            background: #0d1117;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            font-family:
+                "JetBrains Mono",
+                "SFMono-Regular",
+                Consolas,
+                "Liberation Mono",
+                monospace;
+
+            font-size: 12px;
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+
+            z-index: 2;
+
+            background: #161b22;
+        }
+
+        th {
+            padding: 10px;
+
+            text-align: left;
+            white-space: nowrap;
+
+            color: #8b949e;
+
+            border-bottom: 1px solid #30363d;
+        }
+
+        td {
+            padding: 9px 10px;
+
+            vertical-align: top;
+
+            border-bottom: 1px solid #21262d;
+        }
+
+        tbody tr:hover {
+            background: #161b22;
+        }
+
+        .timestamp {
+            width: 220px;
+
+            color: #8b949e;
+
+            white-space: nowrap;
+        }
+
+        .level {
+            width: 90px;
+
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .level-info {
+            color: #58a6ff;
+        }
+
+        .level-warning {
+            color: #d29922;
+        }
+
+        .level-error {
+            color: #f85149;
+        }
+
+        .level-critical {
+            color: #ff7b72;
+        }
+
+        .level-debug {
+            color: #8b949e;
+        }
+
+        .event {
+            width: 240px;
+
+            color: #f0f6fc;
+            font-weight: 600;
+        }
+
+        .details {
+            min-width: 400px;
+
+            color: #8b949e;
+        }
+
+        pre {
+            margin: 0;
+
+            max-width: 100%;
+
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+
+            color: #8b949e;
+        }
+
+        .empty {
+            padding: 40px;
+
+            text-align: center;
+
+            color: #8b949e;
+        }
+
+        .loading-more {
+            padding: 14px;
+
+            text-align: center;
+
+            color: #8b949e;
+
+            font-size: 12px;
+        }
+
+        @media (max-width: 800px) {
+
+            html,
+            body {
+                overflow: hidden;
+            }
+
+            body {
+                padding: 12px;
+            }
+
+            .header {
+                margin-bottom: 12px;
+            }
+
+            .title {
+                font-size: 20px;
+            }
+
+            .controls {
+                flex-wrap: wrap;
+            }
+
+            .auto-refresh {
+                margin-left: 0;
+            }
+
+            input {
+                width: 100%;
+            }
+
+            .table-container {
+                min-height: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <div>
+                <h1 class="title">Application Logs</h1>
+
+                <div class="subtitle">
+                    Structlog / Uvicorn
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+
+            <select id="level">
+                <option value="">All levels</option>
+                <option value="debug">DEBUG</option>
+                <option value="info">INFO</option>
+                <option value="warning">WARNING</option>
+                <option value="error">ERROR</option>
+                <option value="critical">CRITICAL</option>
+            </select>
+
+            <input id="event" type="text" placeholder="Filter event...">
+
+            <button id="refresh">
+                Refresh
+            </button>
+
+            <label class="auto-refresh">
+                <input id="autoRefresh" type="checkbox" checked>
+                Auto refresh
+            </label>
+
+        </div>
+
+        <div class="status">
+
+            <div id="count">
+                0 logs
+            </div>
+
+            <div class="connection">
+
+                <span id="indicator" class="indicator"></span>
+
+                <span id="connectionText">
+                    Connected
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="table-container" id="tableContainer">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Level</th>
+                        <th>Event</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+
+                <tbody id="logs">
+
+                    <tr>
+                        <td colspan="4" class="empty">
+                            Loading logs...
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <script>
+        const API_URL = "/logs";
+        const PAGE_SIZE = 100;
+        const REFRESH_INTERVAL = 2000;
+
+        let logs = [];
+        let offset = 0;
+        let hasMore = true;
+        let loading = false;
+        let eventDebounce = null;
+        let refreshTimer = null;
+
+        function escapeHtml(value) {
+            return String(value ?? "")
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+        async function loadLogs(reset = true) {
+
+            if (loading) {
+                return;
+            }
+
+            if (!reset && !hasMore) {
+                return;
+            }
+
+            loading = true;
+
+            const level =
+                document.getElementById("level").value;
+
+            const event =
+                document
+                    .getElementById("event")
+                    .value
+                    .trim();
+
+            if (reset) {
+                offset = 0;
+                logs = [];
+                hasMore = true;
+            }
+
+            const params = new URLSearchParams();
+
+            if (level) {
+                params.set("level", level);
+            }
+
+            if (event) {
+                params.set("event", event);
+            }
+
+            params.set("offset", String(offset));
+            params.set("limit", String(PAGE_SIZE));
+
+            try {
+
+                const response = await fetch(
+                    `${API_URL}?${params.toString()}`,
+                    {
+                        cache: "no-store",
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP ${response.status}`
+                    );
+                }
+
+                const data = await response.json();
+
+                /*
+                 * /logs returns the logs directly as an array.
+                 */
+
+                if (!Array.isArray(data)) {
+                    console.error(
+                        "Unexpected /logs response:",
+                        data
+                    );
+
+                    throw new Error(
+                        "Invalid response: expected logs array"
+                    );
+                }
+
+                if (reset) {
+                    logs = data;
+                } else {
+                    logs.push(...data);
+                }
+
+                /*
+                 * Since the API returns an array rather than a
+                 * { logs, has_more } object, infer whether another
+                 * page exists from the page size.
+                 */
+                hasMore = data.length === PAGE_SIZE;
+
+                offset = logs.length;
+
+                renderLogs();
+
+                setConnection(true);
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to load logs:",
+                    error
+                );
+
+                setConnection(false);
+
+                if (reset) {
+                    renderError(error);
+                }
+
+            } finally {
+                loading = false;
+            }
+        }
+
+        function renderLogs() {
+
+            const tbody =
+                document.getElementById("logs");
+
+            document.getElementById("count")
+                .textContent =
+                `${logs.length} loaded`;
+
+            if (!logs.length) {
+
+                tbody.innerHTML = `
+                    <tr>
+                        <td
+                            colspan="4"
+                            class="empty"
+                        >
+                            No logs found
+                        </td>
+                    </tr>
+                `;
+
+                return;
+            }
+
+            tbody.innerHTML = logs.map(log => {
+
+                const timestamp =
+                    escapeHtml(log.timestamp);
+
+                const level =
+                    String(
+                        log.level ?? ""
+                    ).toLowerCase();
+
+                const event =
+                    escapeHtml(log.event);
+
+                const details = {
+                    ...log
+                };
+
+                delete details.timestamp;
+                delete details.level;
+                delete details.event;
+
+                const formattedDetails =
+                    escapeHtml(
+                        JSON.stringify(
+                            details,
+                            null,
+                            2
+                        )
+                    );
+
+                return `
+                    <tr>
+
+                        <td class="timestamp">
+                            ${timestamp}
+                        </td>
+
+                        <td class="level level-${escapeHtml(level)}">
+                            ${escapeHtml(level)}
+                        </td>
+
+                        <td class="event">
+                            ${event}
+                        </td>
+
+                        <td class="details">
+                            <pre>${formattedDetails}</pre>
+                        </td>
+
+                    </tr>
+                `;
+
+            }).join("");
+        }
+
+        function renderError(error) {
+
+            const tbody =
+                document.getElementById("logs");
+
+            tbody.innerHTML = `
+                <tr>
+                    <td
+                        colspan="4"
+                        class="empty"
+                    >
+                        Failed to load logs:
+                        ${escapeHtml(error?.message)}
+                    </td>
+                </tr>
+            `;
+        }
+
+        function setConnection(connected) {
+
+            const indicator =
+                document.getElementById("indicator");
+
+            const text =
+                document.getElementById("connectionText");
+
+            if (connected) {
+
+                indicator.classList.remove("error");
+
+                text.textContent =
+                    "Connected";
+
+            } else {
+
+                indicator.classList.add("error");
+
+                text.textContent =
+                    "Disconnected";
+            }
+        }
+
+        const tableContainer =
+            document.getElementById(
+                "tableContainer"
+            );
+
+        tableContainer.addEventListener(
+            "scroll",
+            () => {
+
+                const nearBottom =
+                    tableContainer.scrollTop +
+                    tableContainer.clientHeight >=
+                    tableContainer.scrollHeight - 300;
+
+                if (
+                    nearBottom &&
+                    hasMore &&
+                    !loading
+                ) {
+                    loadLogs(false);
+                }
+            }
+        );
+
+        function startAutoRefresh() {
+
+            stopAutoRefresh();
+
+            refreshTimer =
+                setInterval(
+                    () => {
+
+                        const enabled =
+                            document
+                                .getElementById(
+                                    "autoRefresh"
+                                )
+                                .checked;
+
+                        if (enabled) {
+
+                            /*
+                             * Only refresh the first page.
+                             *
+                             * This keeps the newest 100 logs
+                             * current without repeatedly fetching
+                             * every loaded page.
+                             */
+
+                            loadLogs(true);
+                        }
+
+                    },
+                    REFRESH_INTERVAL
+                );
+        }
+
+        function stopAutoRefresh() {
+
+            if (refreshTimer !== null) {
+
+                clearInterval(refreshTimer);
+
+                refreshTimer = null;
+            }
+        }
+
+        document
+            .getElementById("refresh")
+            .addEventListener(
+                "click",
+                () => loadLogs(true)
+            );
+
+        document
+            .getElementById("level")
+            .addEventListener(
+                "change",
+                () => loadLogs(true)
+            );
+
+        document
+            .getElementById("event")
+            .addEventListener(
+                "input",
+                () => {
+
+                    clearTimeout(eventDebounce);
+
+                    eventDebounce =
+                        setTimeout(
+                            () => loadLogs(true),
+                            250
+                        );
+                }
+            );
+
+        document
+            .getElementById("autoRefresh")
+            .addEventListener(
+                "change",
+                event => {
+
+                    if (event.target.checked) {
+                        startAutoRefresh();
+                    } else {
+                        stopAutoRefresh();
+                    }
+                }
+            );
+
+        loadLogs(true);
+        startAutoRefresh();
+
+    </script>
+
+</body>
+
+</html>

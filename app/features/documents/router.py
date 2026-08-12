@@ -2,12 +2,14 @@ import time
 from uuid import UUID
 
 # pyrefly: ignore [missing-import]
-from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, Path, Query, UploadFile, status
+from fastapi import APIRouter, Depends, File, HTTPException, Path, Query, UploadFile, status
 # pyrefly: ignore [missing-import]
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
+from app.core.queue import get_queue
 from app.features.documents.service import DocumentService
+from app.queue.redis_queue import RedisQueue
 from app.schemas.analysis import AnalysisCreateResponse, AnalysisListItem
 from app.schemas.document import DocumentRead
 from app.schemas.errors import (
@@ -216,9 +218,9 @@ async def delete_document_permanently(
     },
 )
 async def analyze_document(
-    background_tasks: BackgroundTasks,
     document_id: UUID = Path(...),
     db: AsyncSession = Depends(get_db),
+    queue: RedisQueue = Depends(get_queue),
 ):
     start = time.perf_counter()
     logger.info(
@@ -228,8 +230,8 @@ async def analyze_document(
         document_id=str(document_id),
     )
     try:
-        service = DocumentService(db)
-        result = await service.analyze_document(document_id, background_tasks)
+        service = DocumentService(db, queue)
+        result = await service.analyze_document(document_id)
         duration = (time.perf_counter() - start) * 1000
         logger.info(
             "Request completed",

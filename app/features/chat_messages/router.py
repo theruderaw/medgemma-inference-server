@@ -1,11 +1,13 @@
 import time
 from uuid import UUID
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
+from app.core.queue import get_queue
 from app.features.chat_messages.service import ChatMessagesService
+from app.queue.redis_queue import RedisQueue
 from app.schemas.errors import (
     ERROR_400,
     ERROR_404,
@@ -33,8 +35,8 @@ router = APIRouter(
 async def add_message_to_chat(
     chat_id: UUID,
     payload: ChatMessageCreate,
-    background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
+    queue: RedisQueue = Depends(get_queue),
 ):
     start = time.perf_counter()
     logger.info(
@@ -44,11 +46,10 @@ async def add_message_to_chat(
         chat_id=str(chat_id),
     )
     try:
-        service = ChatMessagesService(db)
+        service = ChatMessagesService(db, queue)
         result = await service.create_message_in_chat(
             chat_id,
             payload,
-            background_tasks
         )
         duration = (time.perf_counter() - start) * 1000
         logger.info(

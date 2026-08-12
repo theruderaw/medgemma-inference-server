@@ -10,7 +10,7 @@ The **MedGemma Inference Server** is a backend service that processes medical im
 - **Chunking and embedding**: each analysis produces one chunk (the summary) that is embedded with `EMBED_MODEL` for semantic search.
 - **Similarity retrieval**: stored chunk vectors are queried via PostgreSQL’s `pgvector` to find relevant context.
 - **Chat and RAG**: users create chat sessions, attach documents, and ask questions. The system assembles context (current document, similar chunks, previous documents) and generates answers.
-- **Asynchronous processing**: long analyses run in background tasks; clients poll the analysis status.
+- **Asynchronous processing**: long analyses run in a separate worker process consuming a Redis task queue; clients poll the analysis status.
 
 **Key components**:
 
@@ -20,6 +20,8 @@ The **MedGemma Inference Server** is a backend service that processes medical im
 - **Models** (`app/models/*.py`): SQLModel ORM (Document, Analysis, Chunk, ChatSession, ChatMessage, ChatDocument) and enums (AnalysisStatus, ChunkType, MessageRole).
 - **Schemas** (`app/schemas/*.py`): Pydantic request/response models.
 - **Inference** (`app/inference/*.py`): interfaces to Ollama, prompt engineering, and RAG orchestration.
+- **Queue** (`app/queue/*.py`): task envelope schema, Redis-backed queue, and the dispatcher that routes a consumed task to the right service.
+- **Worker** (`app/worker.py`): standalone process that consumes the queue and executes the inference pipelines.
 
 **Architecture diagram**:
 
@@ -40,6 +42,7 @@ flowchart TB
 
 - Python 3.11+
 - PostgreSQL 14+ with `pgvector` extension
+- Redis (task queue between the API and worker processes)
 - Ollama running locally (serving the configured models)
 - Docker & Docker Compose (optional)
 
@@ -49,6 +52,7 @@ Required environment variables (see Configuration):
 - `ANALYSIS_MODEL`: vision model (e.g. `medgemma1.5:4b`)
 - `TEXT_MODEL`: text model (e.g. `qwen2.5:3b`)
 - `EMBED_MODEL`: embedding model (e.g. `nomic-embed-text:latest`)
+- `REDIS_URL`: e.g. `redis://localhost:6379/0` (defaults to this if unset)
 
 ### Installation
 
@@ -80,6 +84,7 @@ Required environment variables (see Configuration):
     ANALYSIS_MODEL=medgemma1.5:4b
     TEXT_MODEL=qwen2.5:3b
     EMBED_MODEL=nomic-embed-text:latest
+    REDIS_URL=redis://localhost:6379/0
     ```
     
 5. **Pull Ollama models**:
@@ -96,7 +101,13 @@ Required environment variables (see Configuration):
     alembic upgrade head
     ```
     
-7. **Start the server**:
+7. **Start Redis** (if not already running):
+    
+    ```bash
+    redis-server
+    ```
+    
+8. **Start the API server**:
     
     ```bash
     uvicorn app.main:app --reload
@@ -104,15 +115,23 @@ Required environment variables (see Configuration):
     
     API available at `http://localhost:8000`; Swagger UI at `/docs`.
     
+9. **Start the worker** (separate terminal — long-running analysis and RAG inference execute here, not in the API process):
+    
+    ```bash
+    python -m app.worker
+    ```
+    
 
 ### Docker Setup
 
-A `Dockerfile` and `compose.yml` are provided. Build and run:
+A `Dockerfile` and `compose.yml` are provided, defining three services: `inference` (the API), `worker`, and `redis`. Build and run all of them:
 
 ```bash
 docker compose build
 docker compose up -d
 ```
+
+The API and worker are independent containers — `docker compose restart inference` does not interrupt in-flight worker tasks, and vice versa.
 
 ---
 
@@ -121,17 +140,20 @@ docker compose up -d
 - **API‑first**: clear REST resources with Pydantic validation.
 - **Separation of concerns**: routers → services → models; inference logic isolated.
 - **Stateless**: all persistent state in PostgreSQL; no in‑memory session data.
-- **Async processing**: long tasks (vision inference) run in the background.
+- **Async processing**: long-running inference (vision analysis, extraction, embedding, RAG generation) runs in a separate worker process, decoupled from the API via a Redis queue — not in-process background tasks. See [Task Queue and Worker](#task-queue-and-worker).
 - **Configurable**: model names are loaded from environment variables.
 
 **Component diagram**:
 
 ```mermaid
 flowchart LR
-    A[Browser / API Consumer] --> B[FastAPI Routers & Services]
+    A[Browser / API Consumer] --> B[FastAPI API]
+    B -->|enqueue| R[(Redis Queue)]
+    R -->|consume| W[Worker Process]
 
     subgraph InferenceServer [Inference Server]
         B
+        W
         C[(PostgreSQL + pgvector)]
 
         subgraph AI [AI Inference via Ollama]
@@ -141,11 +163,14 @@ flowchart LR
         end
     end
 
-    B --> D
-    B --> E
-    B --> F
+    W --> D
+    W --> E
+    W --> F
     B --> C
+    W --> C
 ```
+
+The API validates requests, writes/reads PostgreSQL, and enqueues work — it never calls the inference pipelines directly. The worker consumes tasks from Redis and calls the existing `ImageAnalysisService.run()` / `PDFAnalysisService.run()` / `RAGService.run()` entry points, which own their own DB session and update `Analysis.status` / save `ChatMessage` records as before. Redis is only the handoff between the two processes; PostgreSQL remains the source of truth for application state.
 
 ---
 
@@ -162,10 +187,12 @@ class Settings(BaseSettings):
     ANALYSIS_MODEL: str
     TEXT_MODEL: str
     EMBED_MODEL: str
+    EMBEDDING_DIM: int
+    REDIS_URL: str = "redis://localhost:6379/0"
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 ```
 
-All variables are required; the app fails fast if any are missing.
+All variables except `REDIS_URL` are required; the app fails fast if any are missing. `REDIS_URL` defaults to `redis://localhost:6379/0` so existing `.env` files don't need to be updated immediately, but production deployments should set it explicitly.
 
 ## Database Layer
 
@@ -366,7 +393,8 @@ Documents go through a pipeline **driven by the Analysis status**:
 flowchart LR
     A[Upload] --> B[Document created]
     B --> C[POST /documents/{id}/analysis creates Analysis with status=READY]
-    C --> D[Background: ANALYZING → vision model]
+    C --> Q[Enqueued on Redis]
+    Q --> D[Worker: ANALYZING → vision model]
     D --> E[CHUNKING → extract summary + create chunk]
     E --> F[EMBEDDING → compute embedding for chunk]
     F --> G[COMPLETE]
@@ -376,7 +404,7 @@ flowchart LR
 The `Analysis` model holds the status; the `Document` itself has no status.
 
 1. **Upload**: client uploads an image; server saves file and creates `Document` record.
-2. **Submit for analysis**: client calls `POST /documents/{id}/analysis`; an `Analysis` record is created with status `READY` and the background pipeline is enqueued.
+2. **Submit for analysis**: client calls `POST /documents/{id}/analysis`; an `Analysis` record is created with status `READY` and a task is enqueued on Redis for the worker process to pick up.
 3. **Analyse**: `ImageAnalysisService.analyse()` calls the vision model, stores the raw output in `raw_output`, and sets status to `ANALYZING` then `CHUNKING`.
 4. **Extract**: `extract()` uses the text model to produce a summary and entities, creates a single `Chunk` (with those entities), and sets status to `CHUNKING` then `EMBEDDING`.
 5. **Embed**: `embed()` computes the vector for the chunk via the embedding model and stores it; status becomes `COMPLETE`.
@@ -428,6 +456,39 @@ The `Analysis` model holds the status; the `Document` itself has no status.
 - Sets status to `COMPLETE`.
 
 If any step fails, status becomes `FAILED` and the error is logged.
+
+---
+
+## Task Queue and Worker
+
+Long-running inference (image/PDF analysis, RAG generation) is decoupled from the API process via a Redis-backed queue, consumed by a separate worker process. This replaces the previous FastAPI `BackgroundTasks` approach, which lost all in-flight work on process restart and had no failure visibility beyond logs.
+
+```mermaid
+flowchart LR
+    API[FastAPI API] -->|add| Q[(Redis: queue:pending)]
+    Q -->|get, blocking| W[Worker Process]
+    W --> S[Existing services:<br/>ImageAnalysisService.run<br/>PDFAnalysisService.run<br/>RAGService.run]
+    S --> DB[(PostgreSQL)]
+```
+
+**Key modules**:
+
+- `app/queue/tasks.py` — `TaskEnvelope` wraps a typed payload (`AnalysisTaskPayload` or `RAGTaskPayload`) with a `task_id` and `task_type`, serialized to JSON for storage in Redis.
+- `app/queue/redis_queue.py` — `RedisQueue` implements the only operations the queue needs:
+    - `add(task)` — pushes a task onto the pending list (`queue:pending`) and records its status as `queued`.
+    - `get(timeout)` — blocks (via `BRPOP`) for the next task, up to `timeout` seconds, marking it `processing` once popped. Returns `None` on timeout so the worker can check for a shutdown request.
+    - `check(task_id)` — returns `queued` / `processing` / `completed` / `failed`, or `None` if unknown. This tracks the *queue entry's* state only — `Analysis.status` in PostgreSQL remains the source of truth for application state.
+    - `remove(task_id)` — cancels a task that hasn't started executing yet.
+    - `mark_completed(task_id)` / `mark_failed(task_id)` — called by the worker after dispatch.
+- `app/queue/dispatcher.py` — `dispatch(task)` maps `task_type` to the corresponding service's `run()` entry point. Contains no pipeline logic of its own.
+- `app/worker.py` — the worker process. Run with `python -m app.worker`. Handles `SIGTERM`/`SIGINT` for graceful shutdown (finishes the current task, then exits); processes one task at a time by design, since the inference pipeline shares local Ollama model resources.
+- `app/core/queue.py` — a singleton `RedisQueue` instance plus a `get_queue()` FastAPI dependency, mirroring `app/core/database.py`'s `get_db()` pattern.
+
+**API routers enqueue instead of executing directly**: `POST /documents/{id}/analysis` and `POST /chats/{chat_id}/query` both call `queue.add(TaskEnvelope.for_analysis(...))` / `TaskEnvelope.for_rag(...)` and return immediately (HTTP 202 for analysis) — they never call the inference services in-process.
+
+**Concurrency**: start with one worker process. Multiple workers can safely consume from the same queue later (each `BRPOP` is atomic), but that should only be introduced after measuring actual resource usage and throughput.
+
+**Duplicate submissions**: the queue itself does no deduplication. `DocumentService.analyze_document` already rejects a new analysis (`409 Conflict`) while one is `ANALYZING`/`CHUNKING`/`EMBEDDING` for the same document — PostgreSQL remains authoritative for whether an analysis is in progress.
 
 ---
 
@@ -528,17 +589,17 @@ The chat system provides a conversational interface on top of documents.
 
 **ChatMessagesService** (`app/features/chat_messages/service.py`):
 
-- `create_message_in_chat(chat_id, payload, background_tasks)`:
+- `create_message_in_chat(chat_id, payload)`:
     - Validates the chat exists.
     - Creates and saves the new message.
-    - If the message role is `USER`, enqueues `RAGService.run(chat_id, message.content)` in the background.
-    - Returns the created message.
+    - Enqueues a RAG task (`TaskEnvelope.for_rag(chat_id, message.content)`) onto the Redis queue for the worker to pick up.
+    - Returns the created message immediately, without waiting for the RAG response.
 - `get_chat_messages(chat_id)` – returns all messages in chronological order.
 - `get_message_from_chat(chat_id, message_id)` – fetches a specific message (404 if not found).
 - `update_message_from_chat(...)` – patches the message content/metadata.
 - `delete_message_from_chat(...)` – removes the message.
 
-**RAG response**: the assistant’s reply is created asynchronously and stored as a new `ChatMessage` with `role=ASSISTANT`. Clients can poll the messages list to see it appear.
+**RAG response**: the assistant's reply is generated by the worker process (`RAGService.run`, dispatched via `app/queue/dispatcher.py`) and stored as a new `ChatMessage` with `role=ASSISTANT`. Clients poll the messages list to see it appear.
 
 ---
 
@@ -596,6 +657,25 @@ All endpoints are grouped under `/documents`, `/analysis`, and `/chats`.
 
 # Developer Tools
 
+**Local development workflow** (three terminals):
+
+```text
+Terminal 1                Terminal 2                 Terminal 3
+──────────                ──────────                 ──────────
+Start PostgreSQL          uvicorn app.main:app        python -m app.worker
+Start Redis                --reload
+Start Ollama
+```
+
+The API and worker are independently startable and stoppable — restarting one does not interrupt the other, and queued work in Redis survives an API restart. This makes debugging straightforward:
+
+```text
+API problem?       → check the API process/logs
+Inference problem?  → check the worker process/logs
+A task not running? → check Redis (`RedisQueue.check(task_id)` / `queue:pending` length)
+Analysis state?      → check PostgreSQL (`Analysis.status`)
+```
+
 The repository includes utility scripts (not shown in the code dump but referenced in the original):
 
 - **`run_benchmark.py`**: batch‑uploads images, triggers analysis, polls until complete, and outputs a manifest mapping filenames to document IDs.
@@ -622,6 +702,9 @@ These tools are intended for local testing and performance evaluation.
 - **ContextBundle**: in‑memory object holding similar chunks, previous document summaries, and current raw output.
 - **ContextEngine**: builds the context bundle.
 - **RAGService**: orchestrates embedding, context building, prompt augmentation, and generation.
+- **TaskEnvelope**: the unit of work placed on the Redis queue — a `task_id`, `task_type`, and typed payload.
+- **RedisQueue**: the queue abstraction (`add`/`get`/`check`/`remove`) backing the handoff between the API and worker processes.
+- **Worker**: the standalone process (`app/worker.py`) that consumes queued tasks and executes the existing inference services.
 
 ---
 

@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     EMBED_MODEL: str
     OLLAMA_URL: str
     EMBEDDING_DIM: int
+    REDIS_URL: str 
 
     model_config = SettingsConfigDict(
         env_file=".env",

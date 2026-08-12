@@ -124,7 +124,6 @@ class ImageAnalysisService:
                     {"role": "user", "content": analysis.raw_output},
                 ],
                 stream=False,
-                format_json=True,
             )
             content = res["message"]["content"].strip()
             if content and content != "{}":
@@ -162,6 +161,7 @@ class ImageAnalysisService:
             analysis_id=analysis_id,
             chunk_content=summary,
             chunk_index=1,
+            page_number=0,  
             chunk_type=ChunkType.IMAGE,
             entities=entities,
             notes=notes,

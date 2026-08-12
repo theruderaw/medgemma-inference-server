@@ -1,26 +1,29 @@
 from datetime import datetime
 from uuid import UUID
 
-from fastapi import BackgroundTasks, HTTPException, status
+from fastapi import HTTPException, status
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.features.chats.service import ChatsService
-from app.inference.rag import RAGService
 from app.models.chat import ChatMessage
+from app.queue.redis_queue import RedisQueue
+from app.queue.tasks import TaskEnvelope
 from app.schemas.message import ChatMessageCreate, ChatMessageUpdate
 from app.logger import logger
 
 
 class ChatMessagesService:
-    def __init__(self, db: AsyncSession):
+    def __init__(self, db: AsyncSession, queue: RedisQueue | None = None):
         self.db = db
+        # `queue` is only required for create_message_in_chat, which enqueues
+        # the RAG task; other methods don't need it.
+        self.queue = queue
 
     async def create_message_in_chat(
         self,
         chat_id: UUID,
         payload: ChatMessageCreate,
-        background_tasks: BackgroundTasks,
     ):
         logger.info("Creating message in chat", chat_id=str(chat_id), role=payload.role)
         chat = await ChatsService(self.db).get_chat(chat_id)
@@ -38,15 +41,13 @@ class ChatMessagesService:
         await self.db.commit()
         await self.db.refresh(message)
 
-        background_tasks.add_task(
-            RAGService.run,
-            chat_id,
-            message.content,
-        )
+        task = TaskEnvelope.for_rag(chat_id=chat_id, query=message.content)
+        await self.queue.add(task)
         logger.info(
             "Message created and RAG task queued",
             chat_id=str(chat_id),
             message_id=str(message.message_id),
+            task_id=str(task.task_id),
         )
         return message
 
