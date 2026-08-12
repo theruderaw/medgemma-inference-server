@@ -103,6 +103,7 @@ async def delete_document_permanently(
         500: ERROR_500,
     },
 )
+
 async def analyze_document(
     background_tasks:BackgroundTasks,
     document_id: UUID = Path(...),

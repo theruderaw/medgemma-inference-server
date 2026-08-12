@@ -1,3 +1,4 @@
+import hashlib
 import os
 from uuid import UUID, uuid4
 
@@ -90,6 +91,7 @@ class DocumentService:
                 file_path=file_path,
                 content_type=file.content_type,
                 file_size=len(contents),
+                checksum=hashlib.sha256(contents).hexdigest()
             )
 
             self.db.add(document)
@@ -162,8 +164,10 @@ class DocumentService:
     async def list_documents(self, skip: int, limit: int):
         result = await self.db.execute(
             select(Document)
+            .order_by(Document.created_at.desc())
             .offset(skip)
             .limit(limit)
+            
         )
         return result.scalars().all()
 
