@@ -4,6 +4,7 @@ Generic upload-handling utilities (not specific to any file type).
 
 # pyrefly: ignore [missing-import]
 from fastapi import HTTPException, UploadFile
+from app.logger import logger
 
 
 async def read_upload_within_limit(
@@ -18,6 +19,13 @@ async def read_upload_within_limit(
     Raises:
         HTTPException(413): If the upload exceeds `max_bytes`.
     """
+    logger.debug(
+        "Reading upload within limit",
+        filename=file.filename,
+        max_bytes=max_bytes,
+        chunk_size=chunk_size,
+    )
+
     chunks: list[bytes] = []
     total = 0
 
@@ -28,6 +36,12 @@ async def read_upload_within_limit(
 
         total += len(chunk)
         if total > max_bytes:
+            logger.warning(
+                "Upload exceeded size limit",
+                filename=file.filename,
+                total=total,
+                max_bytes=max_bytes,
+            )
             raise HTTPException(
                 status_code=413,
                 detail="File too large",
@@ -36,4 +50,10 @@ async def read_upload_within_limit(
         chunks.append(chunk)
 
     await file.seek(0)
-    return b"".join(chunks)
+    result = b"".join(chunks)
+    logger.debug(
+        "Upload read completed",
+        filename=file.filename,
+        total_bytes=len(result),
+    )
+    return result

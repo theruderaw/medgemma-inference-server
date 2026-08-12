@@ -17,6 +17,7 @@ from app.models.chat_document import ChatDocument
 from app.models.chunk import Chunk
 from app.models.enums import MessageRole
 from app.schemas.context import ChatDocumentSummary
+from app.logger import logger
 
 
 class RAGService:
@@ -28,14 +29,19 @@ class RAGService:
 
     async def embed_query(self, query: str) -> list[float]:
         if not query or not query.strip():
+            logger.warning("Empty query provided for embedding")
             raise ValueError("Query can't be empty")
 
+        logger.debug("Embedding query", query_length=len(query))
         res = await embed(model=settings.EMBED_MODEL, input=query)
-        return res["embeddings"][0]
+        embedding = res["embeddings"][0]
+        logger.debug("Query embedding completed", embedding_dim=len(embedding))
+        return embedding
 
     # ---- prompt assembly --------------------------------------------------
 
     async def augment(self, query: str, context: ContextBundle) -> str:
+        logger.debug("Augmenting query with context", query_length=len(query))
         similar_chunks_section = "\n".join(
             f"""
             Chunk {index}:
@@ -64,11 +70,14 @@ class RAGService:
         {current_doc_section}
         """
 
-        return QUERY_PROMPT.format(context=combined_context, query=query)
+        prompt = QUERY_PROMPT.format(context=combined_context, query=query)
+        logger.debug("Prompt assembled", prompt_length=len(prompt))
+        return prompt
 
     # ---- generation ---------------------------------------------------
 
     async def generate(self, chat_id: UUID, prompt: str):
+        logger.info("Generating response for chat", chat_id=str(chat_id))
         res = await chat(
             model=settings.TEXT_MODEL,
             messages=[
@@ -88,6 +97,12 @@ class RAGService:
         self.db.add(message)
         await self.db.commit()
         await self.db.refresh(message)
+        logger.info(
+            "Response generated and saved",
+            chat_id=str(chat_id),
+            message_id=str(message.message_id),
+            content_length=len(message.content),
+        )
 
     # ---- entry points -----------------------------------------------------
 
@@ -97,6 +112,12 @@ class RAGService:
         query: str,
         current_document_id: UUID | None = None,
     ):
+        logger.info(
+            "Running RAG pipeline",
+            chat_id=str(chat_id),
+            query_length=len(query),
+            has_current_doc=current_document_id is not None,
+        )
         async with AsyncSessionLocal() as db:
             service = RAGService(db=db)
 
@@ -108,9 +129,11 @@ class RAGService:
             )
             prompt = await service.augment(query, context)
             await service.generate(chat_id, prompt)
+            logger.info("RAG pipeline completed", chat_id=str(chat_id))
 
     @staticmethod
     async def getDocumentSummary(chat_id: UUID) -> list[ChatDocumentSummary]:
+        logger.info("Fetching document summaries for chat", chat_id=str(chat_id))
         async with AsyncSessionLocal() as db:
             try:
                 latest_analysis = (
@@ -144,6 +167,7 @@ class RAGService:
                 rows = result.all()
 
                 if not rows:
+                    logger.info("No document summaries found for chat", chat_id=str(chat_id))
                     return []
 
                 analysis_ids = [row.analysis_id for row in rows]
@@ -187,10 +211,17 @@ class RAGService:
                     for row in rows
                 ]
 
+                logger.info(
+                    "Document summaries fetched",
+                    chat_id=str(chat_id),
+                    count=len(summaries),
+                )
                 return summaries
 
             except Exception as e:
-                print(
-                    f"Error fetching document summary for chat_id={chat_id}: {e}"
+                logger.error(
+                    "Error fetching document summaries",
+                    chat_id=str(chat_id),
+                    error=str(e),
                 )
                 raise
