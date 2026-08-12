@@ -20,6 +20,7 @@ class ChatsService:
     async def list_chats(self, skip: int, limit: int):
         result = await self.db.exec(
             select(ChatSession)
+            .order_by(ChatSession.created_at.desc())
             .offset(skip)
             .limit(limit)
         )
@@ -67,8 +68,10 @@ class ChatsService:
 
     async def delete_chat(self, chat_id: UUID):
         chat = await self.get_chat(chat_id)
-
-        self.db.delete(chat)
+        if not chat:
+            raise HTTPException(404, "Chat not found")
+        
+        await self.db.delete(chat)
 
         await self.db.commit()
 
@@ -231,7 +234,7 @@ class ChatsService:
             document_id,
         )
 
-        self.db.delete(chat_document)
+        await self.db.delete(chat_document)
 
         message = ChatMessage(
             chat_id=chat_id,

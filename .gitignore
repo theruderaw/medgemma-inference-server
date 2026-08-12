@@ -51,6 +51,7 @@ Thumbs.db
 # Model files / local models
 medgemma-gguf/
 *.gguf
+tests/
 *.safetensors
 *.bin
 *.pt

@@ -6,6 +6,7 @@ from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.models.analysis import Analysis
+from app.models.enums import AnalysisStatus
 from app.schemas.analysis import (
     AnalysisMetadata,
     AnalysisRead,
@@ -79,5 +80,5 @@ class AnalysisService:
                 detail="Analysis not present",
             )
 
-        self.db.delete(analysis)
+        analysis.status = AnalysisStatus.DELETED
         await self.db.commit()

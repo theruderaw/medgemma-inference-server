@@ -36,6 +36,14 @@ class Document(SQLModel, table=True):
         nullable=False,
     )
 
+    checksum: str | None = Field(
+        default=None,
+        max_length=64,
+        index=True,
+        # TODO: Make checksum unique once duplicate-document handling is implemented.
+    )
+
+
     file_size: int = Field(
         nullable=False,
     )

@@ -111,7 +111,6 @@ async def delete_chat_session(
     
 @router.post(
     "/{chat_id}/document/{document_id}",
-    response_model=ChatDocumentRead,
     status_code=status.HTTP_202_ACCEPTED,
     responses={
         404: ERROR_404,

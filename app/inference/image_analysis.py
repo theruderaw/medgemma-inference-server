@@ -11,7 +11,7 @@ from app.core.config import settings
 from app.core.database import AsyncSessionLocal
 from app.features.chats import service
 from app.inference.llm import chat, embed as ollama_embed
-from app.inference.prompts import EXTRACT_PROMPT, PDF_PAGE_ANALYSIS_PROMPT, SYS_PROMPT_INGESTION
+from app.inference.prompts import EXTRACT_PROMPT, PDF_PAGE_ANALYSIS_PROMPT, IMG_PROCESS_PROMPT
 from app.inference.types import ChestXrayEntity
 from app.models.analysis import Analysis
 from app.models.chunk import Chunk
@@ -93,7 +93,7 @@ class ImageAnalysisService:
             messages=[
                 {
                     "role": "user",
-                    "content": SYS_PROMPT_INGESTION,
+                    "content": IMG_PROCESS_PROMPT,
                 }
             ],
             images=[image],

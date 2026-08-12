@@ -112,6 +112,8 @@ class ChatMessagesService:
             chat_id,
             message_id,
         )
+        if not message:
+            raise HTTPException(404,"Message not Found")
 
         self.db.delete(message)
         await self.db.commit()
