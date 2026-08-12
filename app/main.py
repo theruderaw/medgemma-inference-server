@@ -355,6 +355,12 @@ LOGS_HTML = (
     / "logs.html"
 )
 
+INDEX_HTML = (
+    Path(__file__).resolve().parent
+    / "static"
+    / "index.html"
+)
+
 
 @app.get(
     "/logs/ui",
@@ -365,6 +371,14 @@ async def logs_ui():
         LOGS_HTML
     )
 
+@app.get(
+    "/",
+    include_in_schema=False,
+)
+async def logs_ui():
+    return FileResponse(
+        INDEX_HTML
+    )
 
 # =========================================================
 # STARTUP
