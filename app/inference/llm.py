@@ -22,6 +22,7 @@ from fastapi import UploadFile
 
 from app.core.config import settings
 from app.inference.types import ImageInput
+from app.logger import logger
 
 
 OLLAMA_TIMEOUT = httpx.Timeout(
@@ -63,6 +64,7 @@ async def _encode_images(
 
 def _raise_timeout(e: httpx.TimeoutException) -> None:
     """Convert HTTPX timeout errors into a controlled client-layer error."""
+    logger.error("Ollama request timed out", error=str(e))
     raise RuntimeError("Ollama request timed out") from e
 
 
@@ -102,6 +104,15 @@ async def chat(
     if format_json:
         payload["format"] = "json"
 
+    logger.debug(
+        "Calling Ollama chat",
+        model=model,
+        stream=stream,
+        format_json=format_json,
+        message_count=len(messages),
+        has_images=bool(images),
+    )
+
     if not stream:
         try:
             async with httpx.AsyncClient(
@@ -113,12 +124,15 @@ async def chat(
                 )
 
                 resp.raise_for_status()
-                return resp.json()
+                result = resp.json()
+                logger.debug("Ollama chat response received", model=model)
+                return result
 
         except httpx.TimeoutException as e:
             _raise_timeout(e)
 
     async def _iter() -> AsyncIterator[dict]:
+        logger.debug("Starting Ollama chat stream", model=model)
         try:
             async with httpx.AsyncClient(
                 timeout=OLLAMA_TIMEOUT
@@ -164,6 +178,14 @@ async def generate(
     if b64_images:
         payload["images"] = b64_images
 
+    logger.debug(
+        "Calling Ollama generate",
+        model=model,
+        stream=stream,
+        prompt_length=len(prompt),
+        has_images=bool(b64_images),
+    )
+
     if not stream:
         try:
             async with httpx.AsyncClient(
@@ -175,12 +197,15 @@ async def generate(
                 )
 
                 resp.raise_for_status()
-                return resp.json()
+                result = resp.json()
+                logger.debug("Ollama generate response received", model=model)
+                return result
 
         except httpx.TimeoutException as e:
             _raise_timeout(e)
 
     async def _iter() -> AsyncIterator[dict]:
+        logger.debug("Starting Ollama generate stream", model=model)
         try:
             async with httpx.AsyncClient(
                 timeout=OLLAMA_TIMEOUT
@@ -218,6 +243,12 @@ async def embed(
         **kwargs,
     }
 
+    logger.debug(
+        "Calling Ollama embed",
+        model=model,
+        input_type=type(input).__name__,
+    )
+
     try:
         async with httpx.AsyncClient(
             timeout=OLLAMA_TIMEOUT
@@ -228,7 +259,9 @@ async def embed(
             )
 
             resp.raise_for_status()
-            return resp.json()
+            result = resp.json()
+            logger.debug("Ollama embed response received", model=model)
+            return result
 
     except httpx.TimeoutException as e:
         _raise_timeout(e)

@@ -9,6 +9,7 @@ from app.models.analysis import Analysis
 from app.models.chat_document import ChatDocument
 from app.models.chunk import Chunk
 from app.inference.types import ChestXrayEntity
+from app.logger import logger
 
 
 @dataclass
@@ -45,6 +46,12 @@ class ContextEngine:
         current_document_id: UUID | None = None,
         top_k: int = 5,
     ) -> ContextBundle:
+        logger.info(
+            "Building context for chat",
+            chat_id=str(chat_id),
+            top_k=top_k,
+            has_current_doc=current_document_id is not None,
+        )
         similar_chunks = await self._get_similar_chunks(query_embedding, top_k)
         previous_documents = await self._get_previous_document_summaries(chat_id)
         current_document_raw_output = (
@@ -53,18 +60,24 @@ class ContextEngine:
             else None
         )
 
-        return ContextBundle(
+        bundle = ContextBundle(
             similar_chunks=similar_chunks,
             previous_documents=previous_documents,
             current_document_raw_output=current_document_raw_output,
         )
+        logger.info(
+            "Context built",
+            similar_chunk_count=len(similar_chunks),
+            previous_doc_count=len(previous_documents),
+            has_raw_output=current_document_raw_output is not None,
+        )
+        return bundle
 
-    # 1. HNSW cosine similarity over chunk entities/content
     async def _get_similar_chunks(
         self, query_embedding: list[float], top_k: int
     ) -> list[SimilarChunk]:
+        logger.debug("Fetching similar chunks", top_k=top_k)
         distance = Chunk.embedding.cosine_distance(query_embedding)
-
         result = await self.db.execute(
             select(
                 Chunk.chunk_id,
@@ -76,22 +89,23 @@ class ContextEngine:
             .order_by(distance)
             .limit(top_k)
         )
-
-        return [
+        chunks = [
             SimilarChunk(
                 chunk_id=row.chunk_id,
                 document_id=row.document_id,
                 content=row.chunk_content,
                 entities=row.entities,
-                similarity=1 - row.distance,  # cosine_distance -> similarity
+                similarity=1 - row.distance,
             )
             for row in result.all()
         ]
+        logger.debug("Similar chunks retrieved", count=len(chunks))
+        return chunks
 
-    # 2. Previously mentioned docs in this chat: analysis.summary + union(chunk.notes)
     async def _get_previous_document_summaries(
         self, chat_id: UUID
     ) -> list[DocumentSummaryContext]:
+        logger.debug("Fetching previous document summaries", chat_id=str(chat_id))
         latest_analysis = (
             select(Analysis)
             .distinct(Analysis.document_id)
@@ -114,6 +128,7 @@ class ContextEngine:
         )
         rows = result.all()
         if not rows:
+            logger.debug("No previous documents found for chat", chat_id=str(chat_id))
             return []
 
         analysis_ids = [row.analysis_id for row in rows]
@@ -132,7 +147,7 @@ class ContextEngine:
                 except ValueError:
                     continue
 
-        return [
+        contexts = [
             DocumentSummaryContext(
                 document_id=row.document_id,
                 summary=row.summary,
@@ -140,11 +155,13 @@ class ContextEngine:
             )
             for row in rows
         ]
+        logger.debug("Previous document summaries retrieved", count=len(contexts))
+        return contexts
 
-    # 3. Currently referenced document's raw model output
     async def _get_current_document_raw_output(
         self, document_id: UUID
     ) -> str | None:
+        logger.debug("Fetching current document raw output", document_id=str(document_id))
         result = await self.db.execute(
             select(Analysis.raw_output)
             .where(Analysis.document_id == document_id)
@@ -152,4 +169,6 @@ class ContextEngine:
             .limit(1)
         )
         row = result.first()
-        return row.raw_output if row else None
+        raw = row.raw_output if row else None
+        logger.debug("Current document raw output fetched", has_raw=raw is not None)
+        return raw

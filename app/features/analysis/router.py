@@ -1,7 +1,8 @@
 from uuid import UUID
+import time
 
 # pyrefly: ignore [missing-import]
-from fastapi import APIRouter, Depends, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 # pyrefly: ignore [missing-import]
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,6 +13,7 @@ from app.schemas.analysis import (
     AnalysisStatusResponse,
 )
 from app.schemas.errors import ERROR_404, ERROR_500
+from app.logger import logger
 
 router = APIRouter(
     prefix="/api/v1/analysis",
@@ -31,8 +33,22 @@ async def get_latest_analysis(
     analysis_id: UUID,
     db: AsyncSession = Depends(get_db),
 ):
-    service = AnalysisService(db)
-    return await service.get_analysis(analysis_id)
+    start = time.perf_counter()
+    logger.info("Request received", path="/api/v1/analysis/{analysis_id}", method="GET", analysis_id=str(analysis_id))
+    try:
+        service = AnalysisService(db)
+        result = await service.get_analysis(analysis_id)
+        duration = (time.perf_counter() - start) * 1000
+        logger.info("Request completed", status_code=200, duration_ms=round(duration, 2))
+        return result
+    except HTTPException as e:
+        duration = (time.perf_counter() - start) * 1000
+        logger.warning("Request failed", status_code=e.status_code, detail=e.detail, duration_ms=round(duration, 2))
+        raise
+    except Exception as e:
+        duration = (time.perf_counter() - start) * 1000
+        logger.exception("Unhandled error", duration_ms=round(duration, 2))
+        raise
 
 
 @router.get(
@@ -47,8 +63,22 @@ async def get_analysis_status(
     analysis_id: UUID,
     db: AsyncSession = Depends(get_db),
 ):
-    service = AnalysisService(db)
-    return await service.get_analysis_status(analysis_id)
+    start = time.perf_counter()
+    logger.info("Request received", path="/api/v1/analysis/{analysis_id}/status", method="GET", analysis_id=str(analysis_id))
+    try:
+        service = AnalysisService(db)
+        result = await service.get_analysis_status(analysis_id)
+        duration = (time.perf_counter() - start) * 1000
+        logger.info("Request completed", status_code=200, duration_ms=round(duration, 2))
+        return result
+    except HTTPException as e:
+        duration = (time.perf_counter() - start) * 1000
+        logger.warning("Request failed", status_code=e.status_code, detail=e.detail, duration_ms=round(duration, 2))
+        raise
+    except Exception as e:
+        duration = (time.perf_counter() - start) * 1000
+        logger.exception("Unhandled error", duration_ms=round(duration, 2))
+        raise
 
 
 @router.delete(
@@ -63,6 +93,19 @@ async def delete_analysis(
     analysis_id: UUID,
     db: AsyncSession = Depends(get_db),
 ):
-    service = AnalysisService(db)
-    await service.delete_analysis(analysis_id)
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    start = time.perf_counter()
+    logger.info("Request received", path="/api/v1/analysis/{analysis_id}", method="DELETE", analysis_id=str(analysis_id))
+    try:
+        service = AnalysisService(db)
+        await service.delete_analysis(analysis_id)
+        duration = (time.perf_counter() - start) * 1000
+        logger.info("Request completed", status_code=204, duration_ms=round(duration, 2))
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
+    except HTTPException as e:
+        duration = (time.perf_counter() - start) * 1000
+        logger.warning("Request failed", status_code=e.status_code, detail=e.detail, duration_ms=round(duration, 2))
+        raise
+    except Exception as e:
+        duration = (time.perf_counter() - start) * 1000
+        logger.exception("Unhandled error", duration_ms=round(duration, 2))
+        raise
