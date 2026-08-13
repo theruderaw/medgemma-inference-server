@@ -53,6 +53,8 @@ class Analysis(SQLModel, table=True):
         nullable=False,
         ge=0,
     )
+    
+    validated : bool = False
 
     status: AnalysisStatus = Field(
         default=AnalysisStatus.READY,

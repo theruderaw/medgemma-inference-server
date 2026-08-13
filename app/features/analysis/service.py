@@ -105,3 +105,35 @@ class AnalysisService:
             analysis_id=str(analysis_id),
             status=analysis.status,
         )
+        
+    async def validate_analysis(self,analysis_id:UUID):
+        
+        logger.info("Validating analysis", analysis_id=str(analysis_id))
+        result = await self.db.exec(
+            select(Analysis)
+            .where(Analysis.analysis_id == analysis_id)
+        )
+        
+        analysis = result.first()
+        
+        if not analysis:
+            logger.warning(
+                "Analysis not found for validation",
+                analysis_id=str(analysis_id),
+            )
+            raise HTTPException(
+                status_code=404,
+                detail="Analysis not present",
+            )
+        
+        analysis.validated = True
+        
+        await self.db.commit()
+        await self.db.refresh(analysis)
+        
+        logger.info(
+            "Analysis validated",
+            analysis_id=str(analysis_id),
+        )
+
+        return analysis
