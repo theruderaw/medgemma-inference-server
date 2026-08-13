@@ -109,3 +109,60 @@ async def delete_analysis(
         duration = (time.perf_counter() - start) * 1000
         logger.exception("Unhandled error", duration_ms=round(duration, 2))
         raise
+
+@router.post(
+    "/{analysis_id}/validate",
+    response_model=AnalysisRead,
+    responses={
+        404: ERROR_404,
+        500: ERROR_500,
+    },
+)
+async def validate_analysis(
+    analysis_id: UUID,
+    db: AsyncSession = Depends(get_db),
+):
+    start = time.perf_counter()
+
+    logger.info(
+        "Request received",
+        path="/api/v1/analysis/{analysis_id}/validate",
+        method="POST",
+        analysis_id=str(analysis_id),
+    )
+
+    try:
+        service = AnalysisService(db)
+        result = await service.validate_analysis(analysis_id)
+
+        duration = (time.perf_counter() - start) * 1000
+
+        logger.info(
+            "Request completed",
+            status_code=200,
+            duration_ms=round(duration, 2),
+        )
+
+        return result
+
+    except HTTPException as e:
+        duration = (time.perf_counter() - start) * 1000
+
+        logger.warning(
+            "Request failed",
+            status_code=e.status_code,
+            detail=e.detail,
+            duration_ms=round(duration, 2),
+        )
+
+        raise
+
+    except Exception:
+        duration = (time.perf_counter() - start) * 1000
+
+        logger.exception(
+            "Unhandled error",
+            duration_ms=round(duration, 2),
+        )
+
+        raise
