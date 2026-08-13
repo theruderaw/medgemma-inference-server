@@ -42,16 +42,31 @@
 
         * {
             box-sizing: border-box;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        *::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
         }
 
         html {
-            min-height: 100%;
+            height: 100vh;
+            height: 100dvh;
+            height: var(--app-vh, 100dvh);
+            overflow: hidden;
             background: var(--bg);
         }
 
         body {
             margin: 0;
-            min-height: 100vh;
+            height: 100%;
+            overflow: hidden;
+
+            display: flex;
+            flex-direction: column;
 
             background: var(--bg);
             color: var(--text);
@@ -90,11 +105,10 @@
            ========================================================= */
 
         .navbar {
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            flex: 0 0 var(--nav-height);
 
             height: var(--nav-height);
+            overflow: hidden;
 
             display: flex;
             align-items: center;
@@ -237,8 +251,13 @@
         .container {
             width: min(1400px, calc(100% - 40px));
 
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+
             margin: 0 auto;
-            padding: 34px 0 70px;
+            padding: 34px 0 40px;
         }
 
         .page {
@@ -649,7 +668,6 @@
 
         .list-item {
             padding: 13px 0;
-
             border-bottom: 1px solid var(--border);
         }
 
@@ -699,6 +717,10 @@
             align-items: center;
             justify-content: space-between;
             gap: 14px;
+        }
+
+        .muted {
+            color: var(--muted);
         }
 
         /* =========================================================
@@ -776,7 +798,6 @@
 
         .chat-sidebar-header {
             padding: 15px;
-
             border-bottom: 1px solid var(--border);
         }
 
@@ -851,7 +872,6 @@
 
         .chat-main-header {
             padding: 15px 18px;
-
             border-bottom: 1px solid var(--border);
         }
 
@@ -880,7 +900,6 @@
 
         .message {
             padding: 12px 0;
-
             border-bottom: 1px solid var(--border);
         }
 
@@ -1015,7 +1034,6 @@
 
         .modal-body {
             padding: 18px;
-
             overflow: auto;
         }
 
@@ -1134,9 +1152,7 @@
 
         .toast-content {
             flex: 1;
-
             color: var(--text-2);
-
             font-size: 12px;
         }
 
@@ -1178,12 +1194,13 @@
 
         @media (max-width: 900px) {
             .navbar {
+                flex-basis: auto;
                 height: auto;
+                overflow: visible;
             }
 
             .navbar-inner {
                 min-height: 64px;
-
                 width: calc(100% - 24px);
 
                 flex-wrap: wrap;
@@ -1201,7 +1218,6 @@
             .nav-tabs {
                 width: 100%;
                 height: 46px;
-
                 order: 3;
             }
 
@@ -1232,7 +1248,6 @@
             .chat-list {
                 display: flex;
                 gap: 6px;
-
                 overflow-x: auto;
             }
 
@@ -1287,26 +1302,8 @@
         }
 
         /* =========================================================
-           SCROLLBAR
+           SELECTION
            ========================================================= */
-
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #090a0c;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #292e35;
-            border-radius: 5px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #3a414a;
-        }
 
         ::selection {
             background: #244b73;
@@ -1329,7 +1326,9 @@
 
                 <div>
                     <div class="brand-name">API Console</div>
-                    <div class="brand-subtitle">FastAPI inference service</div>
+                    <div class="brand-subtitle">
+                        FastAPI inference service
+                    </div>
                 </div>
             </a>
 
@@ -1429,12 +1428,15 @@
                 <div class="card">
 
                     <div class="card-header">
+
                         <div>
                             <div class="card-title">System</div>
+
                             <div class="card-subtitle">
                                 Current API environment
                             </div>
                         </div>
+
                     </div>
 
                     <div class="card-body">
@@ -1445,6 +1447,7 @@
 
                                 <div class="list-row">
                                     <span class="muted">API</span>
+
                                     <span class="badge badge-green">
                                         ONLINE
                                     </span>
@@ -1456,6 +1459,7 @@
 
                                 <div class="list-row">
                                     <span class="muted">Protocol</span>
+
                                     <span class="mono">
                                         HTTP / JSON
                                     </span>
@@ -1513,9 +1517,7 @@
                 </div>
 
                 <div class="card-body">
-
                     <div id="documentsList"></div>
-
                 </div>
 
             </div>
@@ -1597,7 +1599,9 @@
                 <div class="card-body">
 
                     <div id="analysesList">
+
                         <div class="empty">
+
                             <div class="empty-title">
                                 No document selected
                             </div>
@@ -1605,7 +1609,9 @@
                             <div class="empty-description">
                                 Enter a document UUID above to inspect its analyses.
                             </div>
+
                         </div>
+
                     </div>
 
                 </div>
@@ -1818,6 +1824,30 @@
     <script>
 
         /* =========================================================
+           VIEWPORT HEIGHT
+           ========================================================= */
+
+        function setAppViewportHeight() {
+            document.documentElement.style.setProperty(
+                '--app-vh',
+                `${window.innerHeight}px`
+            );
+        }
+
+        setAppViewportHeight();
+
+        window.addEventListener(
+            'resize',
+            setAppViewportHeight
+        );
+
+        window.addEventListener(
+            'orientationchange',
+            setAppViewportHeight
+        );
+
+
+        /* =========================================================
            CONFIGURATION
            ========================================================= */
 
@@ -1834,6 +1864,8 @@
 
         let modalConfirmAction = null;
 
+        let activeChatStream = null;
+
 
         /* =========================================================
            DOM HELPERS
@@ -1843,11 +1875,8 @@
 
 
         function esc(str) {
-
             const div = document.createElement('div');
-
             div.textContent = str ?? '';
-
             return div.innerHTML;
         }
 
@@ -1990,9 +2019,10 @@
 
             $('toastContainer').appendChild(toast);
 
-            setTimeout(() => {
-                toast.remove();
-            }, duration);
+            setTimeout(
+                () => toast.remove(),
+                duration
+            );
         }
 
 
@@ -2073,7 +2103,10 @@
                     </button>
 
                     <button
-                        class="btn ${danger ? 'btn-danger' : 'btn-primary'}"
+                        class="btn ${danger
+                        ? 'btn-danger'
+                        : 'btn-primary'
+                    }"
                         id="modalConfirmBtn"
                     >
                         ${esc(confirmText)}
@@ -2096,7 +2129,10 @@
         }
 
 
-        function showError(title, message) {
+        function showError(
+            title,
+            message
+        ) {
 
             openModal({
 
@@ -2120,7 +2156,10 @@
         }
 
 
-        function showJson(title, data) {
+        function showJson(
+            title,
+            data
+        ) {
 
             openModal({
 
@@ -2130,7 +2169,11 @@
 
                 body: `
                     <pre class="modal-json">${esc(
-                    JSON.stringify(data, null, 2)
+                    JSON.stringify(
+                        data,
+                        null,
+                        2
+                    )
                 )}</pre>
                 `,
 
@@ -2152,7 +2195,9 @@
 
                 if (
                     event.key === 'Escape' &&
-                    $('modalBackdrop').classList.contains('open')
+                    $('modalBackdrop')
+                        .classList
+                        .contains('open')
                 ) {
                     closeModal();
                 }
@@ -2184,8 +2229,9 @@
             } catch (err) {
 
                 $('documentsList').innerHTML =
-                    renderError(err.message);
-
+                    renderError(
+                        err.message
+                    );
             }
         }
 
@@ -2199,6 +2245,7 @@
 
                 container.innerHTML = `
                     <div class="empty">
+
                         <div class="empty-title">
                             No documents
                         </div>
@@ -2206,6 +2253,7 @@
                         <div class="empty-description">
                             Upload a document to begin processing.
                         </div>
+
                     </div>
                 `;
 
@@ -2225,17 +2273,31 @@
                                 <div class="list-main">
 
                                     <div class="list-title">
-                                        ${esc(d.original_filename)}
+                                        ${esc(
+                d.original_filename
+            )}
                                     </div>
 
                                     <div class="list-meta">
-                                        ${esc(d.content_type)}
+
+                                        ${esc(
+                d.content_type
+            )}
+
                                         ·
-                                        ${formatBytes(d.file_size)}
+
+                                        ${formatBytes(
+                d.file_size
+            )}
+
                                         ·
+
                                         <span class="mono">
-                                            ${esc(d.document_id)}
+                                            ${esc(
+                d.document_id
+            )}
                                         </span>
+
                                     </div>
 
                                 </div>
@@ -2243,7 +2305,10 @@
                                 <div class="list-actions">
 
                                     <span class="badge">
-                                        ${esc(d.status || 'UNKNOWN')}
+                                        ${esc(
+                d.status ||
+                'UNKNOWN'
+            )}
                                     </span>
 
                                     <button
@@ -2302,9 +2367,7 @@
                 $('uploadBtn');
 
             button.disabled = true;
-
-            button.textContent =
-                'Uploading…';
+            button.textContent = 'Uploading…';
 
 
             try {
@@ -2439,6 +2502,7 @@
 
                 $('analysesList').innerHTML = `
                     <div class="empty">
+
                         <div class="empty-title">
                             No document selected
                         </div>
@@ -2446,6 +2510,7 @@
                         <div class="empty-description">
                             Enter a document UUID above.
                         </div>
+
                     </div>
                 `;
 
@@ -2486,6 +2551,7 @@
 
                 container.innerHTML = `
                     <div class="empty">
+
                         <div class="empty-title">
                             No analyses found
                         </div>
@@ -2493,6 +2559,7 @@
                         <div class="empty-description">
                             This document has no analysis records yet.
                         </div>
+
                     </div>
                 `;
 
@@ -2512,21 +2579,31 @@
                                 <div class="list-main">
 
                                     <div class="list-title mono">
-                                        ${esc(a.analysis_id)}
+                                        ${esc(
+                a.analysis_id
+            )}
                                     </div>
 
                                     <div class="list-meta">
                                         Created:
-                                        ${esc(a.created_at || 'Unknown')}
+                                        ${esc(
+                a.created_at ||
+                'Unknown'
+            )}
                                     </div>
 
                                     ${a.summary
                     ? `
                                                 <div
                                                     class="list-meta"
-                                                    style="margin-top:7px;color:var(--text-2);"
+                                                    style="
+                                                        margin-top: 7px;
+                                                        color: var(--text-2);
+                                                    "
                                                 >
-                                                    ${esc(a.summary)}
+                                                    ${esc(
+                        a.summary
+                    )}
                                                 </div>
                                             `
                     : ''
@@ -2536,8 +2613,15 @@
 
                                 <div class="list-actions">
 
-                                    <span class="badge ${statusBadgeClass(a.status)}">
-                                        ${esc(a.status || 'UNKNOWN')}
+                                    <span
+                                        class="badge ${statusBadgeClass(
+                    a.status
+                )}"
+                                    >
+                                        ${esc(
+                    a.status ||
+                    'UNKNOWN'
+                )}
                                     </span>
 
                                     <button
@@ -2710,6 +2794,7 @@
 
                 container.innerHTML = `
                     <div class="empty">
+
                         <div class="empty-title">
                             No conversations
                         </div>
@@ -2717,6 +2802,7 @@
                         <div class="empty-description">
                             Create a chat to get started.
                         </div>
+
                     </div>
                 `;
 
@@ -2735,7 +2821,7 @@
                         onclick="selectChat('${c.chat_id}')"
                     >
 
-                        <div style="min-width:0;">
+                        <div style="min-width: 0;">
 
                             <div class="chat-item-title">
                                 ${esc(
@@ -2905,6 +2991,7 @@
                                 chatId
                             ) {
                                 selectedChatId = null;
+                                closeActiveChatStream();
                             }
 
 
@@ -2932,6 +3019,8 @@
         async function selectChat(
             chatId
         ) {
+
+            closeActiveChatStream();
 
             selectedChatId =
                 chatId;
@@ -2981,13 +3070,15 @@
                         ${esc(selectedChatId)}
                     </div>
 
-                    <div style="margin-top:7px;">
+                    <div style="margin-top: 7px;">
+
                         <button
                             class="btn btn-small btn-danger"
                             onclick="deleteChat('${selectedChatId}')"
                         >
                             Delete chat
                         </button>
+
                     </div>
                 `;
 
@@ -3014,6 +3105,7 @@
 
                 $('messagesList').innerHTML = `
                     <div class="empty">
+
                         <div class="empty-title">
                             No conversation selected
                         </div>
@@ -3021,6 +3113,7 @@
                         <div class="empty-description">
                             Select or create a chat to view messages.
                         </div>
+
                     </div>
                 `;
             }
@@ -3043,13 +3136,12 @@
                 </option>
 
                 ${documents.map(d => `
-                        <option
-                            value="${d.document_id}"
-                        >
-                            ${esc(d.original_filename)}
-                        </option>
-                    `).join('')
-                }
+                    <option value="${d.document_id}">
+                        ${esc(
+                d.original_filename
+            )}
+                    </option>
+                `).join('')}
             `;
         }
 
@@ -3094,6 +3186,7 @@
 
                 container.innerHTML = `
                     <div class="empty">
+
                         <div class="empty-title">
                             No documents attached
                         </div>
@@ -3101,6 +3194,7 @@
                         <div class="empty-description">
                             Attach a document above to provide context.
                         </div>
+
                     </div>
                 `;
 
@@ -3128,7 +3222,9 @@
                                     </div>
 
                                     <div class="list-meta mono">
-                                        ${esc(d.document_id)}
+                                        ${esc(
+                d.document_id
+            )}
                                     </div>
 
                                 </div>
@@ -3295,6 +3391,7 @@
 
                 container.innerHTML = `
                     <div class="empty">
+
                         <div class="empty-title">
                             No messages
                         </div>
@@ -3302,6 +3399,7 @@
                         <div class="empty-description">
                             Send the first message in this conversation.
                         </div>
+
                     </div>
                 `;
 
@@ -3316,10 +3414,12 @@
 
                         <div class="message-header">
 
-                            <span class="badge ${m.role === 'USER'
+                            <span
+                                class="badge ${m.role === 'USER'
                         ? 'badge-blue'
                         : ''
-                    }">
+                    }"
+                            >
                                 ${esc(m.role)}
                             </span>
 
@@ -3330,7 +3430,7 @@
                             <button
                                 class="btn btn-small btn-danger"
                                 onclick="deleteMessage('${m.message_id}')"
-                                style="margin-left:auto;"
+                                style="margin-left: auto;"
                             >
                                 Delete
                             </button>
@@ -3346,6 +3446,293 @@
                 `).join('');
         }
 
+
+        /* =========================================================
+           CHAT STREAMING — SSE
+           ========================================================= */
+
+        function closeActiveChatStream() {
+
+            if (activeChatStream) {
+                activeChatStream.close();
+                activeChatStream = null;
+            }
+        }
+
+
+        /*
+         * Opens the SSE stream BEFORE the POST query.
+         *
+         * This ordering matters:
+         *
+         *   1. Browser connects to /stream
+         *   2. Server accepts the SSE connection
+         *   3. Client receives "open"
+         *   4. Client POSTs /query
+         *   5. Backend publishes chunks
+         *   6. Browser receives chunks immediately
+         *
+         * This prevents the first chunks from being published before
+         * the browser has subscribed.
+         */
+
+        function streamAssistantReply(chatId) {
+
+            return new Promise(
+                (resolve, reject) => {
+
+                    closeActiveChatStream();
+
+
+                    const es =
+                        new EventSource(
+                            `${API_BASE}/api/v1/chats/${chatId}/stream`
+                        );
+
+                    activeChatStream = es;
+
+
+                    let opened = false;
+                    let draftEl = null;
+                    let draftContent = '';
+
+
+                    /* ---------------------------------------------
+                       SSE OPEN
+                       --------------------------------------------- */
+
+                    es.addEventListener(
+                        'open',
+                        () => {
+
+                            opened = true;
+
+                            resolve();
+
+                        }
+                    );
+
+
+                    /* ---------------------------------------------
+                       SSE CHUNK
+                       --------------------------------------------- */
+
+                    es.addEventListener(
+                        'chunk',
+                        event => {
+
+                            let data;
+
+                            try {
+
+                                data =
+                                    JSON.parse(
+                                        event.data
+                                    );
+
+                            } catch (err) {
+
+                                console.error(
+                                    'Invalid SSE chunk:',
+                                    event.data,
+                                    err
+                                );
+
+                                return;
+                            }
+
+
+                            const content =
+                                data.content ?? '';
+
+
+                            draftContent +=
+                                content;
+
+
+                            if (
+                                chatId !==
+                                selectedChatId
+                            ) {
+                                return;
+                            }
+
+
+                            const container =
+                                $('messagesList');
+
+
+                            /*
+                             * Remove the "No messages" state the
+                             * moment the first token arrives.
+                             */
+
+                            if (!draftEl) {
+
+                                const empty =
+                                    container.querySelector(
+                                        '.empty'
+                                    );
+
+                                if (empty) {
+                                    container.innerHTML = '';
+                                }
+
+
+                                draftEl =
+                                    document.createElement(
+                                        'div'
+                                    );
+
+                                draftEl.className =
+                                    'message';
+
+
+                                draftEl.innerHTML = `
+                                    <div class="message-header">
+
+                                        <span class="badge">
+                                            ASSISTANT
+                                        </span>
+
+                                        <span class="list-meta">
+                                            generating…
+                                        </span>
+
+                                    </div>
+
+                                    <div class="message-content"></div>
+                                `;
+
+
+                                container.appendChild(
+                                    draftEl
+                                );
+                            }
+
+
+                            const contentEl =
+                                draftEl.querySelector(
+                                    '.message-content'
+                                );
+
+
+                            contentEl.textContent =
+                                draftContent;
+
+
+                            /*
+                             * Keep the latest generated text visible.
+                             */
+
+                            container.scrollTop =
+                                container.scrollHeight;
+                        }
+                    );
+
+
+                    /* ---------------------------------------------
+                       SSE DONE
+                       --------------------------------------------- */
+
+                    es.addEventListener(
+                        'done',
+                        () => {
+
+                            closeActiveChatStream();
+
+
+                            if (
+                                chatId ===
+                                selectedChatId
+                            ) {
+                                loadMessages();
+                            }
+                        }
+                    );
+
+
+                    /* ---------------------------------------------
+                       SSE ERROR EVENT / CONNECTION ERROR
+                       --------------------------------------------- */
+
+                    es.addEventListener(
+                        'error',
+                        event => {
+
+                            /*
+                             * There are two possibilities here:
+                             *
+                             * 1. Server emitted an SSE "error" event
+                             *    containing JSON in event.data.
+                             *
+                             * 2. EventSource itself lost the connection,
+                             *    in which case event.data is empty.
+                             */
+
+                            let detail =
+                                'Connection lost';
+
+
+                            try {
+
+                                if (event.data) {
+
+                                    const data =
+                                        JSON.parse(
+                                            event.data
+                                        );
+
+                                    detail =
+                                        data.detail ||
+                                        data.message ||
+                                        detail;
+                                }
+
+                            } catch (_) {
+                                /*
+                                 * Connection-level error.
+                                 */
+                            }
+
+
+                            closeActiveChatStream();
+
+
+                            if (
+                                chatId ===
+                                selectedChatId
+                            ) {
+
+                                showToast(
+                                    `Streaming failed: ${detail}`,
+                                    'warning'
+                                );
+
+                                loadMessages();
+                            }
+
+
+                            if (!opened) {
+
+                                reject(
+                                    new Error(
+                                        detail
+                                    )
+                                );
+                            }
+
+                        }
+                    );
+
+                }
+            );
+        }
+
+
+        /* =========================================================
+           SEND MESSAGE
+           ========================================================= */
 
         async function sendMessage() {
 
@@ -3381,10 +3768,49 @@
             button.textContent = 'Sending…';
 
 
+            /*
+             * Capture this before awaiting anything.
+             *
+             * The user could theoretically switch chats while
+             * network operations are in flight.
+             */
+
+            const chatId =
+                selectedChatId;
+
+
             try {
 
+                /*
+                 * IMPORTANT:
+                 *
+                 * Connect to SSE FIRST.
+                 *
+                 * Do NOT reverse these two operations.
+                 *
+                 * Correct:
+                 *
+                 *     GET /stream
+                 *     wait for open
+                 *     POST /query
+                 *
+                 * Incorrect:
+                 *
+                 *     POST /query
+                 *     GET /stream
+                 *
+                 * The incorrect version can lose early streamed
+                 * tokens because the backend may start publishing
+                 * before the EventSource subscription exists.
+                 */
+
+                await streamAssistantReply(
+                    chatId
+                );
+
+
                 await apiFetch(
-                    `/api/v1/chats/${selectedChatId}/query`,
+                    `/api/v1/chats/${chatId}/query`,
                     {
                         method: 'POST',
 
@@ -3403,7 +3829,6 @@
 
                 $('messageContent').value = '';
 
-                await loadMessages();
 
             } catch (err) {
 
@@ -3412,6 +3837,9 @@
                     err.message
                 );
 
+                closeActiveChatStream();
+
+
             } finally {
 
                 button.disabled = false;
@@ -3419,6 +3847,10 @@
             }
         }
 
+
+        /* =========================================================
+           DELETE MESSAGE
+           ========================================================= */
 
         async function deleteMessage(
             messageId
@@ -3488,6 +3920,7 @@
 
 
             if (bytes < 1024 * 1024) {
+
                 return `${(
                     bytes / 1024
                 ).toFixed(1)} KB`;
@@ -3495,6 +3928,7 @@
 
 
             if (bytes < 1024 * 1024 * 1024) {
+
                 return `${(
                     bytes /
                     (1024 * 1024)

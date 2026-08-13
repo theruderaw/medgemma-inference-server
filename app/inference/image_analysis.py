@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import settings
 from app.core.database import AsyncSessionLocal
 from app.inference.llm import chat, embed as ollama_embed
-from app.inference.prompts import EXTRACT_PROMPT, IMG_PROCESS_PROMPT
+from app.inference.prompts import IMG_EXTRACT_PROMPT, IMG_PROCESS_PROMPT
 from app.inference.types import ChestXrayEntity
 from app.models.analysis import Analysis
 from app.models.chunk import Chunk
@@ -19,7 +19,7 @@ from app.models.enums import AnalysisStatus, ChunkType
 from app.utils.pdf_ocr import extract_pdf_text, render_pdf_images
 from app.logger import logger
 
-EXTRACTION_ENTITIES = [entity.value for entity in ChestXrayEntity]
+IMG_EXTRACTION_ENTITIES = [entity.value for entity in ChestXrayEntity]
 
 
 class ImageAnalysisService:
@@ -46,7 +46,7 @@ class ImageAnalysisService:
     def _regex_extract_entities(report_text: str) -> list[str]:
         report_lower = report_text.lower()
         found = []
-        for entity in EXTRACTION_ENTITIES:
+        for entity in IMG_EXTRACTION_ENTITIES:
             pattern = rf"\b{re.escape(entity.lower())}\b"
             if re.search(pattern, report_lower):
                 found.append(entity)
@@ -92,7 +92,7 @@ class ImageAnalysisService:
         analysis.raw_output = content
         analysis.summary = content
         analysis.prompt_template = IMG_PROCESS_PROMPT
-        analysis.extract_prompt_template = EXTRACT_PROMPT
+        analysis.extract_prompt_template = IMG_EXTRACT_PROMPT
 
         await self.db.commit()
         logger.info("Image analysis completed", analysis_id=str(analysis_id))
@@ -120,7 +120,7 @@ class ImageAnalysisService:
             res = await chat(
                 model=self.text_model,
                 messages=[
-                    {"role": "system", "content": EXTRACT_PROMPT},
+                    {"role": "system", "content": IMG_EXTRACT_PROMPT},
                     {"role": "user", "content": analysis.raw_output},
                 ],
                 stream=False,

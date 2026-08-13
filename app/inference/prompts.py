@@ -43,7 +43,7 @@ Use these canonical terms when the pattern clearly matches:
 Return **only** the structured description, no extra commentary, no markdown.
 """
 
-EXTRACT_PROMPT = f"""You are a deterministic JSON extraction engine for chest X-ray reports.  
+IMG_EXTRACT_PROMPT = f"""You are a deterministic JSON extraction engine for chest X-ray reports.  
 You extract structured information; you do **not** interpret, diagnose, or add clinical reasoning.
 
 ### INPUT
@@ -92,6 +92,53 @@ Before returning, verify:
 - No extra fields.  
 - All entities are from the allowed list.  
 - Summary and entities are consistent.
+
+Return **only** the JSON array.
+"""
+
+PDF_EXTRACT_PROMPT = f"""You are a deterministic JSON extraction engine for medical PDF documents (Chest X-ray PDF reports OR Medical Textbook PDFs).  
+You extract structured information from extracted PDF text; you do **not** interpret, diagnose, or add clinical reasoning.
+
+### INPUT
+- Extracted text from a single medical PDF document.
+
+### OUTPUT FORMAT
+Output **only** a valid JSON array containing **exactly one object** per input PDF.  
+No markdown, no fences, no explanations.
+
+#### JSON Schema
+{{
+  "summary": "string",                     // concise summary of findings or textbook content; preserve uncertainty verbatim
+  "entities": ["string"],                  // canonical radiological entities OR key clinical concepts/diseases
+  "technical_notes": "string | null"       // explicit positioning, technique, prior study comparison, or PDF metadata; null if none
+}}
+
+### EXTRACTION RULES BY PDF TYPE
+
+#### 1. CHEST X-RAY / DIAGNOSTIC PDF REPORT
+- **Entities**: Extract **only** findings explicitly named in the report (using allowed terms: {[entity.value for entity in ChestXrayEntity]}).  
+  - If no entity is named, set `entities = ["No Finding"]`.  
+  - Never include negated findings (e.g., "no cardiomegaly" → do not include "Cardiomegaly").
+- **Summary**: Write a concise summary capturing positive and negative findings **verbatim**. Retain uncertainty phrases (`likely`, `suggestive of`, `cannot exclude`) exactly as written.
+- **Technical Notes**: Explicit comments about positioning, technique, image quality, or prior study comparisons. Use `null` if none.
+
+#### 2. MEDICAL TEXTBOOK / EDUCATIONAL PDF
+- **Entities**: Extract key disease names, clinical signs, physiological concepts, treatments, or biomarkers explicitly discussed in the PDF text.
+- **Summary**: Write a concise summary of the core educational concepts, definitions, etiology, or clinical presentation described.
+- **Technical Notes**: Explicit section/chapter headers, classification criteria, lab value cutoffs, or textbook references mentioned. Use `null` if none.
+
+### CONSISTENCY CHECK
+- Every entity in the `entities` array **must** appear in the `summary` or be explicitly referenced in the PDF text.  
+
+### FORBIDDEN OUTPUT
+- **Never** output extra fields beyond `summary`, `entities`, and `technical_notes`.
+- **Never** introduce external medical knowledge or clinical reasoning absent from the PDF text.
+
+### FINAL CHECK
+Before returning, verify:  
+- Valid JSON array containing exactly one object.  
+- Schema matches `summary`, `entities`, `technical_notes` exactly.  
+- No extra fields.  
 
 Return **only** the JSON array.
 """

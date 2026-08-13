@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import settings
 from app.core.database import AsyncSessionLocal
 from app.inference.llm import chat, embed as ollama_embed
-from app.inference.prompts import EXTRACT_PROMPT, PDF_PAGE_ANALYSIS_PROMPT
+from app.inference.prompts import PDF_EXTRACT_PROMPT, PDF_PAGE_ANALYSIS_PROMPT
 from app.models.analysis import Analysis
 from app.models.chunk import Chunk
 from app.models.document import Document
@@ -120,7 +120,7 @@ class PDFAnalysisService:
         analysis.raw_output = "\n\n".join(page_results)
         analysis.summary = analysis.raw_output
         analysis.prompt_template = PDF_PAGE_ANALYSIS_PROMPT
-        analysis.extract_prompt_template = EXTRACT_PROMPT
+        analysis.extract_prompt_template = PDF_EXTRACT_PROMPT
 
         await self.db.commit()
         logger.info(
@@ -162,7 +162,7 @@ class PDFAnalysisService:
                 res = await chat(
                     model=self.text_model,
                     messages=[
-                        {"role": "system", "content": EXTRACT_PROMPT},
+                        {"role": "system", "content": PDF_EXTRACT_PROMPT},
                         {"role": "user", "content": page_content},
                     ],
                     stream=False,
