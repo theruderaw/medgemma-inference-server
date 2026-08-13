@@ -15,6 +15,7 @@ from .chat import (
     ChatMessage,
 )
 
+from .audit_event import AuditEvent
 from .chat_document import ChatDocument
 
 
@@ -33,4 +34,6 @@ __all__ = [
     "ChatMessage",
 
     "ChatDocument",
+    
+    "AuditEvent",
 ]

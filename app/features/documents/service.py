@@ -11,6 +11,7 @@ from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.audit import audit
 from app.core.config import settings
 from app.models.document import Document
 from app.models.analysis import Analysis
@@ -91,6 +92,18 @@ class DocumentService:
                 checksum=hashlib.sha256(contents).hexdigest()
             )
             self.db.add(document)
+            
+            await audit(
+                db = self.db,
+                event_type="document:upload",
+                document_id=document_id,
+                audit_metadata={
+                    "filename":file.filename,
+                    "content_type":file.content_type,
+                    "file_size": len(contents)
+                }
+            )
+            
             await self.db.commit()
             await self.db.refresh(document)
 
@@ -184,6 +197,17 @@ class DocumentService:
     async def delete_document(self, document_id: UUID):
         logger.info("Deleting document", document_id=str(document_id))
         document = await self.get_document(document_id)  # raises 404 if not found
+        await audit(
+                db = self.db,
+                event_type="document:delete",
+                document_id=document_id,
+                audit_metadata={
+                    "file":document.original_filename,
+                    "content_type":document.content_type,
+                    "file_size":document.file_size
+                }
+        )
+
         await self.db.delete(document)
         await self.db.commit()
         if document.file_path and os.path.exists(document.file_path):
@@ -252,6 +276,16 @@ class DocumentService:
 
         try:
             self.db.add(analysis)
+            await audit(
+                db = self.db,
+                event_type="document:analysis",
+                document_id=document_id,
+                audit_metadata={
+                    "file":document.original_filename,
+                    "content_type":document.content_type,
+                    "file_size":document.file_size
+                }
+            )
             await self.db.commit()
             await self.db.refresh(analysis)
         except IntegrityError:
