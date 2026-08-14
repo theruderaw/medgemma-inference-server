@@ -90,7 +90,11 @@ class ImageAnalysisService:
 
         content = self._clean_response(res["message"]["content"])
         analysis.raw_output = content
-        analysis.summary = content
+        # NOTE: analysis.summary is intentionally NOT set here. The summary is
+        # derived later in extract() (via LLM extraction or regex fallback) —
+        # setting it to the raw report here previously made summary and
+        # raw_output identical for any caller that read the analysis between
+        # the ANALYZING and CHUNKING steps.
         analysis.prompt_template = IMG_PROCESS_PROMPT
         analysis.extract_prompt_template = IMG_EXTRACT_PROMPT
 
@@ -129,19 +133,42 @@ class ImageAnalysisService:
             if content and content != "{}":
                 try:
                     extracted = json.loads(content)
+
+                    if not isinstance(extracted, list) or len(extracted) != 1:
+                        raise ValueError("Expected JSON array containing exactly one object")
+
+                    extracted = extracted[0]
+
+                    if not isinstance(extracted, dict):
+                        raise ValueError("Expected the array item to be a JSON object")
+
                     summary = extracted.get("summary")
+                    logger.info(f"summary:{summary}")
                     entities = extracted.get("entities")
-                    notes = extracted.get("notes", {})
-                except json.JSONDecodeError:
-                    pass
-        except Exception:
-            pass
+                    notes = {
+                        "technical_notes": extracted.get("technical_notes"),
+                        "comparison": extracted.get("comparison"),
+                    }
+                except json.JSONDecodeError as e:
+                    logger.warning(
+                        "LLM extraction returned invalid JSON, falling back to regex",
+                        analysis_id=str(analysis_id),
+                        error=str(e),
+                        content=content[:500],
+                    )
+        except Exception as e:
+            logger.warning(
+                "LLM extraction call failed, falling back to regex",
+                analysis_id=str(analysis_id),
+                error=str(e),
+                traceback=traceback.format_exc(),
+            )
 
         # Fallback to regex if needed
-        if not summary:
-            summary = self._extract_summary_fallback(analysis.raw_output)
-        if not entities:
-            entities = self._regex_extract_entities(analysis.raw_output)
+        # if not summary:
+        #     summary = self._extract_summary_fallback(analysis.raw_output)
+        #  if not entities:
+        #     entities = self._regex_extract_entities(analysis.raw_output)
 
         if not summary or not entities:
             logger.warning(

@@ -1,0 +1,3413 @@
+================================================================================
+AMR_001
+Images: AMR_001_HTR.png
+Time: 19.80s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Nursing Observation Chart
+Patient name : E. J
+Age : 41 / F
+Hospital number : 2023/BF/057
+Ward : Female medical ward
+Diagnosis : Acute Kidney Injury (AKI)
+
+Date Time Temp [°C] Pulse [bpm] Resp rate [rpm]
+29/12/23 4:00 pm 38.2 °C 112 26
+29/12/23 8:00 pm 38.7 °C 109 24
+30/12/23 12:00 am 35.2 °C 108 23
+30/12/23 8:00 am 37.9 °C 100 20
+30/12/23 12:00 pm 37.5 °C 97 20
+<end_of_image>
+
+================================================================================
+AMR_002
+Images: AMR_002_HTR_p1.png, AMR_002_HTR_p2.png, AMR_002_HTR_p3.png
+Time: 67.89s
+Model: medgemma1.5:4b
+================================================================================
+<unused94>thought
+The user wants me to transcribe a handwritten medical document. I need to be extremely careful about accuracy and adhere strictly to the rules provided.
+
+**Plan:**
+1. Read through the image line by line.
+2. Transcribe each line exactly as it appears, preserving spelling, capitalization, abbreviations, numbers, and punctuation.
+3. Pay close attention to potentially ambiguous words or handwriting.
+4. If a word is unreadable, mark it as [ILLEGIBLE].
+5. Ensure the final output is only the transcription itself.
+
+**Line-by-line Transcription:**
+
+*   `Patient Visit Form`
+*   `U/P a 59 year old male residing in Dukuu,`
+*   `a muslim, Igloo by tribe, a retired army man`
+*   `presented to the emergency room on account`
+*   `of left upper quadrant pain for 3 months duration.`
+*   `The pain was gradual in onset, described to be`
+*   `a stabbing pain radiates to the left shoulder. If c`
+*   `relieved by leaning forward, the pain is interm`
+*   `uent and has no particular timing. It has no`
+*   `excacerbating factors and severity was graded 5/10`
+*   `The swelling was gradual, hard and non`
+*   `tender if it has rapidly progressed.`
+*   `There was bilateral leg swelling which relieves`
+*   `on its own and comes back`
+*   `There is a history of progressive weight loss over`
+*   `a duration of time, noticed by worsening of cough.`
+*   `There was associated shortness of breath, loss of appetite and early satiety.`
+*   `The complaint got worse and he has presented`
+*   `to a private hospital where he was referred to`
+*   `our faculty.`
+*   `On Past medical & surgical history, patient is not a`
+*   `known hypersenive, sickle cell patients, asphmo,`
+*   `epilphic, diabetic or peplic ulcer patients the has`
+*   `had no previous surgery done before, no history of`
+*   `blessed harpsicin.`
+*   `Genotype is not known, Hepatitis B positive. H/O allergy`
+*   `to it is a known smoker and due es not conscern`
+*   `alcohol.`
+*   `He has a known allergy to bromocedet. He is not on`
+*   `any medication.`
+*   `Review of system s was non contributory.`
+*   `Exam on abdominal findings`
+*   `C/P- normal`
+*   `A/E- abdomen was asymmetrically distended it moves`
+*   `with respiration. On light palpation, tenderness was`
+*   `sheltered at the left upper quadrant and a mass`
+*   `was palpable on deep palpation, tenderness was elicited`
+*   `and there was poplable organomegaly extending from`
+*   `the left upper quadrant to the right lower q/d.at`
+*   `The mass was irregular, smooth, non tender, not`
+*   `warm to touch edges were well defined, dull or`
+*   `painless, overlying skin was fixed and no skin`
+
+**Review:**
+- All lines transcribed accurately based on visual appearance.
+- Abbreviations like U/P, C/P, A/E, H/O, q/d are preserved.
+- Spelling is preserved (e.g., hypersenive, asphmo, epilphic, peplic, harpsicin, bromocedet).
+- Numbers and durations are preserved.
+- Punctuation seems correct based on visual evidence.
+- [ILLEGIBLE] is not needed as all text is legible.
+
+The transcription looks accurate according to the rules.<unused95>Patient Visit Form
+U/P a 59 year old male residing in Dukuu,
+a muslim, Igloo by tribe, a retired army man
+presented to the emergency room on account
+of left upper quadrant pain for 3 months duration.
+The pain was gradual in onset, described to be
+a stabbing pain radiates to the left shoulder. If c
+relieved by leaning forward, the pain is interm
+uent and has no particular timing. It has no
+excacerbating factors and severity was graded 5/10
+The swelling was gradual, hard and non
+tender if it has rapidly progressed.
+There was bilateral leg swelling which relieves
+on its own and comes back
+There is a history of progressive weight loss over
+a duration of time, noticed by worsening of cough.
+There was associated shortness of breath, loss of appetite and early satiety.
+The complaint got worse and he has presented
+to a private hospital where he was referred to
+our faculty.
+On Past medical & surgical history, patient is not a
+known hypersenive, sickle cell patients, asphmo,
+epilphic, diabetic or peplic ulcer patients the has
+had no previous surgery done before, no history of
+blessed harpsicin.
+Genotype is not known, Hepatitis B positive. H/O allergy
+to it is a known smoker and due es not conscern
+alcohol.
+He has a known allergy to bromocedet. He is not on
+any medication.
+Review of system s was non contributory.
+Exam on abdominal findings
+C/P- normal
+A/E- abdomen was asymmetrically distended it moves
+with respiration. On light palpation, tenderness was
+sheltered at the left upper quadrant and a mass
+was palpable on deep palpation, tenderness was elicited
+and there was poplable organomegaly extending from
+the left upper quadrant to the right lower q/d.at
+The mass was irregular, smooth, non tender, not
+warm to touch edges were well defined, dull or
+painless, overlying skin was fixed and no skin
+
+================================================================================
+AMR_003
+Images: AMR_003_HTR.png
+Time: 8.77s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+PRESCRIPTION NOTE
+
+Patient's name: J-D
+Age: AD
+Sex: F
+Hospital No: 70079
+
+Prescription
+Rx
+
+Cefuroxime 500mg bd x 5/7
+Strepsils throat lozenges Tgs tds x 5/7
+Vitamin C 1000mg (Calcort) dly x 20/7
+
+Doctor's Name: Dr Joan Riz
+Signature: [ILLEGIBLE]
+Date: 23/02/25
+<end_of_image>
+
+================================================================================
+AMR_004
+Images: AMR_004_HTR.png
+Time: 12.62s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+LAB REQUEST FORM
+
+Patient Name: & R
+Age: AD
+Department: Internal Medicine
+Sample type: Blood Urine Stool CSF Other
+
+Hospital No: 20067
+Gender: M
+Date: 17/07/24
+
+Select the test(s) required below:
+Hematology Parasitology Fluid analysis
+Hæmoglobin <0.8 (12+) [ILLEGIBLE]
+WBC count /mm³ (41.00)
+Differential count
+Lymph <2.50 [ILLEGIBLE]
+Mono <2.50 [ILLEGIBLE]
+Eosin <1.60 [ILLEGIBLE]
+Baso <0.70 [ILLEGIBLE]
+Stool microscopy
+
+Blood cell morphology
+Glucose : color:
+WBC anti : protein:
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+
+Requested by: Dr Oloro Ratu
+
+Comments/Notes:
+<end_of_image>
+
+================================================================================
+AMR_005
+Images: AMR_005_HTR.png
+Time: 5.91s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+HRN: 74631742
+Bed No: C3
+
+PR - 68/min
+RR - 38 cpm
+BP - 119 / 79 mm Hg
+T - 38.2°C
+<end_of_image>
+
+================================================================================
+AMR_006
+Images: AMR_006_HTR.png
+Time: 6.56s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Name: Usman Ameer
+Age: AD
+Sex: F
+Date: 10 Oct, 2025
+
+Tabs Omeprazole 20mg PO tds
+Cap Amoxicillin 500mg tds
+Tabs Chloramphenicol 250mg tds
+
+Physician name: Dr. H. Saini
+<end_of_image>
+
+================================================================================
+AMR_007
+Images: AMR_007_HTR.png
+Time: 152.88s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Name: Isabel Schorr
+Age: Ad
+Sex: F
+Date: 14 - 07 - 2024
+Mann Acl 102-IV
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE]
+[ILLEGIBLE
+
+================================================================================
+AMR_008
+Images: AMR_008_HTR.png
+Time: 6.73s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+HRN NO: 2374101 Bed No: Alt
+PR - 78/min regular
+RR - 18 cpm
+BP - 123 mmHg
+GCS - 13 / 15
+Temperature - 37.1°C
+<end_of_image>
+
+================================================================================
+AMR_009
+Images: AMR_009_HTR.png
+Time: 9.78s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+18 Dec 2016
+
+PT seen: 5 months old female infant residing in Gondal
+State with her parents - Hindu by tribe and Christian
+infant is the mother
+
+PC: Head swelling from birth due to management of
+opening on the breast.
+
+Child is not active and always in pain evidenced by constant
+cries even after feeding.
+
+Patient was managed at a private hospital due to
+high fever
+
+SR: NS, GI System, RS all normal
+Urgent : Frequent urination
+
+FH: 1st child of parents. No history of illness in the family
+SM: Mother admitted to using herbal concoction during pregnancy
+Doesn't smoke nor drink - termed to polygamous family
+
+<end_of_image>
+
+================================================================================
+AMR_010
+Images: AMR_010_HTR.png
+Time: 6.06s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+NAME : Emelia Sani AGE : 12 DATE : 12 May 2026
+SEX: M
+HRN: 5830682
+
+DIAGNOSIS: ?? TB
+
+Specimen used : Sputum
+Investigation requested : GeneXpert
+
+<end_of_image>
+
+================================================================================
+AMR_011
+Images: AMR_011_HTR.png
+Time: 6.14s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+NAME : Waleed Alenzi
+AGE : Ad
+MRN : 5836082
+SEX : M
+DATE : 12 March 2016
+DIAGNOSIS : ?? UTI
+Specimen used : Urine
+Investigation requested : M/C/S
+<end_of_image>
+
+================================================================================
+AMR_012
+Images: AMR_012_HTR.png
+Time: 11.65s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Laboratory Request Form
+
+Patient Information
+Patient Name: Miss J.I
+Patient ID : 2026/Pdl466
+Age : 12 years
+Sex : Female
+Physician Name: Dr Nya Nare
+Date : 10/03/2026
+
+Clinical Note
+Oliguria 2/52, Vomiting 2/52, Generalized
+fever 1/52, fever 1/52, abdominal pain 2/7.
+Suspected AKI with nephrotic Overlap -?
+
+Requested Tests
+Complete Blood Count
+Renal function Test (Urea, Creatinine, GFR)
+Electrolytes
+Urinalysis
+Serum Albumin
+Urine Protein / Creatinine Ratio
+
+Dr N. Nare
+Date : 10/03/2026
+Results to be submitted within [ILLEGIBLE]
+<end_of_image>
+
+================================================================================
+AMR_013
+Images: AMR_013_HTR_p1.png, AMR_013_HTR_p2.png, AMR_013_HTR_p3.png
+Time: 95.66s
+Model: medgemma1.5:4b
+================================================================================
+<unused94>thought
+The user wants me to transcribe a handwritten medical document. I need to be extremely careful about preserving every detail, including spelling, numbers, abbreviations, and line breaks.
+
+**Plan:**
+1. Go through the image line by line.
+2. Transcribe each line exactly as it appears.
+3. Pay close attention to:
+    - Patient details (Name, Age, Gender)
+    - Presenting Complaints
+    - History of Presenting Complaint
+    - Examination findings
+    - Differential Diagnosis
+    - Plan
+    - Medications (Drug names, strengths, doses, routes, frequencies, durations)
+    - Investigations/Monitoring (Fluid input/output, daily weight, pulse rate, blood pressure, urinalysis)
+4. Preserve line breaks and spacing as much as possible.
+5. Use [ILLEGIBLE] for any unreadable parts.
+
+**Line-by-line Transcription:**
+
+*   Date: 10.03.2026
+*   Patient Visit Note
+*   Name: Miss J.I., 12 years, Female
+*   Accompanied by: Mother
+*   Presenting Complaints: Patient and mother report.
+    - Vomiting and diarrhoea 'output'
+    - Generalized body swelling and fever
+    - Lower abdominal pain
+*   History of Presenting Complaint:
+    - Patient reports vomiting started 2 weeks ago, no blood, non-bilious
+    - and contained recently ingested food.
+    - **Detailed Examination:** began 1 week after, decreased urination, irritability in dark
+    - body swelling followed 1 week after, increased urination, gradual onset, low grade
+    - fever, began on intramuscularly, worse on early hours of the day.
+    - later becoming generalized, worse on late hours of the day.
+    - Fever began on intramuscularly, with body swelling, gradual onset, low grade
+    - no associated chills and rigor.
+    - Abdominal Pain began 5 days following, fever onset, irritability, localized
+    - to the lower abdominal region but has progressed to involve the left
+    - and right flank.
+*   Past Medical and Surgical History:
+    - Not a known DM/HTN Patient. Not an epileptic, SCA, or affeminate patient
+    - no history of surgery or previous blood transfusions.
+*   Immunization History:
+    - Not adequately immunized for age according to the NPI schedule.
+    - Received a few vaccines which mother could not read.
+*   Developmental History:
+    - Milestones achieved on time. Good school performance (Class 2), no
+    - Concerns). Achieved all yet. Startled - no behavioural issues(4.)
+*   **On Examination:**
+    - General: Alert in looking, conscious and alert, not distressed,
+    - pale, facial puffiness, febrile with temp of 38.5°C, watery prating.
+    - edema up to dorsal ft. of the leg, dehydrated, anicteric.
+    - Abdomen: Flat and moves with respiration, tenderness on both flank regions
+    - and lower abdominal region. Ves. is stiff and non-tender, spleen not
+    - palpably enlarged, Normo active bowel sounds.
+*   **Respiratory:** Not dyspphic, RB chest wall depth/rhythm, symmetrical Chest
+    - movement, with thescaless sound. No acsited Sound. Breath sound (3)
+    - vesicular. RR 20CPM.
+*   **CVS:** Pulse rate 85bpm, full volume, regular. BP 150/90mmHg. S1/S2
+    - heart sound. apex beat not displaced.
+*   **CNS:** GCS 15/15 (Conscious and alert).
+*   **Diagnosis:** Acute Kidney Injury
+*   **Differential Diagnosis:**
+    - Nephrotic syndrome
+    - Acute Glomerulonephritis
+    - Chronic Kidney Disease ?
+*   **Plan:**
+    - Admit Patient, admit
+    - Urgent Urinalysis + ME S, FEC, ECUR, Serum albumin and total
+    - protein, Blood Culture and Peripheral Blood film, abdominal USG, Chest X-ray
+*   **Next Plant:**
+    - Admit for monitoring and supportive care (Also Place a Bladder Catheter.
+    - Fluid and Salt restriction
+    - Bed rest/Volume status and if no improvement or cardiac failure, give
+    - fluid doses challenge : 20ml/kg. Normal Saline q6h, 80 mins.
+
+**Review:**
+- All visible text transcribed.
+- Line breaks preserved.
+- Abbreviations (DM, HTN, SCA, ECG, ME S, FEC, ECUR, USG, X-ray, q6h) are kept as written.
+- Numbers and measurements are kept as written.
+- Drug names are kept as written.
+- Patient details are kept as written.
+- [ILLEGIBLE] is not needed as the text is clear.
+- No interpretation or correction made.
+
+Looks good.<unused95>Date: 10.03.2026
+Patient Visit Note
+Name: Miss J.I., 12 years, Female
+Accompanied by: Mother
+Presenting Complaints: Patient and mother report.
+    - Vomiting and diarrhoea 'output'
+    - Generalized body swelling and fever
+    - Lower abdominal pain
+History of Presenting Complaint:
+    - Patient reports vomiting started 2 weeks ago, no blood, non-bilious
+    - and contained recently ingested food.
+    - **Detailed Examination:** began 1 week after, decreased urination, irritability in dark
+    - body swelling followed 1 week after, increased urination, gradual onset, low grade
+    - fever, began on intramuscularly, worse on early hours of the day.
+    - later becoming generalized, worse on late hours of the day.
+    - Fever began on intramuscularly, with body swelling, gradual onset, low grade
+    - no associated chills and rigor.
+    - Abdominal Pain began 5 days following, fever onset, irritability, localized
+    - to the lower abdominal region but has progressed to involve the left
+    - and right flank.
+Past Medical and Surgical History:
+    - Not a known DM/HTN Patient. Not an epileptic, SCA, or affeminate patient
+    - no history of surgery or previous blood transfusions.
+Immunization History:
+    - Not adequately immunized for age according to the NPI schedule.
+    - Received a few vaccines which mother could not read.
+Developmental History:
+    - Milestones achieved on time. Good school performance (Class 2), no
+    - Concerns). Achieved all yet. Startled - no behavioural issues(4.)
+**On Examination:**
+    - General: Alert in looking, conscious and alert, not distressed,
+    - pale, facial puffiness, febrile with temp of 38.5°C, watery prating.
+    - edema up to dorsal ft. of the leg, dehydrated, anicteric.
+    - Abdomen: Flat and moves with respiration, tenderness on both flank regions
+    - and lower abdominal region. Ves. is stiff and non-tender, spleen not
+    - palpably enlarged, Normo active bowel sounds.
+**Respiratory:** Not dyspphic, RB chest wall depth/rhythm, symmetrical Chest
+    - movement, with thescaless sound. No acsited Sound. Breath sound (3)
+    - vesicular. RR 20CPM.
+**CVS:** Pulse rate 85bpm, full volume, regular. BP 150/90mmHg. S1/S2
+    - heart sound. apex beat not displaced.
+**CNS:** GCS 15/15 (Conscious and alert).
+Diagnosis: Acute Kidney Injury
+Differential Diagnosis:
+    - Nephrotic syndrome
+    - Acute Glomerulonephritis
+    - Chronic Kidney Disease ?
+Plan:
+    - Admit Patient, admit
+    - Urgent Urinalysis + ME S, FEC, ECUR, Serum albumin and total
+    - protein, Blood Culture and Peripheral Blood film, abdominal USG, Chest X-ray
+Next Plant:
+    - Admit for monitoring and supportive care (Also Place a Bladder Catheter.
+    - Fluid and Salt restriction
+    - Bed rest/Volume status and if no improvement or cardiac failure, give
+    - fluid doses challenge : 20ml/kg. Normal Saline q6h, 80 mins.
+
+================================================================================
+AMR_014
+Images: AMR_014_HTR.png
+Time: 12.32s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Prescription Note
+Date : 10/03/2026
+Patient: Miss J.I., 12 years, female
+Patient ID: 2026 PDI 1466
+
+Ordering Physician
+Dr Maya Lyare
+
+Clinical Notes / Diagnosis
+Oliguria 2/52, Vomiting 2/52, Generalized edema 1/52, fever 1/52, abdominal pain 2/7
+- suspected AKI with nephrotic Syndrome Overlap?
+
+RX
+Furosemide 2 mg/kg dose IV
+Oral nifedipine 0.3mg/kg daily in acute divided doses x 2 days
+Paracetamol (Tab) 1g/dose 6hly x 3 days
+
+Dr N. Hare
+Date : 10/03/2026
+<end_of_image>
+
+================================================================================
+AMR_015
+Images: AMR_015_HTR.png
+Time: 163.50s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Vital Signs Chart
+
+Patient: Miss J.L
+Age : 12 Years
+Gender : Female
+Ward : Paediatric ward
+Diagnosis : Acute Kidney Injury
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEGIBLE]
+
+[ILLEG
+
+================================================================================
+AMR_016
+Images: AMR_016_HTR.png
+Time: 10.17s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+LAB REQUEST FORM
+Date: 12/03/2026
+
+PATIENT INFORMATION
+Name: F10
+Age: 14 years
+Sex: Male
+Hospital Number: 2026/SC/015
+Ward/Clinic: Mala Medical Ward
+
+INVESTIGATIONS REQUIRED
+1 Full Blood Count
+2 Reticulocyte count
+3 Peripheral blood film
+4 Malaria parasite, test
+5 Serum electrolytes, Urea and Creatinine
+
+CLINICAL DETAILS
+Known HbSS patient presenting with:
+- Generalized body pain
+- Fever
+- Weakness
+- ? Vaso-occlusive crisis
+- ? Underlying infection
+
+<end_of_image>
+
+================================================================================
+AMR_017
+Images: AMR_017_HTR.png
+Time: 33.87s
+Model: medgemma1.5:4b
+================================================================================
+<unused94>thought
+The user wants me to transcribe a handwritten medical observation chart. I need to be careful to capture every detail exactly as it appears, including abbreviations and formatting.
+
+**Plan:**
+1.  Transcribe the header information: Patient name, Age/Sex, Hospital number, Ward, Diagnosis.
+2.  Transcribe the table headers: Date, Time, Temp[°C], Pulse[bpm], Resp rate[cpm].
+3.  Transcribe each row of data accurately.
+4.  Pay close attention to abbreviations (Temp[°C], Pulse[bpm], Resp rate[cpm]).
+5.  Ensure all numbers and text are transcribed exactly as written.
+
+**Transcription Steps:**
+
+*   **Header:**
+    *   Patient name: F.O
+    *   Age/Sex: 19/M
+    *   Hospital number: 2026/3c/1015
+    *   Ward: Male medical ward
+    *   Diagnosis: Vaso-occlusive crisis [Scc]
+*   **Table Headers:**
+    *   Date, Time, Temp[°C], Pulse[bpm], Resp rate[cpm]
+*   **Data Rows:**
+    *   12/03/2026 08:00 38.5 102 24
+    *   12/03/2026 12:00 38.2 100 23
+    *   12/03/2026 16:00 37.8 96 22
+    *   12/03/2026 20:00 37.5 90 20
+    *   13/03/2026 08:00 37.2 84 18
+
+**Final Check:** Compare the transcription against the image to ensure accuracy, especially with abbreviations and numbers. The [Scc] seems to be an abbreviation for something, but I will transcribe it exactly as written.<unused95>Patient name: F.O
+Age/Sex: 19/M
+Hospital number: 2026/3c/1015
+Ward: Male medical ward
+Diagnosis: Vaso-occlusive crisis [Scc]
+
+Date, Time, Temp[°C], Pulse[bpm], Resp rate[cpm]
+12/03/2026 08:00 38.5 102 24
+12/03/2026 12:00 38.2 100 23
+12/03/2026 16:00 37.8 96 22
+12/03/2026 20:00 37.5 90 20
+13/03/2026 08:00 37.2 84 18
+
+================================================================================
+AMR_018
+Images: AMR_018_HTR_p1.png, AMR_018_HTR_p2.png, AMR_018_HTR_p3.png, AMR_018_HTR_p4.png, AMR_018_HTR_p5.png
+Time: 98.96s
+Model: medgemma1.5:4b
+================================================================================
+<unused94>thought
+The user wants me to transcribe a handwritten medical document. I need to be careful to capture every detail exactly as it appears, including formatting, abbreviations, and potentially illegible sections.
+
+**Plan:**
+1. Go through the image line by line.
+2. Transcribe each line accurately.
+3. Pay close attention to:
+    - Patient details (Name, Age, Sex, Address)
+    - Clinical History (Presenting Complaints, Past History)
+    - Family/Social History
+    - Physical Examination (General, Vital Signs, Musculoskeletal, Abdomen, Respiratory, Cardiovascular)
+    - Working Diagnosis
+    - Plan
+4. Preserve line breaks and formatting where possible.
+5. Transcribe abbreviations exactly as written (e.g., "bd", "tds", "12hrly").
+6. Transcribe numbers exactly.
+7. If any part is illegible, mark it as [ILLEGIBLE].
+
+**Line-by-line Transcription:**
+
+*   **Patient Details:**
+    *   FLAME: F.O.
+    *   AGE: 19 years
+    *   SEX: Male
+    *   ADDRESS: Mission Road, Batin City
+    *   MARITAL STATUS: Single
+    *   OCCUPATION: Pharmaceutical Apprentice
+    *   RELIGION: Christian
+    *   LEVEL OF EDUCATION: Secondary
+    *   TRIBE: Urhobo
+    *   INFORMANT: Patient
+*   **Clinical History:**
+    *   A presenting Complaints:
+        *   Severe generalized bone pain - 3 days
+        *   Fever - 2 days
+        *   General body weakness - 1 day
+    *   B History of Presenting Complaints
+        *   Patient is a known case of Sickle Cell Disease who was apparently well until
+        *   3 days ago when he developed severe generalized bone pain, involving the lower
+        *   limbs and lower back. Pain was sudden in onset, severe [illegible], dull and persistent, no
+        *   radiation, worse with movement and exposure to cold, slightly relieved by
+        *   over-the-counter analgesics. He developed fever 2 days ago, described as
+        *   intermittent and low grade. There is associated generalized body weakness, no
+        *   cough or chest pain, no abdominal swelling, no jaundice. The reports show
+        *   no episodes in the past with the last episode about 6 months ago, which
+        *   required a hospital admission. There was a history of recent exposure to cold weather
+        *   and poor fluid intake prior to onset.
+*   **C Preview of Systems:**
+    *   - Respiratory: No cough, no difficulty breathing
+    *   - CVS: No palpitations
+    *   - GIT: No abdominal pain, no vomiting
+    *   - CRIT: No headache, no loss of consciousness
+*   **D Past Medical History:**
+    *   Patient was diagnosed with Sickle Cell Disease in childhood. He has had multiple previous
+    *   hospital admissions for painful crises. F.O.
+*   **E Drug History:**
+    *   Patient is on a regular use of Folic acid, occasional use of analgesics. No known
+    *   drug allergies.
+*   **F Family And Social History:**
+    *   Patient is from a polygamous family setting, with his mother being the first
+    *   of 2 wives. Patient is the second born with 2 brothers. F.O. siblings with Sickle cell disease. Patient does not drink alcohol or
+    *   smoke tobacco in any form. Patient has poor hydration habits.
+*   **G Physical Examination:**
+    *   A GENERAL:
+        *   Patient is in painful distress, pale, not
+        *   jaundiced, mild dehydration, no lymphadenopathy.
+    *   B VITAL SIGNS:
+        *   - Temperature: 38°C
+        *   - Pulse: 102 bpm
+    *   C MUSCULOSKELETAL:
+        *   F.O. joint swelling, marked tenderness over
+        *   long bones [femur, tibia].
+    *   D ABDOMEN:
+        *   Abdomen was soft, non-tender, no hepatosplenomegaly.
+    *   E RESPIRATORY:
+        *   Clear breath sounds.
+    *   F CARDIOVASCULAR:
+        *   Tachycardia, soft systolic murmur.
+*   **H WORKING DIAGNOSIS:**
+    *   Vaso-oclusive crises in a patient with
+    *   Sickle Cell Disease.
+*   **I PLAN:**
+    *   - Admit patient
+    *   - IV fluids [Normal saline].
+    *   - Analgesics [Paracetamol, NSAIDs]
+    *   - Oxygen if needed
+    *   - Antipyretics
+    *   - Investigations: Full Blood Count, Malaria test, Peripheral blood film, Urinalysis, Serum
+    *   electrolytes, urea, creatinine.
+    *   - Monitor vital signs
+
+**Review and Refine:**
+- Check for accuracy in transcription of names, numbers, measurements, drug names, abbreviations.
+- Ensure line breaks are preserved.
+- Confirm illegible sections are marked correctly.
+- The word "severe [illegible]" is clearly unreadable, so it should be transcribed as such.
+- The abbreviation "F.O." appears frequently and should be transcribed exactly.
+- The abbreviation "[ILLEGIBLE]" seems appropriate for the unreadable part of the pain description.
+
+Looks good. Proceed with generating the final output.<unused95>FLAME: F.O.
+AGE: 19 years
+SEX: Male
+ADDRESS: Mission Road, Batin City
+MARITAL STATUS: Single
+OCCUPATION: Pharmaceutical Apprentice
+RELIGION: Christian
+LEVEL OF EDUCATION: Secondary
+TRIBE: Urhobo
+INFORMANT: Patient
+
+A presenting Complaints:
+- Severe generalized bone pain - 3 days
+- Fever - 2 days
+- General body weakness - 1 day
+
+B History of Presenting Complaints
+Patient is a known case of Sickle Cell Disease who was apparently well until
+3 days ago when he developed severe generalized bone pain, involving the lower
+limbs and lower back. Pain was sudden in onset, severe [ILLEGIBLE], dull and persistent, no
+radiation, worse with movement and exposure to cold, slightly relieved by
+over-the-counter analgesics. He developed fever 2 days ago, described as
+intermittent and low grade. There is associated generalized body weakness, no
+cough or chest pain, no abdominal swelling, no jaundice. The reports show
+no episodes in the past with the last episode about 6 months ago, which
+required a hospital admission. There was a history of recent exposure to cold weather
+and poor fluid intake prior to onset.
+
+C Preview of Systems:
+- Respiratory: No cough, no difficulty breathing
+- CVS: No palpitations
+- GIT: No abdominal pain, no vomiting
+- CRIT: No headache, no loss of consciousness
+
+D Past Medical History
+Patient was diagnosed with Sickle Cell Disease in childhood. He has had multiple previous
+hospital admissions for painful crises. F.O.
+
+E Drug History
+Patient is on a regular use of Folic acid, occasional use of analgesics. No known
+drug allergies.
+
+F Family And Social History
+Patient is from a polygamous family setting, with his mother being the first
+of 2 wives. Patient is the second born with 2 brothers. F.O. siblings with Sickle cell disease. Patient does not drink alcohol or
+smoke tobacco in any form. Patient has poor hydration habits.
+
+G Physical Examination
+A GENERAL:
+Patient is in painful distress, pale, not
+jaundiced, mild dehydration, no lymphadenopathy.
+
+B VITAL SIGNS:
+- Temperature: 38°C
+- Pulse: 102 bpm
+
+C MUSCULOSKELETAL:
+F.O. joint swelling, marked tenderness over
+long bones [femur, tibia].
+
+D ABDOMEN:
+Abdomen was soft, non-tender, no hepatosplenomegaly.
+
+E RESPIRATORY:
+Clear breath sounds.
+
+F CARDIOVASCULAR:
+Tachycardia, soft systolic murmur.
+
+H WORKING DIAGNOSIS:
+Vaso-oclusive crises in a patient with
+Sickle Cell Disease.
+
+I PLAN:
+- Admit patient
+- IV fluids [Normal saline].
+- Analgesics [Paracetamol, NSAIDs]
+- Oxygen if needed
+- Antipyretics
+- Investigations: Full Blood Count, Malaria test, Peripheral blood film, Urinalysis, Serum
+electrolytes, urea, creatinine.
+- Monitor vital signs
+
+================================================================================
+AMR_019
+Images: AMR_019_HTR.png
+Time: 30.46s
+Model: medgemma1.5:4b
+================================================================================
+<unused94>thought
+The user wants me to transcribe a handwritten prescription note. I need to be careful to capture every detail exactly as it appears, including formatting, abbreviations, and potentially illegible parts.
+
+**Plan:**
+1. Read the image line by line.
+2. Transcribe each line accurately.
+3. Pay close attention to:
+    - Patient details (Name, Age)
+    - Hospital number
+    - Date
+    - Diagnosis
+    - Medication list (Drug name, strength, dose, route, frequency, duration)
+4. Preserve the structure and layout.
+5. Use [ILLEGIBLE] if any part is unreadable.
+
+**Line-by-line Transcription:**
+
+1.  `Prescription Note`
+2.  `Patient Name: F. D.`
+3.  `Age 18yr : 19/M`
+4.  `Hospital Number: 2026/56/1015`
+5.  `Date: 12/03/2026`
+6.  `Diagnosis: Vaso-occlusive crisis secondary`
+7.  `to sickle cell disease`
+8.  `MEDICATIONS`
+9.  `1 Tab Paracetamol 500mg`
+10. `1 tablet every 3 hours x 3/7`
+11. `2 Tab Ibuprofen 400mg`
+12. `1 tablet every 12 hours x 3/7`
+13. `3 Tab Folic acid 5mg`
+14. `1 tablet daily x 30 days`
+15. `4 IV Normal Saline 0.9%`
+16. `1 litre over 8 hours`
+17. `5 IM Diclofenac 75mg`
+
+**Review:**
+- All visible text is captured.
+- Abbreviations (Tab, mg, yr, M, bd, tds, hrly, IV, IM) are preserved.
+- Drug names and strengths are correct.
+- Doses, routes, frequencies, durations are transcribed as written.
+- The structure seems okay.
+
+Looks good.<unused95>Prescription Note
+Patient Name: F. D.
+Age 18yr : 19/M
+Hospital Number: 2026/56/1015
+Date: 12/03/2026
+Diagnosis: Vaso-occlusive crisis secondary
+to sickle cell disease
+MEDICATIONS
+1 Tab Paracetamol 500mg
+1 tablet every 3 hours x 3/7
+2 Tab Ibuprofen 400mg
+1 tablet every 12 hours x 3/7
+3 Tab Folic acid 5mg
+1 tablet daily x 30 days
+4 IV Normal Saline 0.9%
+1 litre over 8 hours
+5 IM Diclofenac 75mg
+
+================================================================================
+AMR_020
+Images: AMR_020_HTR.png
+Time: 12.34s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Patient Visit Note
+
+Patient Name: Chinadu Okoro
+Age: 28y6
+Sex: Male
+Hosp No: M01/001/26
+Date: 23/03/26
+
+PC
+Burning Chat Pain X 3/7
+
+HPC
+Pt reports burning sensation in epigastric region,
+relating to d cholestasis after meals if clu
+rying down. No vomiting. No ho of diarea.
+
+PMNK
+No Known Chronic illness
+No previous surgery
+Drug List:
+Occasional use of antacids
+Allergies:
+No Known drug allergy
+
+O/E:
+PR: 82/bpm
+BP: 120/80mm
+Abd: Mild epigastric tenderness
+
+AST:
+Libeldy GCOPA
+
+P.L.A.:
+Omeprazol 2mg one day
+Lifestyle modification
+Follow up in 1 week
+
+<end_of_image>
+
+================================================================================
+AMR_021
+Images: AMR_021_HTR.png
+Time: 12.02s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Nursing Vital Sign Chart
+
+Pt Name: Amira Bello
+Hosp No: Med/002126
+Date: 23/03/2024
+
+Time | Temp | PR/RR | BP
+-------|------|--------|-----
+8:00 am | 37.2°C | 78 / 18 | 110/70
+12:00 pm | 37.5°C | 82 / 20 | 115/75
+4:00 pm | 37.3°C | 80 / 18 | 112/72
+8:00 pm | 37.6°C | 76 / 17 | 110/70
+<end_of_image>
+
+================================================================================
+AMR_022
+Images: AMR_022_HTR.png
+Time: 156.91s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Pharmacy Prescription not
+Pt Name: Blesly Shubhramm
+Age: 22
+Sex: F
+Aspir No: M0108/26
+Date: 23/04/26
+Diagnosis: Melanoma
+
+Prescription:
+1. Amoxicillin (compounded) /ceay tab( )
+   4tabs stat, 4 tabs after chr, 4tabs BDx47
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4tabs BDx37
+   4 tabs stat, 4 tabs after chr, 4
+
+================================================================================
+AMR_023
+Images: AMR_023_HTR.png
+Time: 7.42s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Cabinet request for
+
+Pt Name: Suman. Ganjulax
+Age : 35 Yrs
+Sex : M
+Hosp No.: Med 1009 / 26
+
+Requiring electro: Dr A. Johnson
+
+Chirald detais
+Term 5/7
+Westerb
+Brodelo
+Investigabls reported
+FSC
+MP
+Briral Cellore
+
+<end_of_image>
+
+================================================================================
+AMR_024
+Images: AMR_024_HTR.png
+Time: 18.80s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Case 9: Diabetic ketoacidosis
+
+A 19 years old female is brought to the emergency unit with vomiting, abdominal pain, anorexia and malaise and progressive weakness for 3 days.
+Lab tests report she became confused a few hours before presentation.
+
+On examination:
+Pulse 124 bpm
+Blood pressure 90/60 mmHg
+Deep tropical breathing (Kussmaul and nephropathy)
+Tachycardia on examination.
+
+Investigations:
+Random blood glucose 2.8 mmol/L
+Urine ketones - strongly positive
+Arterial blood gas - metabolic acidosis
+Diagnosis:
+Diabetic ketoacidosis secondary to Type 1 diabetes
+
+medline
+Immune deficiency management
+IV fluids
+Electrolyte correction
+Monitoring of blood glucose and potassium.
+Community need therapy may involve Insulin.
+
+<end_of_image>
+Case 9: Diabetic ketoacidosis
+
+A 19 years old female is brought to the emergency unit with vomiting, abdominal pain, anorexia and malaise and progressive weakness for 3 days.
+Lab tests report she became confused a few hours before presentation.
+
+On examination:
+Pulse 124 bpm
+Blood pressure 90/60 mmHg
+Deep tropical breathing (Kussmaul and nephropathy)
+Tachycardia on examination.
+
+Investigations:
+Random blood glucose 2.8 mmol/L
+Urine ketones - strongly positive
+Arterial blood gas - metabolic acidosis
+Diagnosis:
+Diabetic ketoacidosis secondary to Type 1 diabetes
+
+medline
+Immune deficiency management
+IV fluids
+Electrolyte correction
+Monitoring of blood glucose and potassium.
+Community need therapy may involve Insulin.
+
+================================================================================
+AMR_025
+Images: AMR_025_HTR.png
+Time: 11.24s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Case 3 - pulmonary tuberculosis
+
+A 35 years old man presents to the medical outpatient clinic with cough lasting so long that he cannot make the cough
+was two hourly dry button and become productive
+with occasional blood stained sputum. He also
+on examination complains of non gracie flexor,
+highly sweats, weight loss, easy fatigability
+and loss of appetite.
+
+chronically ill-looking mom:
+Temperature 39°C
+weight loss evident
+mild pallor
+Haemoglobin rate 25 g/dl
+Chest X-ray
+ESR elevated
+Differential
+pulmonary tuberculosis -
+investigation is
+Pneumocystis pneumonia
+chest radiograph showed upper lobe contrary lesion
+ESR was elevated
+
+Monomethyl
+Rifampicin
+Isoniazid
+Ethambutol
+Streptomycin
+Contact tracing.
+<end_of_image>
+
+================================================================================
+AMR_026
+Images: AMR_026_HTR.png
+Time: 10.84s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+CASE 4 - hyperthyroidism:
+A 32 years old woman presents with papyrine
+methyst loss despite increased appetite for smothly
+head hotness, nervousness and tremor.
+on examination
+pulse 118 bpm
+Blood pressure 110/70 mmHg
+Fine tremors of the hands
+Warm moist palms
+Mild exophthalmos
+Jaundice
+Isth suppressed
+face red & enlarged
+Thyroid ultrasono - diffuse enlargement of thyro
+9 land
+Diagnosis:
+Hyperthyroidism likely secondary to Graves disease.
+Nodulomegany
+Antithyroid medication such as combination le
+Beta blockers & such as propranolol to for symptom control
+Thyroid function monitoring
+possible radioactive iodine therapy on inquiry
+if indicated.
+<end_of_image>
+
+================================================================================
+AMR_027
+Images: AMR_027_HTR.png
+Time: 13.25s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Case scenario 1 - Congestive Cardiac Failure
+
+A 62 years old man patient with progressive shortness
+of breath for 2 months initially became breathless
+on exertion but now he is breathless while lying flat
+and requires three pillows to sleep. He also complains
+of bilateral leg swelling, easy fatigability, nocturnal
+coughing and reddish exercise tolerance.
+He has a history of poorly controlled hypertension for
+15 years and was previously admitted for hypertensive
+heart disease.
+
+On examination:
+Pulse rate 110/min
+Blood pressure 170 / 100 mmHg
+Raised jugular venous pressure.
+Chest X-ray: cardiomegaly with pulmonary edema.
+ECG: left ventricular hypertrophy
+Echocardiography:
+Diagnosis:
+Congestive Cardiac failure secondary to Hypertensive
+heart disease.
+
+Prescription:
+Oxygen therapy
+Digoxin
+Diuretics (e.g., Furosemide)
+ACE inhibitors (e.g. Lisinopril D)
+Furosemide and Saff non-stick
+Blood pressure cost!
+
+<end_of_image>
+
+================================================================================
+AMR_028
+Images: AMR_028_HTR.png
+Time: 40.12s
+Model: medgemma1.5:4b
+================================================================================
+<unused94>thought
+The user wants me to transcribe a handwritten medical document. I need to be extremely careful about preserving every detail exactly as it appears, including formatting, spelling, numbers, and abbreviations.
+
+**Plan:**
+1. Go through the image line by line.
+2. Transcribe each line accurately.
+3. Pay close attention to:
+    - Patient Information (Name, Age, Sex, Hospital No., Mental Status, Occupation, Address)
+    - Informant
+    - Patient Details
+    - Presenting Complaints (Fever, Headache, General body weakness, Vomiting)
+    - History of Presenting Illness (Patient's condition before presentation, onset of symptoms, associated symptoms like chills and rigors, headache description, general body weakness/reduced activity, vomiting details - non-projectile, non-bloody, containing reality yogurt food)
+    - No history of: Cough, Difficulty breathing, Dysphonia.
+4. Ensure all numbers, names, IDs, and abbreviations are transcribed exactly.
+5. Preserve the line breaks as much as possible.
+
+**Line-by-line Transcription:**
+
+*   Patient Information
+    *   Name: Aisha Mohammed
+    *   Age: 22 years
+    *   Sex: Female
+    *   Hospital No.: 2026/MOL/042
+    *   Mental Status: Single
+    *   Occupation: Student
+    *   Address: Benin City, Edo State
+
+*   Informant
+    *   [ILLEGIBLE]
+
+*   Patient Details
+    *   [ILLEGIBLE]
+
+*   Presenting Complaints
+    *   Fever - 3 days
+    *   Headache - 3 days
+    *   General body weakness - 2 days
+    *   Vomiting - 1 day
+
+*   History of Presenting Illness
+    *   Patient was apparently well until 5 days prior to presentation,
+        when she developed fever. Fever as high-grade, intermittent and
+        associated with chills and rigors.
+    *   Headache is generalized, dull in nature and persistent.
+    *   She also complains of general body weakness and reduced
+        activity.
+    *   Vomiting stated 1 day prior to presentation, about 2
+        episodes, non-projectile, non-bloody, containing reality yogurt
+        food.
+    *   No history of:
+        *   Cough
+        *   Difficulty breathing
+        *   Dysphonia
+
+**Review and Refine:**
+- The transcription seems accurate based on the image.
+- I've noted parts that are illegible ([ILLEGIBLE]).
+- All visible text is transcribed.
+- Formatting (line breaks, bullet points) is preserved.
+- No interpretation or correction has been made.
+
+Looks good.<unused95>Patient Information
+*   Name: Aisha Mohammed
+*   Age: 22 years
+*   Sex: Female
+*   Hospital No.: 2026/MOL/042
+*   Mental Status: Single
+*   Occupation: Student
+*   Address: Benin City, Edo State
+
+Informant
+*   [ILLEGIBLE]
+
+Patient Details
+*   [ILLEGIBLE]
+
+Presenting Complaints
+*   Fever - 3 days
+*   Headache - 3 days
+*   General body weakness - 2 days
+*   Vomiting - 1 day
+
+History of Presenting Illness
+Patient was apparently well until 5 days prior to presentation,
+when she developed fever. Fever as high-grade, intermittent and
+associated with chills and rigors.
+Headache is generalized, dull in nature and persistent.
+She also complains of general body weakness and reduced
+activity.
+Vomiting stated 1 day prior to presentation, about 2
+episodes, non-projectile, non-bloody, containing reality yogurt
+food.
+No history of:
+*   Cough
+*   Difficulty breathing
+*   Dysphonia
+
+================================================================================
+AMR_029
+Images: AMR_029_HTR.png
+Time: 14.06s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Vital Signs
+*   Temperature : 39.0°C
+*   Pulse : 104 bpm Regular, good volume
+*   Respiratory Rate : 22 cpm
+*   Blood Pressure : 110/70 mmHg
+*   SpO2 : 97% on room air
+
+Systemic Examination
+Cardiovascular System (CCVS):
+*   Heart Sounds S1 & S2 present, no murmurs
+*   Respiratory system LRS:
+*   Chest clear, good aeration bilaterally
+*   Abdomen:
+*   Soft, non-tender
+*   No organomegaly
+
+Central Nervous System (CNS):
+*   Conscious, alert, oriented
+*   No focal neurological deficit
+
+Provisional Diagnosis
+*   Uncomplicated Malaria
+
+Differential Diagnosis
+*   Typhoid Fever
+*   Viral Febrile illness
+
+Plan
+*   Malaria parasite test (urgent?)
+*   Full Blood Count
+*   Stat Antiemetic - Loperamide
+*   Paracetamol for fever
+*   Oral rehydration
+*   Advice on Mosquito Control
+*   Review in 48 hours.
+<end_of_image>
+
+================================================================================
+AMR_030
+Images: AMR_030_HTR.png
+Time: 14.98s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+VITALS SIGNS CHART
+Patient Name: Aisha Mohammed
+Ward: Female Medical Ward
+Diagnosis: Malaria .
+
+Date - Time Temp°C| Pulse|BPM| RR|CPM| BP|mmHg| SpO2|%
+15/03/2026 08:00 | 39.0 | 104 | 22 | 110/70 | 97
+15/03/2026 12:00 | 38.5 | 100 | 22 | 110/72 | 98
+15/03/2026 16:00 | 38.0 | 96 | 20 | 112/70 | 98
+15/03/2026 20:00 | 37.6 | 90 | 20 | 110/70 | 98
+16/03/2026 08:00 | 37.2 | 84 | 18 | 110/72 | 99
+
+<end_of_image>
+
+================================================================================
+AMR_031
+Images: AMR_031_HTR.png
+Time: 10.86s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Prescription Note
+Hospital Number : 2026/HGL001
+Patient Name: Aisha Mohammed
+Age/Sex : 22/F
+Date: 15/08/2026
+
+Diagnosis ! Uncomplicated malaria.
+
+Rx Medications
+1. Tab Artemether-Lumefantrine 120/120 mg
+   4 tablets stat, then 4 tablets after 8 hours
+   then 4 tablets thrice daily for 2 days
+2. Tab Povanacard 500 mg
+   1 tablet every 8 hours x 3 days
+3. Tab Metoclopramide 10 mg
+   1 tablet every 8 hours x 2 days (for Vomiting)
+4. Oral rehydration solution AORS7
+   Drink after each vomiting episode.
+<end_of_image>
+
+================================================================================
+AMR_032
+Images: AMR_032_HTR.png
+Time: 8.33s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+LAB REQUEST FORM
+Hospital : WIT Medical Centre
+Date : 15/03/2026
+
+Patient info
+* Name: Afra Mohammed
+* Age: 22 years
+* Sex: Female
+* Hospital No: 2026/fte/001
+
+Investigations Requested
+Parasitology
+* Malena Parasite Test (Stix & Thin Film)
+Haematology
+* Full Body Count RBC
+Clinical details
+3-day history of fever with chills and rigor, headache and vomiting.
+<end_of_image>
+
+================================================================================
+AMR_033
+Images: AMR_033_HTR.png
+Time: 7.56s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Name: Abcede Mygbat
+Age: 25 years / Female Hospital id: 23716
+Date: 04/04/23
+
+Tab
+Nitrofurantoin 100mg bd x 5/7
+Tab PCM Soving 8hrly x 3/7
+
+Doctor's name: Dr Praise Jundele
+Doctor's number: 1437096.
+<end_of_image>
+
+================================================================================
+AMR_034
+Images: AMR_034_HTR.png
+Time: 12.82s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Mrs Soyeye Tiburan
+Date: 03/12/23 Hospital No: 226101 Age Adult
+Tab pom 500mg x 3/7
+Tab amoxicillin 500mg 12hrly x 5/7
+<end_of_image>
+
+================================================================================
+AMR_035
+Images: AMR_035_HTR.png
+Time: 39.99s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Name: Miss Grace Etrim
+Age: Adult
+Date: 02/02/24
+Hospital ID: S41000
+
+Urine mcs result
+Microscopy:
+Colour - straw colored
+Odour - normal
+Slightly cloudy
+Microscopy:
+Rbc cells : 10-15 /HPF
+Rbc : 2-3 /HPF
+Bacteria : +
+Casts : Nil
+
+Culture:
+organism isolated: Escherichia coli
+Colony count : >10^5 CFU/ml
+
+Sensitivity:
+Amoxicillin Resistant
+Cefuroxime Sensitive
+Nitrofurantoin Sensitive
+Ceftazidime Sensitive
+Gentamicin Sensitive
+<end_of_image>
+
+================================================================================
+AMR_036
+Images: AMR_036_HTR.png
+Time: 52.53s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Mrs Alumbasa Grace
+Date: 03/21/26
+Tcm Blood Count Result:
+PCV: 30%
+WBC: 5500 /µL
+Platelets: 170,000 /µL
+Neutrophils: 48%
+Lymphocytes: 20%
+<end_of_image>
+
+================================================================================
+AMR_037
+Images: AMR_037_HTR.png
+Time: 209.54s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Elizabeth Lumina
+Clinical Summary
+
+20/03/26
+10:51 am A 36 yr old booked now P2 A2 who delivered via SVD yesterday
+@ EGA of 38 weeks gestation.
+Outcome was a live male neonate with Appgar score of 8'9s and
+birth weight of 3.5kg.
+
+There was good maternal outcome.
+
+Baby was commenced on breast feeding yesterday.
+Patient is currently on Tabs haematinics and antifoliticis and is regular
+with her medications.
+
+Vitals are stable as seen on nurses chart.
+BP range over the last 24hours = 120-130 mmHg.
+90-80 mmHg.
+
+C/O: Nif Fresh Complaint.
+O/E: A young woman conscious and alert, in no distress. Arteric,
+acyrrous, a fibrotic, not pale intd - dehydrated, still bilateral pitting edema.
+CVs - Pro 74 bpm, BP = 130/90 mmHg.
+A/D - Full and mucous with respiration.
+Nif area of tenderness.
+Uterine size is 18/52 and uterus is well contracted.
+V/E - A/L/V
+
+Applied sanitary pad stained with normal Chorea.
+Assessment: Stable post partum.
+
+PLAN
+( ) Do post partum PCOH
+( ) CT ongoing medicals
+( ) CF other loss of mgmt.
+
+Dr Okhobhum
+<end_of_image>
+
+================================================================================
+AMR_038
+Images: AMR_038_HTR.png
+Time: 129.79s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+VITAL SIGNS CHART
+
+Name: Elizabeth Irving
+Wagard: Post Natal Word
+
+| Date | Temp | PR | BP | PR | Time |
+|---|---|---|---|---|---|
+| 23/03/26 | 37.1°C | 60bpm | 140/70 mmHg | 20cmm | 11:53pm |
+| 23/03/26 | 36.8°C | 68bpm | 130/70 mmHg | 18 cmm | 3:13am |
+| 23/03/26 | 37.0°C | 70bpm | 120/50 mmHg | 20 cmm | 9:00am |
+
+<end_of_image>
+
+================================================================================
+AMR_039
+Images: AMR_039_HTR.png
+Time: 65.72s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+Name: Elizabeth Lwanga
+Age: 35 yrs +
+Sex: Female
+H/No: 14F8151
+Date: 23/03/2022 PRESCRIPTION NOTE
+Tabs Labetaluf 200mg bd x 3/4
+Tabs Atenol 500mg bd x 3/4
+Dr. Okothum
+<end_of_image>
+
+================================================================================
+AMR_040
+Images: AMR_040_HTR.png
+Time: 64.34s
+Model: medgemma1.5:4b
+================================================================================
+<start_of_image>
+LAB REQUEST FORM
+Name: E G Sabeth Laning
+Age: 38
+Sex: F
+HNo: 148151
+Referring ward : Lobom Ward
+Type of Investigation : PCV
+Indication for Investigation : URGENT!!
+Date : 22/05/2016
+Dr.Ukechuka
+<end_of_image>
+

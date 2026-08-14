@@ -218,10 +218,17 @@ class DocumentService:
 
     async def list_analyses(self, document_id: UUID, skip: int, limit: int):
         logger.info("Listing analyses for document", document_id=str(document_id), skip=skip, limit=limit)
-        await self.get_document(document_id)
+        document = await self.db.get(Document,document_id)
+        if not document:
+            raise HTTPException(
+                404,"Document not found"
+            )
         result = await self.db.execute(
             select(Analysis)
-            .where(Analysis.document_id == document_id)
+            .where(
+                Analysis.document_id == document_id,
+                Analysis.status != AnalysisStatus.DELETED
+            )
             .order_by(Analysis.created_at.desc())
             .offset(skip)
             .limit(limit)
@@ -273,6 +280,7 @@ class DocumentService:
             model_version=model_version,
             status=AnalysisStatus.ANALYZING
         )
+        document = await self.get_document(analysis.document_id)
 
         try:
             self.db.add(analysis)
@@ -303,7 +311,6 @@ class DocumentService:
                 detail=f"Failed to create analysis record: {type(e).__name__}",
             )
 
-        document = await self.get_document(analysis.document_id)
         if document.content_type in ("application/pdf", "image/png", "image/jpeg"):
             task = TaskEnvelope.for_analysis(
                 analysis_id=analysis.analysis_id,
@@ -333,9 +340,7 @@ class DocumentService:
         )
         analyses = result.scalars().all()
         if not analyses:
-            logger.warning("No analyses found for deletion", document_id=str(document_id))
-            raise HTTPException(404, "Document doesn't have any analyses")
-
+            return
         try:
             for analysis in analyses:
                 await self.db.delete(analysis)
