@@ -1,24 +1,10 @@
-"""
-Functions that talk to Ollama — no server, just a client module.
-
-Images may be passed as raw bytes, base64 strings, or FastAPI UploadFile
-objects (e.g. straight from an endpoint's `file: UploadFile` param).
-
-Usage:
-from app.core.ollama_client import chat, embed, generate
-
-await chat(model="llama3", messages=[{"role": "user", "content": "hi"}])
-
-# with an image, e.g. from a FastAPI endpoint:
-# async def route(file: UploadFile):
-#     await generate(model="llava", prompt="describe this", images=[file])
-"""
-
 import base64
+from io import BytesIO
 from typing import Any, AsyncIterator
 
 import httpx
 from fastapi import UploadFile
+from PIL import Image
 
 from app.core.config import settings
 from app.inference.types import ImageInput
@@ -32,23 +18,43 @@ OLLAMA_TIMEOUT = httpx.Timeout(
     pool=5.0,
 )
 
+# Target resolution for Vision-Language Models to reduce hallucinations
+TARGET_IMAGE_SIZE = (448, 448)
+
 
 def _url(path: str) -> str:
     return f"{settings.OLLAMA_URL.rstrip('/')}{path}"
 
 
+def _resize_and_encode(image_bytes: bytes) -> str:
+    """Resize image bytes to TARGET_IMAGE_SIZE and return base64 string."""
+    with Image.open(BytesIO(image_bytes)) as img:
+        # Convert to RGB to ensure compatibility across formats (PNG/JPEG)
+        img_resized = img.convert("RGB").resize(
+            TARGET_IMAGE_SIZE, Image.Resampling.LANCZOS
+        )
+        buffer = BytesIO()
+        img_resized.save(buffer, format="PNG")
+        return base64.b64encode(buffer.getvalue()).decode("utf-8")
+
+
 async def _to_base64(image: ImageInput) -> str:
-    """Normalize bytes / base64 str / UploadFile into a base64 string."""
+    """Normalize bytes / base64 str / UploadFile into a 448x448 base64 string."""
     if isinstance(image, UploadFile):
         data = await image.read()
-        return base64.b64encode(data).decode()
+        return _resize_and_encode(data)
 
     if isinstance(image, bytes):
-        return base64.b64encode(image).decode()
+        return _resize_and_encode(image)
 
     if isinstance(image, str):
-        # Assume it's already base64-encoded.
-        return image
+        # Decode base64 str, resize, and re-encode
+        try:
+            data = base64.b64decode(image)
+            return _resize_and_encode(data)
+        except Exception:
+            # Fallback if raw string cannot be parsed as base64 bytes
+            return image
 
     raise TypeError(f"Unsupported image type: {type(image)!r}")
 
@@ -115,9 +121,7 @@ async def chat(
 
     if not stream:
         try:
-            async with httpx.AsyncClient(
-                timeout=OLLAMA_TIMEOUT
-            ) as client:
+            async with httpx.AsyncClient(timeout=OLLAMA_TIMEOUT) as client:
                 resp = await client.post(
                     _url("/api/chat"),
                     json=payload,
@@ -134,9 +138,7 @@ async def chat(
     async def _iter() -> AsyncIterator[dict]:
         logger.debug("Starting Ollama chat stream", model=model)
         try:
-            async with httpx.AsyncClient(
-                timeout=OLLAMA_TIMEOUT
-            ) as client:
+            async with httpx.AsyncClient(timeout=OLLAMA_TIMEOUT) as client:
                 async with client.stream(
                     "POST",
                     _url("/api/chat"),
@@ -188,9 +190,7 @@ async def generate(
 
     if not stream:
         try:
-            async with httpx.AsyncClient(
-                timeout=OLLAMA_TIMEOUT
-            ) as client:
+            async with httpx.AsyncClient(timeout=OLLAMA_TIMEOUT) as client:
                 resp = await client.post(
                     _url("/api/generate"),
                     json=payload,
@@ -207,9 +207,7 @@ async def generate(
     async def _iter() -> AsyncIterator[dict]:
         logger.debug("Starting Ollama generate stream", model=model)
         try:
-            async with httpx.AsyncClient(
-                timeout=OLLAMA_TIMEOUT
-            ) as client:
+            async with httpx.AsyncClient(timeout=OLLAMA_TIMEOUT) as client:
                 async with client.stream(
                     "POST",
                     _url("/api/generate"),
@@ -250,9 +248,7 @@ async def embed(
     )
 
     try:
-        async with httpx.AsyncClient(
-            timeout=OLLAMA_TIMEOUT
-        ) as client:
+        async with httpx.AsyncClient(timeout=OLLAMA_TIMEOUT) as client:
             resp = await client.post(
                 _url("/api/embed"),
                 json=payload,

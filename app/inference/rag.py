@@ -121,6 +121,26 @@ class RAGService:
         async with AsyncSessionLocal() as db:
             service = RAGService(db=db)
 
+            # Small-talk guard
+            simple_greetings = {
+                "hi", "hello", "hey", "hey there", "hi there", "good morning",
+                "good afternoon", "good evening", "howdy", "yo", "sup"
+            }
+            normalized_query = query.strip().lower().rstrip("!.?")
+            if normalized_query in simple_greetings:
+                logger.info("Small talk detected, responding directly", chat_id=str(chat_id))
+                message = ChatMessage(
+                    message_id=uuid4(),
+                    chat_id=chat_id,
+                    role=MessageRole.ASSISTANT,
+                    content="Hello! I can help answer questions about your medical documents. Please attach a document and ask a medical question.",
+                    message_metadata={},
+                )
+                db.add(message)
+                await db.commit()
+                await db.refresh(message)
+                return
+
             query_embedding = await service.embed_query(query)
             context = await service.context_engine.build_context(
                 chat_id=chat_id,
@@ -131,7 +151,8 @@ class RAGService:
             prompt = await service.augment(query, context)
             await service.generate(chat_id, prompt)
             logger.info("RAG pipeline completed", chat_id=str(chat_id))
-
+            
+            
     @staticmethod
     async def getDocumentSummary(chat_id: UUID) -> list[ChatDocumentSummary]:
         logger.info("Fetching document summaries for chat", chat_id=str(chat_id))

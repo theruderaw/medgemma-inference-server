@@ -1734,13 +1734,33 @@
                 pollMessages(id);
             }
 
+            // Added helper to preserve chat input text and focus across re-renders
+            function renderChatDetailPreservingInput(chat, messages, docs, allDocs) {
+                const inputEl = View.$("#chatInput");
+                const wasFocused = document.activeElement === inputEl;
+                const currentValue = inputEl ? inputEl.value : "";
+
+                View.renderChatDetail(chat, messages, docs, allDocs);
+
+                // After re-render, restore input value and focus if it was focused
+                const newInputEl = View.$("#chatInput");
+                if (newInputEl) {
+                    newInputEl.value = currentValue;
+                    if (wasFocused) {
+                        newInputEl.focus();
+                        // Optionally move cursor to end
+                        newInputEl.setSelectionRange(newInputEl.value.length, newInputEl.value.length);
+                    }
+                }
+            }
+
             async function loadChatDetail(id) {
                 try {
                     const [chat, messages, docs] = await Promise.all([
                         Model.getChat(id), Model.listMessages(id), Model.listChatDocuments(id),
                     ]);
                     if (!Model.state.documents.length) await refreshDocuments();
-                    View.renderChatDetail(chat, messages, docs, Model.state.documents);
+                    renderChatDetailPreservingInput(chat, messages, docs, Model.state.documents);
                 } catch (e) {
                     View.showToast(`Failed to load chat: ${e.message}`, "error");
                 }
@@ -1755,7 +1775,7 @@
                         const messages = await Model.listMessages(chatId);
                         const chat = await Model.getChat(chatId);
                         const docs = await Model.listChatDocuments(chatId);
-                        View.renderChatDetail(chat, messages, docs, Model.state.documents);
+                        renderChatDetailPreservingInput(chat, messages, docs, Model.state.documents);
                     } catch (_) { /* transient — keep polling */ }
                 }, POLL_MS);
             }

@@ -5,7 +5,13 @@ from enum import StrEnum
 
 ImageInput = bytes | str | UploadFile
 
+
 class ChestXrayEntity(StrEnum):
+    """
+    Canonical labels from the NIH ChestX-ray14 dataset
+    (Wang et al., 2017 — https://arxiv.org/abs/1705.02315).
+    14 finding classes + "No Finding" = 15 total.
+    """
     NO_FINDING = "No Finding"
     ATELECTASIS = "Atelectasis"
     CARDIOMEGALY = "Cardiomegaly"
@@ -20,7 +26,8 @@ class ChestXrayEntity(StrEnum):
     EMPHYSEMA = "Emphysema"
     FIBROSIS = "Fibrosis"
     PLEURAL_THICKENING = "Pleural_Thickening"
-    
+    HERNIA = "Hernia"
+
 
 OUTPUT_JSON_STRUCTURE = json.dumps(
     {
@@ -35,4 +42,3 @@ OUTPUT_JSON_STRUCTURE = json.dumps(
     },
     indent=2,
 )
-    

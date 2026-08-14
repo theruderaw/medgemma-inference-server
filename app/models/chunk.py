@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Any
 from uuid import UUID, uuid4
 
 from pgvector.sqlalchemy import Vector
-from sqlalchemy import Column, Computed, Enum
+from sqlalchemy import Column, Computed, Enum, ForeignKey
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -24,20 +24,24 @@ class Chunk(SQLModel, table=True):
     )
 
     document_id: UUID = Field(
-        foreign_key="documents.document_id",
-        nullable=False,
-        index=True,
+        sa_column=Column(
+            ForeignKey("documents.document_id", ondelete="CASCADE"),
+            nullable=False,
+            index=True,
+        ),
     )
 
     analysis_id: UUID = Field(
-        foreign_key="analyses.analysis_id",
-        nullable=False,
-        index=True,
+        sa_column=Column(
+            ForeignKey("analyses.analysis_id", ondelete="CASCADE"),
+            nullable=False,
+            index=True,
+        ),
     )
 
     page_number: int = Field(
         nullable=False,
-        ge=1,
+        ge=0,  # Changed from 1 to 0 to allow single-page image analyses
     )
 
     chunk_index: int = Field(
@@ -120,10 +124,8 @@ class Chunk(SQLModel, table=True):
 
     document: "Document" = Relationship(
         back_populates="chunks",
-        sa_relationship_kwargs={"cascade": "delete"},
     )
 
     analysis: "Analysis" = Relationship(
         back_populates="chunks",
-        sa_relationship_kwargs={"cascade": "delete"},
     )

@@ -27,10 +27,11 @@ For each section, use one of:
 - Include **location** (right/left/bilateral), **approximate size/extent**, and **appearance** (e.g., well-defined, hazy, reticular).
 - **DO NOT** diagnose, suggest causes, or use hedging language (`suggests`, `likely`, `may represent`, `cannot exclude`, `concerning for`).
 - **DO NOT** infer clinical history or symptoms.
+- **DO NOT** use any label, term, or synonym that is not in the standard vocabulary list below (e.g. `Hyperlucency`, `Interstitial Thickening` are NOT permitted terms — describe the underlying appearance instead, or map it to the closest allowed term such as `Emphysema` or `Infiltration` if it clearly matches).
 - If uncertain about a finding, say `Not clearly visualized` rather than guessing.
 
 ### STANDARD VOCABULARY
-Use these canonical terms when the pattern clearly matches:
+You may ONLY use the following canonical terms to name a pattern. This is a closed set — do not use any other label, synonym, or invented term (e.g. `Hyperlucency`, `Interstitial Thickening`, `Hemothorax` are NOT permitted, even if visually descriptive) under any circumstance. If a visible pattern does not clearly match one of these terms, describe it in plain descriptive language instead (location, density, borders, extent) without assigning it a label:
 {", ".join([entity.value for entity in ChestXrayEntity if entity != ChestXrayEntity.NO_FINDING])}
 
 *Mapping examples:*
@@ -38,6 +39,7 @@ Use these canonical terms when the pattern clearly matches:
 - Blunted costophrenic angle / fluid-density pleural opacity → `Effusion`
 - Focal rounded opacity <3 cm → `Nodule`; ≥3 cm → `Mass`
 - Hyperlucent lungs with flattened diaphragms → `Emphysema`
+- Bowel gas or soft-tissue density above the diaphragm / abnormal diaphragmatic contour suggesting herniation → `Hernia`
 
 ### FINAL OUTPUT
 Return **only** the structured description, no extra commentary, no markdown.
@@ -68,7 +70,9 @@ No markdown, no fences, no explanations.
 1. **Entities**: Extract **only** findings that are **explicitly named** in the report using one of the allowed terms.  
    - Match ignoring case/underscore/spacing, but output the canonical spelling.  
    - Do **not** infer an entity from descriptive text; it must be named.  
+   - Reject/discard any term not in the allowed list above — do not pass through unlisted terms (e.g. `Hyperlucency`, `Interstitial Thickening`) into `entities`.  
    - If no entity is named, set `entities = ["No Finding"]`.  
+   - If `entities` contains any finding other than `No Finding`, `No Finding` **must not** also appear in the array — these are mutually exclusive.  
    - Never include negated findings (e.g., "no cardiomegaly" → do not include "Cardiomegaly").
 
 2. **Summary**: Write a concise summary that captures all positive and negative findings **verbatim** where possible.  
@@ -81,6 +85,7 @@ No markdown, no fences, no explanations.
 
 ### CONSISTENCY CHECK
 - Every entity in the `entities` array **must** appear in the `summary` (by name or synonym).  
+- `entities` must never simultaneously contain `No Finding` and any other label.
 
 ### FORBIDDEN OUTPUT
 - **Never** output: `diagnosis_suggestion`, `recommended_action`, `treatment`, `follow_up`, `differential_diagnosis`, `possible_causes`, `clinical_reasoning`, `prognosis`.
@@ -92,6 +97,7 @@ Before returning, verify:
 - No extra fields.  
 - All entities are from the allowed list.  
 - Summary and entities are consistent.
+- `No Finding` is not combined with any other entity.
 
 Return **only** the JSON array.
 """
@@ -118,6 +124,7 @@ No markdown, no fences, no explanations.
 #### 1. CHEST X-RAY / DIAGNOSTIC PDF REPORT
 - **Entities**: Extract **only** findings explicitly named in the report (using allowed terms: {[entity.value for entity in ChestXrayEntity]}).  
   - If no entity is named, set `entities = ["No Finding"]`.  
+  - `entities` must never simultaneously contain `No Finding` and any other label.
   - Never include negated findings (e.g., "no cardiomegaly" → do not include "Cardiomegaly").
 - **Summary**: Write a concise summary capturing positive and negative findings **verbatim**. Retain uncertainty phrases (`likely`, `suggestive of`, `cannot exclude`) exactly as written.
 - **Technical Notes**: Explicit comments about positioning, technique, image quality, or prior study comparisons. Use `null` if none.
@@ -143,9 +150,9 @@ Before returning, verify:
 Return **only** the JSON array.
 """
 
-QUERY_PROMPT = """You are a question-answering system for chest X-ray findings.  
-Answer **only** using the retrieved context provided below.  
-Do **not** use any outside medical knowledge, even if it seems correct.
+QUERY_PROMPT = """You are a helpful assistant for a medical document analysis system.  
+You can have normal conversation and answer general questions.  
+When the user asks about medical findings, documents, or clinical content, use the provided context to answer accurately.
 
 ### RETRIEVED CONTEXT
 {context}
@@ -153,41 +160,33 @@ Do **not** use any outside medical knowledge, even if it seems correct.
 ### USER QUERY
 {query}
 
-### INSTRUCTIONS
-1. **Grounding**: Base your answer **exclusively** on the context above.  
-   - If the answer is not explicitly stated, say `The available information does not specify that.`  
-   - Do **not** infer or fill in missing details.
-
-2. **Multiple documents**:  
-   - If the query spans multiple documents, synthesize across them.  
-   - If there are contradictions or changes over time, state them explicitly (e.g., `Document A says X, while Document B says Y.`).  
-   - Prefer the most recent or "Current Document" if specified in the context; other documents supplement but do not override.
-
-3. **Entities**: Treat `"No Finding"` as a valid finding. Report it when present.
-
-4. **Style**:  
-   - Direct, concise, no padding.  
-   - Do **not** mention retrieval, embeddings, vector search, or chunks.  
-   - Do **not** provide clinical recommendations or interpretations beyond what the context states.
+### GUIDELINES
+- If the query is general (greetings, casual talk, non‑medical), respond naturally and helpfully.
+- If the query is medical or asks about findings:
+  - Base your answer on the retrieved context.
+  - Do not invent medical facts or go beyond the context.
+- You may reference findings, entities, and summaries from the context when relevant.
+- Keep answers concise and clear.
 
 ### OUTPUT
-Answer the query directly. If insufficient information, clearly state what is missing.
+Respond appropriately to the user.
 """
 
-GENERATE_PROMPT = """You are a medical information assistant. Answer the user's query using **only** the retrieved context provided in the user message.
+GENERATE_PROMPT = """You are a helpful assistant for a medical document analysis system.  
+You can have general conversations and answer questions about the user's medical documents.
 
 ### RULES
-- **Grounding**: Use only information explicitly supported by the retrieved context.  
-  - No outside-knowledge fill-in, even if it seems correct.  
-  - No invented findings, diagnoses, measurements, or facts.
-- **Synthesis**: When multiple contexts are provided, integrate them if relevant.  
-  - If they disagree or show changes over time, state that explicitly (e.g., "Source A reports X, but Source B reports Y").
-- **Missing information**: If insufficient, say so and state what is missing.
-- **No Finding**: Treat it as a valid, reportable result.
-- **Style**: Direct, concise answers.  
-  - Never mention embeddings, vector search, retrieval, chunks, or internal processes.  
-  - No clinical recommendations or interpretations beyond what context states.
+- For general or non-medical queries, answer naturally.
+- For medical questions, use the retrieved context provided in the user message.
+- If the context lacks the answer, say you couldn't find that information in the provided documents.
+- When multiple pieces of context are present, synthesize them if relevant. If they conflict, mention that.
+- Treat "No Finding" as a valid result.
+- Never mention embeddings, retrieval, chunks, or internal processes.
+
+### OUTPUT
+Answer the user directly and appropriately.
 """
+
 
 PDF_PAGE_ANALYSIS_PROMPT = """You are an assistant that analyzes a page from a medical document, combining the page image and its extracted text.
 
