@@ -60,12 +60,21 @@ class Document(SQLModel, table=True):
 
     analyses: list["Analysis"] = Relationship(
         back_populates="document",
+        sa_relationship_kwargs={
+            "cascade": "all, delete-orphan",
+        },
     )
 
     chunks: list["Chunk"] = Relationship(
         back_populates="document",
+        sa_relationship_kwargs={
+            "cascade":"all,delete-orphan"
+        }
     )
 
     chat_documents: list["ChatDocument"] = Relationship(
         back_populates="document",
+        sa_relationship_kwargs={
+            "cascade":"all,delete-orphan"
+        }
     )

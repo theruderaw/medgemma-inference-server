@@ -104,7 +104,6 @@ class Analysis(SQLModel, table=True):
     # Relationships with CASCADE (Matches Chunk behavior)
     document: "Document" = Relationship(
         back_populates="analyses",
-        sa_relationship_kwargs={"cascade": "delete"},  # <-- ADD THIS
     )
 
     chunks: list["Chunk"] = Relationship(
